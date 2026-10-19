@@ -2,7 +2,7 @@
 
 A reusable, multi-agent software engineering organization for designing, building, testing, auditing, deploying (with approval), and maintaining modern web applications.
 
-**This package is a complete installation specification plus 20 native OhMyPi slash-command templates.** It is not pre-installed software, an extension binary, a configured AI provider, or a guarantee of production security. A running OhMyPi session must create, enable, and verify the agent definitions, skills, policies, and command files described by the Master Prompt.
+**This package is a complete installation specification plus 23 native OhMyPi slash-command templates and 16 professional UI/UX skills.** It is not pre-installed software, an extension binary, a configured AI provider, or a guarantee of production security. A running OhMyPi session must create, enable, and verify the agent definitions, skills, policies, and command files described by the Master Prompt.
 
 ## Contents
 
@@ -10,14 +10,20 @@ A reusable, multi-agent software engineering organization for designing, buildin
 WebTeam/
 ├── README.md
 ├── WEBTEAM_MASTER_PROMPT.md
-└── commands/
-    ├── webteam_create_project.md
-    ├── webteam_adopt_project.md
-    ├── webteam_audit.md
-    └── ... 17 additional commands (20 total)
+├── commands/
+│   ├── webteam_create_project.md
+│   ├── webteam_adopt_project.md
+│   ├── webteam_audit.md
+│   ├── webteam_uiux.md
+│   └── ... 19 additional commands (23 total)
+└── skills/
+    ├── webteam-design-direction-and-taste/SKILL.md
+    ├── webteam-typography-art-direction/SKILL.md
+    ├── webteam-tables-lists-and-cards/SKILL.md
+    └── ... 13 additional UI/UX skills (16 total)
 ```
 
-There are **no migration prompts, legacy releases, or alternate-language documents** in this distribution. The standalone Markdown templates in `commands/` are authoritative for slash-command behavior; the Master Prompt defines how to install and coordinate them.
+There are **no migration prompts, legacy releases, or alternate-language documents** in this distribution. The standalone Markdown templates in `commands/` and `skills/` are authoritative sources for commands and the new Designer skills; the Master Prompt defines how to install and coordinate them.
 
 ## 1. What WebTeam does
 
@@ -27,7 +33,7 @@ Key characteristics:
 
 - **16 specialist agents**, coordinated by `webteam-orchestrator` where OMP's effective runtime permits; the main session coordinates directly when nested delegation is unsupported.
 - **Two-level architecture:** reusable Global WebTeam plus per-repository Project WebTeam specifications and configuration.
-- **Native slash commands:** 20 reusable Markdown commands for project creation, adoption, inspection, audit, testing, and delivery.
+- **Native slash commands:** 23 reusable Markdown commands for project creation, adoption, inspection, UI/UX craft audit, testing, and delivery.
 - **Project-aware onboarding:** questions about the repository, product, requirements, frontend/backend/database, design, testing, deployment, and AI model routing.
 - **Professional design:** the complete eight-stage design workflow, Design DNA, palettes, font pairing, accessibility, interaction specification, design tokens, and anti-generic-UI checks.
 - **Engineering tests:** Vitest, component and Fastify API tests, integration and contract checks, Playwright E2E, visual regression, and CI quality gates.
@@ -80,7 +86,7 @@ A typical layout is:
 ~/.omp/agent/                       # example only; verify current profile
   agents/webteam-*.md               # 16 globally reusable roles, flat files
   skills/<skill-name>/SKILL.md      # load relevant skills on demand
-  commands/webteam_*.md             # 20 flat Markdown commands
+  commands/webteam_*.md             # 23 flat Markdown commands
   config.yml                        # only approved, verified settings
 
 my-app/
@@ -101,6 +107,74 @@ my-app/
 
 The real OMP discovery rules depend on version, active profile, current working directory, and nested `.omp` directories. Native commands and native agent files normally use flat `*.md` discovery; do not put them into attractive but unrecognized subfolders. When launching from monorepo subdirectories, inspect both effective context instructions and effective project settings, which need not follow identical lookup rules.
 
+<!-- WEBTEAM_DESIGN_CRAFT_README_BEGIN -->
+
+## Professional design craft: avoiding generic AI-looking UI
+
+WebTeam's Designer does more than select fonts/colors and draw rounded cards. The final package includes **16 OMP-discoverable specialized UI/UX skills** under `skills/<skill-name>/SKILL.md` to strengthen art direction, layout proportions, brand systems, typography, truthful content, data-heavy UI, landing experiences, auth/settings design, interaction, visual critique and Playwright-based visual verification.
+
+Why AI-generated UI often looks interchangeable:
+
+- The same card/grid templates are applied to fundamentally different information tasks.
+- Color and typography are chosen for trends rather than genuine product identity.
+- Fake metrics, generic copy and filler imagery substitute for real information architecture.
+- Only a happy-path screenshot is reviewed; empty, error, dense, long-text, keyboard and mobile states are ignored.
+- Arbitrary aesthetic "scores" replace structured critique, browser evidence and product research.
+
+The updated workflow begins with product intent and authentic content, develops an explicit art direction, explores structurally different options for major design decisions, defines design tokens and component contracts, and reviews rendered screens. Existing projects retain their documented Design DNA by default. Unique design is **not** an excuse to break UX conventions or WCAG 2.2 AA goals.
+
+### Extended page experience and component catalogs
+
+The Designer now has **two additional on-demand skills**, keeping the 14 existing specialized skills intact:
+
+| Skill | Use | Reference material |
+|---|---|---|
+| `webteam-page-experience-patterns` | Choose an actual page blueprint by user job and route | `references/PAGE_BLUEPRINTS.md` — **22 page patterns** (P01–P22) |
+| `webteam-component-interaction-contracts` | Define accessible, implementable complex widget behavior | `references/COMPONENT_CATALOG.md` — **38 component patterns** (C01–C38); `references/ACCEPTANCE_MATRICES.md` — example test contracts |
+
+**Additional pages/flows:** search and filtered results; record details/master–detail; forms and multistep wizards; first-run onboarding/invitations; organization administration/permissions; case/approval queues; calendar/bookings/timetables; messages/notifications; file libraries/versioning; reports/exports; CMS/editors; commerce and billing; developer portal/API/webhook setup; AI-assisted workflows; maps; help/knowledge; kanban/collaboration; 401/403/404/409/429/500/offline/maintenance; adaptive mobile/split-view; domain-specific education/finance/health workflows; comparisons; audit and incident consoles.
+
+**Additional components:** global navigation, breadcrumbs, tabs/disclosure, command palette, tree, split pane, labeled form controls, combobox/autocomplete, date/time-range picker, currency/slider, file uploader, OTP, dialog/drawer, popover, alerts, skeletons, chips/status, semantic table vs data grid, filters, nested treegrid, charts, timeline, calendars, kanban, maps, rich editor, media preview, collaboration, code/log viewer, theme/language controls, pagination/virtualization, sticky indexes, session and sensitive actions, consent, billing and AI-assisted review. These patterns are **not instructions to implement unrequested features**.
+
+**Usage contract:** select the matching catalog section(s), create a route/component contract with full interaction states, data provenance, keyboard/focus, mobile, error recovery and actual acceptance evidence. Do not load both full catalogs on every design task. Existing Design DNA takes precedence absent redesign approval. The catalog files must be copied together with their owning `SKILL.md`; an installed skill with missing references fails the readiness check.
+
+**Standards rationale:** page patterns separate a user's task from generic visual templates; WAI APG establishes specific keyboard semantics for rich widgets (including grid/treegrid, dialogs and combobox), and WCAG 2.2 adds important target-size and focus-visibility tests. See [WAI APG](https://www.w3.org/WAI/ARIA/apg/patterns/), [GOV.UK patterns](https://design-system.service.gov.uk/patterns/), [MOJ components](https://design-patterns.service.justice.gov.uk/components/), and [WCAG 2.2](https://www.w3.org/TR/WCAG22/).
+
+### Dedicated UI/UX command
+
+```text
+/webteam_uiux --mode=report --scope=all --depth=deep --roadmap=on
+/webteam_uiux --mode=plan --pages=/dashboard,/users --style=preserve
+/webteam_uiux --mode=fix --pages=/dashboard --max-fixes=3 --style=preserve
+/webteam_uiux --mode=report --scope=component --component=DataTable
+```
+
+- **report (default):** inspect actual UI when browser tools are authorized, generate a redacted Markdown report at `docs/audits/UIUX_AUDIT_<date>.md`, include prioritized issues and optional experience roadmap. Does not edit product source.
+- **plan:** report plus staged remediation plan, owners, acceptance criteria and visual-test coverage. Does not edit product source.
+- **fix:** bounded, approved UI fixes by the Frontend implementation owner, supported by Designer/QA review; verify with actual tests. Do not replace branding, rewrite unrelated pages or silently update snapshot baselines.
+
+Options are **prompt conventions**, not built-in CLI flag validation; OMP file commands expand to prompts and the main session must interpret/validate arguments. The `--style=preserve|evolve|redesign` parameter defaults to `preserve`. `redesign` requires confirmation before changing established visual identity. A missing browser means results are explicitly marked static-only/unverified rather than passed.
+
+**Which command should I use?** `/webteam_uiux` for visual/UX critique, remediation or high-quality redesign planning; `/webteam_design_audit` to reconstruct or compare Design DNA; `/webteam_visual_test` for Playwright screenshot/behavior checks; `/webteam_audit` for comprehensive cross-discipline project auditing.
+
+### Using the bundled skills
+
+**For an already-running WebTeam:** do **not** re-run global bootstrap merely to add design capability. Give the existing OMP session the updated section **§7A** of the Master Prompt and the package's `skills/` directories **including nested reference assets**, and `commands/webteam_uiux.md` files. Ask it to inspect the current Designer definition, merge the new design protocols into that one agent only, confirm skill name collisions before installing, install the dedicated command into the verified active `commands/` root, and run a read-only targeted smoke test. Preserve Memory, fallback, model roles, unrelated skills and existing Design DNA. If runtime reload is needed, do it only as documented by the installed build.
+
+The package's `skills/` directory (including each `references/` subdirectory) is a source distribution, not automatic evidence that skills were installed. At bootstrap, WebTeam copies the chosen Designer skills to the verified OMP global `skills/` directory (one-level layout) and tests discovery. Do not enable all skills in `autoloadSkills`: load only what the task needs. If `omp-designer` is separately installed, verify its behavior and avoid conflicting duplicate injection/hooks; these WebTeam skills remain independent.
+
+<!-- WEBTEAM_DESIGN_CRAFT_README_END -->
+
+### Evidence-informed design references
+
+Use external references as **guidance**, not as a license to clone product identities. The specialized skills draw on widely applicable principles:
+
+- [Nielsen Norman Group — Principles of Visual Design](https://www.nngroup.com/articles/principles-visual-design/): hierarchy, scale, balance, contrast and grouping.
+- [US Web Design System — Design Tokens](https://designsystem.digital.gov/design-tokens/): consistent semantic visual foundations.
+- [WCAG 2.2](https://www.w3.org/TR/WCAG22/): accessibility acceptance requirements and exceptions.
+- [Playwright — Screenshot Assertions](https://playwright.dev/docs/test-snapshots): reproducible visual comparisons; baselines still require intentional human review.
+- [omp-designer](https://github.com/LePro10/omp-designer): optional inspiration for art direction, anti-template critique and bounded delivery review; never duplicate its runtime hooks blindly.
+
 ## 3. Prerequisites and safe installation
 
 You need an installed OhMyPi with access to the intended local files, an approved model provider with credentials configured **outside tracked project files**, and permission to configure your agent profile. For specialist smoke tests, you may also need a disposable project and a working shell/test environment.
@@ -111,10 +185,10 @@ The native command behavior documented here was checked against OhMyPi **v18.12.
 
 1. Download/extract this package to a trusted directory. Review the command files and Master Prompt before using them with an AI coding agent.
 2. Launch OMP in an authorized working directory; confirm its version (`omp --version`) and actual profile/config roots using installed documentation or supported commands.
-3. Supply the complete `WEBTEAM_MASTER_PROMPT.md` to your OMP session **and make the companion `commands/` directory readable to that session**. Request: “Implement this WebTeam installation specification; first inspect the installed runtime and ask me for the required setup choices.”
-4. Answer the compact installation interview: effective agent file placement, **primary model provider first**, usable models, optional additional provider(s) for fallback, optional council, Caveman/Codebase Memory, Mnemopi/Auto-Learn, quality-loop policy and global command scope.
+3. Supply the complete `WEBTEAM_MASTER_PROMPT.md` to your OMP session **and make the companion `commands/` and `skills/` directories readable to that session**. Request: “Implement this WebTeam installation specification; first inspect the installed runtime and ask me for the required setup choices.”
+4. Answer the compact installation interview: effective agent file placement, **primary model provider first**, usable models, optional additional provider(s) for fallback, optional council, Caveman/Codebase Memory, Mnemopi/Auto-Learn, quality-loop policy, global command scope, and **optional live subagent visibility** (`full` / `collapsed` / keep existing).
 5. Review the proposed settings, downloads, access permissions, approximate cost implications and file manifest before granting installation authorization. Credentials belong in a supported secure environment, not in Markdown or Git.
-6. Allow OMP to create all 16 agent definitions, actual `SKILL.md` files, approved model mappings, supporting policies, and command files. A named skill without a discoverable `SKILL.md` is not installed.
+6. Allow OMP to create all 16 agent definitions, install the companion professional Designer `SKILL.md` files **and their required reference documents** and create all other required skills, approved model mappings, supporting policies, and command files. A named skill without a discoverable `SKILL.md` is not installed.
 7. Require runtime validation: effective discovery, model resolution, real `task` delegation, safe default routing, command expansion, and optional integration health. A static file check alone is **not** a successful install.
 8. Restart/reload OMP when required by the installed runtime; run `/webteam_healthcheck` and `/webteam_help`. Review the results before using WebTeam for critical work.
 
@@ -165,7 +239,7 @@ Adoption starts with read-only source and configuration inspection. It discovers
 
 Project artifacts are the durable authority; recalled memory is advisory and can be stale. Avoid requesting an entire-agent council for every isolated change. Run checks proportionate to risk, and require an independent review for sensitive work.
 
-## 5. Complete list of 20 slash commands
+## 5. Complete list of 23 slash commands
 
 All command names are slash commands **inside OMP chat**, not terminal shell commands. Their Markdown bodies are loaded as prompts. The main session interprets arguments and uses actual permitted OMP tools/agents; a command file cannot independently enforce access control.
 
@@ -173,11 +247,13 @@ All command names are slash commands **inside OMP chat**, not terminal shell com
 |---|---|
 | `/webteam_create_project` | New application onboarding and project documentation |
 | `/webteam_adopt_project` | Safe takeover of an existing repository |
+| `/webteam_agents` | Inspect the installed/discoverable 16-agent roster; not a live activity feed |
 | `/webteam_status` | Project status, blockers and routing health |
 | `/webteam_plan` | Scope and stage a feature without coding |
 | `/webteam_implement` | Implement approved, bounded functionality |
 | `/webteam_audit` | Full evidence-based audit, remediation plan and optional safe fixes |
-| `/webteam_design_audit` | Design DNA, UI consistency and visual/design system review |
+| `/webteam_design_audit` | Design DNA, UI consistency and visual/design system review (read-only) |
+| `/webteam_uiux` | Dedicated UI/UX report, remediation plan or bounded approved fixes |
 | `/webteam_architecture_audit` | System structure, contracts and architecture decisions |
 | `/webteam_security_audit` | Targeted security, privacy, authorization and dependency review |
 | `/webteam_test` | Unit/component/API/integration/E2E tests according to risk |
@@ -186,6 +262,7 @@ All command names are slash commands **inside OMP chat**, not terminal shell com
 | `/webteam_reference_analyze` | Inspect external Git repositories for suitable reusable ideas |
 | `/webteam_memory_review` | Mnemopi scope, recall, lesson retention and Auto-Learn review |
 | `/webteam_models_audit` | Effective primary/fallback/council routing and permissions |
+| `/webteam_monitor` | Read-only status/Agent Hub guidance for actual running subagents |
 | `/webteam_quality_loop` | Supervised, bounded quality repair cycles |
 | `/webteam_docs_sync` | Synchronize approved project documents with real implementation |
 | `/webteam_healthcheck` | Verify discovery, routing, delegation and tool availability |
@@ -242,6 +319,7 @@ The command never treats `--mode=fix` as permission to deploy, delete data, run 
 - `/webteam_security_audit` is a narrower security assessment.
 - `/webteam_design_audit` inspects design consistency and Design DNA.
 - `/webteam_healthcheck` assesses **WebTeam itself** (configuration, discovery, routing and delegation), not application security or business correctness.
+- `/webteam_agents` inventories the installed/discoverable agents, whereas `/webteam_monitor` helps observe live subagents and guides use of `Alt+A`. Neither command should be mistaken for proof of successful task delegation.
 
 ## 7. Design quality and visual safety
 
@@ -330,19 +408,59 @@ Use `/webteam_healthcheck` and require the Orchestrator to show evidence for **d
 1. All 16 agent definitions exist, parse, and are **actually discoverable**.
 2. Relevant `SKILL.md` files are recognized, with required supporting references present.
 3. Primary model and optional fallback/council routes resolve to allowed, supported models.
-4. All 20 native command files are loaded, discoverable, and expand expected arguments without collisions.
+4. All 23 native command files are loaded, discoverable, and expand expected arguments without collisions.
 5. An unambiguous natural-language web request really reaches the WebTeam coordination path.
 6. At least one harmless, read-only `task` delegation is observed and returns an identifiable specialist result (or a documented main-session coordination fallback is used).
 7. Actual effective tool permissions, including MCP and extension grants, are inspected.
 8. Optional Mnemopi, Caveman, Codebase Memory and native Loop are checked **only if enabled and consented to**.
-9. No unrelated configuration or repository data is modified; backups and rollback are available.
+9. Optional Agent Hub pinned roster/live preview settings match the user-approved UI preference and are validated against the effective OMP schema; roster visibility is not mistaken for real agent delegation.
+10. No unrelated configuration or repository data is modified; backups and rollback are available.
 
 Record results as `PASS_VERIFIED`, `PARTIAL_VERIFIED`, `BLOCKED`, or `FAIL`, with exact evidence and unverified limitations. Autocomplete presence is not proof of end-to-end execution.
+
+### Watching which agents are actually running
+
+OhMyPi's **Agent Hub** is the native real-time view for subagents associated with the current interactive session. Open it with **`Alt+A`** (default; run `/hotkeys` to inspect the active mapping). Use the roster to see running, idle, parked or aborted subagents, current tasks, resolved models, tool activity and available token/cost metrics. The main OMP session is not included in the subagent list.
+
+For a multi-specialist WebTeam session, the recommended **optional** settings are:
+
+```yaml
+display:
+  pinnedAgents: full
+  subagentLivePreview: true
+```
+
+These settings show every live subagent in the pinned `Subagents` list above the input and a brief current/previous tool activity line. `full` is useful when supervising multiple specialists, whereas `collapsed` (OMP's documented default) uses less terminal space; `off` hides the pinned list. `subagentLivePreview` is normally disabled until selected. The Master Prompt asks for this **once during global team setup**, checks the installed OMP schema and preserves other config keys. These are **visibility settings, not an agent launcher, an extra-model-request loop, a tool-permission boundary, or proof that routing works**. They do not themselves consume extra LLM tokens.
+
+For an existing installation, first inspect the effective config. If supported and you approve a shared global UI change, an OMP session may merge just those two keys into its active `config.yml` and reload as necessary; never overwrite the rest of the `display` object. For a small terminal, keep `pinnedAgents: collapsed` and optionally set live preview to `true`.
+
+To verify: request a harmless read-only task requiring one WebTeam specialist, observe its actual `task` dispatch, then open Agent Hub and check the corresponding live entry. An empty Hub can simply mean no subagents are active. `/agents` lists/configures discovered agent definitions, **not** which agents are currently running; `/jobs` is for asynchronous jobs. Agent Hub live activity can display sensitive file paths or tool arguments, so avoid publishing unrestricted screenshots/logs.
+
+**Official reference:** [OhMyPi v18.12.2 Agent Hub documentation](https://github.com/can1357/oh-my-pi/blob/v18.12.2/docs/agent-hub.md).
+
+
+### WebTeam agent inspection commands
+
+Use these prompt commands when you want more visibility without changing runtime settings:
+
+```text
+/webteam_monitor
+/webteam_monitor --scope=session --detail=full
+/webteam_agents
+/webteam_agents --mode=verify --scope=all
+```
+
+- **`/webteam_monitor`** is a one-shot, read-only view of whatever live subagent evidence the OMP session exposes, plus practical instructions for **`Alt+A` Agent Hub**. It must say `UNVERIFIED` if live data cannot be read; it is **not** a background status service.
+- **`/webteam_agents`** checks which of the 16 expected agents are installed and actually discoverable, highlights collisions or invalid declarations and can statically inspect delegation prerequisites. It **does not** imply agents are executing.
+- **`/webteam_healthcheck`** is the separate workflow for consented, bounded live routing/delegation smoke tests. Do not run paid probes merely to display agent activity.
+
+These three commands complement native OMP UI tools; they do not replace Agent Hub, grant permissions, or automatically enable display configuration.
 
 ## 14. Troubleshooting
 
 | Symptom | Likely cause / safe next action |
 |---|---|
+| No agents appear in the pinned roster | Verify `display.pinnedAgents`, current OMP session, whether any subagent is active and the `Alt+A` Hub; a configured agent that is not executing will not appear |
 | Slash commands do not appear | Verify native flat `commands/*.md` location, active OMP profile, ignore rules, command collisions, reload state |
 | A command expands but no specialist runs | Prompt expansion does not spawn agents; inspect MAIN task interface, routing policy, tools and delegation depth |
 | Agents exist but normal web requests bypass WebTeam | Verify MAIN/nearest project instructions and observed natural-language routing; add a supported dispatcher without hijacking unrelated tasks |

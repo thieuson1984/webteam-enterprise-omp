@@ -2,17 +2,17 @@
 
 **Audience:** An OhMyPi (OMP) coding-agent session with permission to inspect and, with necessary approvals, configure the runtime.  
 **Scope:** Build a reusable Global WebTeam and per-project engineering workspaces; verify their actual behavior.  
-**Deliverables:** 16 discoverable agents, professionally developed specialized skills, project bootstrap/adoption governance, 20 native Markdown commands, complete testing and audit workflows, and a verified orchestration entry point.
+**Deliverables:** 16 discoverable agents, professionally developed specialized skills, project bootstrap/adoption governance, 23 native Markdown commands, complete testing and audit workflows, and a verified orchestration entry point.
 
-> **Important:** This is an installation prompt, not a pre-installed product. Do not claim a capability was installed, enforced, tested, or enabled unless the running OhMyPi session actually verified it. Use the installed OMP version and its real configuration schema as the authority. The companion `commands/*.md` files are the canonical command sources; do not invent alternate implementations or duplicate conflicting commands.
+> **Important:** This is an installation prompt, not a pre-installed product. Do not claim a capability was installed, enforced, tested, or enabled unless the running OhMyPi session actually verified it. Use the installed OMP version and its real configuration schema as the authority. The companion `commands/*.md` files and `skills/*/SKILL.md` files are the canonical command and advanced Designer skill sources; do not invent alternate implementations or duplicate conflicting commands.
 
 ## How to execute this prompt
 
-1. Start OhMyPi from an intended, authorized location with this document and the accompanying `commands/` files accessible in its workspace or attachments.
+1. Start OhMyPi from an intended, authorized location with this document and the accompanying `commands/` and `skills/` directories accessible in its workspace or attachments.
 2. Read this document as the operating specification. Inspect, then ask the global-installation questions and obtain approvals **before making global configuration changes or installing third-party software**.
 3. Build components incrementally with a manifest/checkpoints; use real native OMP agent/skill/command discovery instead of simulating it in prose.
-4. Install the **exact companion command templates** into the verified native command directory without overwriting unrelated files. If the command directory is unavailable, report the missing source and pause command installation; do not fabricate the command contents.
-5. Run the observed, read-only-or-disposable self-orchestration smoke tests before declaring success.
+4. Install the **exact companion command templates** and the approved advanced Designer skill files into their verified native directories without overwriting unrelated files. If a source directory is unavailable, report the missing source and pause that installation stage; do not fabricate the command contents.
+5. Validate the bundled 16 Designer skills and the dedicated `/webteam_uiux` command in addition to regular OMP agent/skill/command discovery, then run observed, read-only-or-disposable self-orchestration smoke tests before declaring success.
 
 ---
 
@@ -45,6 +45,35 @@ Before writing a setting, inspect the active OMP version, commands, documentatio
 **Config layering:** global reusable team configuration and project-specific overrides must be separated. Inspect actual OMP merge/discovery semantics; note that project settings can replace array settings instead of extending them. Respect nearest `.omp` instruction discovery and any existing external-provider settings. Avoid copying configuration conventions from OpenCode, Claude Code, or other runtimes unless current OMP explicitly supports them. Only enable external extensions after capability, compatibility, security, and permission checks. Treat per-task model selection, model role aliases, advisor/watchdog reviews, and multi-agent deliberation as **distinct features**; verify their capabilities independently.
 
 **Validation hierarchy:** (1) file exists; (2) syntax/frontmatter parses; (3) OMP discovers the agent/skill; (4) model resolves; (5) a representative task delegates and returns; (6) resulting behavior conforms. If any level cannot be tested, state which one is unverified. Prefer native enforceable checks to unverified behavioral promises.
+
+### 1.1 Native Agent Hub visibility — optional global setup choice
+
+During the **first Global WebTeam installation interview**, ask whether the user wants real-time monitoring of active subagents in the OMP TUI. Present these choices without assuming permission to change existing global UI preferences:
+
+- **Recommended for WebTeam:** show all live subagents (`display.pinnedAgents: full`) with compact current/last tool activity (`display.subagentLivePreview: true`). Especially useful when multiple specialists are delegated.
+- **Compact:** retain OMP's default collapsed roster (`display.pinnedAgents: collapsed`), optionally enabling live preview.
+- **Keep existing/off:** preserve current values unchanged or hide the pinned roster with `off`, according to the user's choice. Do not change settings just to pass a smoke test.
+
+For OMP versions whose **installed** settings schema supports both keys, the recommended YAML fragment is:
+
+```yaml
+display:
+  pinnedAgents: full
+  subagentLivePreview: true
+```
+
+**Implementation contract:**
+
+1. Inspect the *effective* version, `display` settings, global configuration scope, and existing user overrides. Verify accepted values (`collapsed`, `full`, `off`) and boolean live preview against the installed schema. For OMP v18.12.2 these values are documented in `docs/agent-hub.md`; later versions must be checked rather than guessed.
+2. Explain that these are **TUI presentation preferences**, not model routing, agent permissions, telemetry uploads, or autonomous background agents. Enabling them does **not itself issue extra LLM requests**. Showing all agents can take substantial terminal space; prefer `collapsed` on small terminals if the user wants it.
+3. Ask explicitly before applying the choice to a **shared global config**. Merge only the two approved keys into the effective `display` map; retain all unrelated `display`, model, memory, MCP, fallback, and extension settings. Do not duplicate the map or overwrite it wholesale.
+4. After applying changes, reload/restart the UI only if the running OMP build requires it. Inspect the effective settings; in a **consented, bounded read-only specialist task** confirm that the pinned `Subagents` block shows the expected roster and that live preview shows actual tool activity when available. If there is no active subagent, the roster can be empty; this is **not** a routing failure by itself.
+5. Inform the user: **`Alt+A` opens Agent Hub**, where actual `running`/`idle`/`parked`/`aborted` subagents, their resolved models and available usage metrics can be inspected. `/hotkeys` reveals current keybindings; custom keymaps can change the shortcut. `/agents` manages discovered agent definitions and is **not** the live roster; `/jobs` shows background jobs, not the specialist transcript view. The **main session is not listed as a subagent**.
+6. Do not report all 16 WebTeam agents as “running” merely because they are installed; only observed runtime rows indicate execution. Avoid copying potentially sensitive live tool arguments or paths into public reports. Agent Hub is observational and does not replace observed `task` dispatch evidence.
+
+This option is **Global UI setup**, not a new question at every project bootstrap. Project-specific UI overrides should be created only when explicitly requested and supported. Do not turn on `tui.mouse` automatically; it changes terminal selection/scroll gestures and is not required for Agent Hub or pinned previews.
+
+**Reference:** `https://github.com/can1357/oh-my-pi/blob/v18.12.2/docs/agent-hub.md`.
 
 ## 2. Two-level architecture: Global WebTeam + Project WebTeam
 
@@ -615,6 +644,99 @@ The Designer is a strategic product-design specialist, not a page decorator. Imp
 
 If `omp-designer` or other design extension is present, evaluate compatible mechanisms without assuming it exists or copying its code blindly. Build independent fallback skills. Design requirements and visual baselines must be usable by QA and Reviewer, not just Designer.
 
+<!-- WEBTEAM_UIUX_ENHANCEMENT_BEGIN -->
+
+## 7A. Designer professional craft and anti-template design protocol (authoritative extension to §7 and §13A.3)
+
+### The defect: aesthetic convergence / plastic-looking AI interfaces
+
+A functional UI can still feel interchangeable when its designer optimizes for fashionable isolated components rather than product-specific hierarchy, real user tasks, evidence-led art direction and implementation craft. Known symptoms are identical floating card grids, generic purple/blue gradients, indiscriminate soft corners and shadows, stock illustrations, oversized hero whitespace, predictable CTA pills, monotonous typography, fake metrics and untested interactive states. These are symptoms, **not universal banned styles**: any visual treatment is acceptable when the product context justifies it and implementation is coherent.
+
+**Never optimize solely for novelty.** Strong professional UI is original *and* usable, recognizable without depending only on a logo, rich in truthful information, legible, accessible, fast and maintainable. Preserve existing Design DNA by default; a well-designed established interface should not be redesigned simply to look different.
+
+### Required decision gate before rendering new/high-impact UI
+
+1. **Product and content first:** explain exactly who the primary user is, the first task, information priority, real content and important edge cases. Collect 2–4 authentic sample records or clearly labeled synthetic fixtures; do not fabricate performance figures, logos, endorsements or statistics.
+2. **Existing identity or net-new?** Read PRODUCT.md, DESIGN.md, design tokens and representative existing screens. Classify `PRESERVE`, `STANDARDIZE`, `EVOLVE`, `REDESIGN`; new major visual identity needs user approval before broad changes.
+3. **Design direction brief:** write three personality traits, three anti-traits, composition family, density, typographic voice, restrained palette and 1–2 unique but purposeful product cues. Prefer one coherent direction over a pile of fashionable effects.
+4. **Variant exploration only when justified:** for a first design or material redesign produce 2–3 STRUCTURALLY distinct options, compared on UX, brand specificity, performance/accessibility and implementation cost. Avoid 3 options that only swap colors. Routine tasks should reuse project standards without new exploration.
+5. **Page-type information contracts:** select correct patterns: action-oriented dashboard; authentic-story landing page; focused auth/recovery; settings with save/draft/error state; profile with permissions; tables for attribute comparison; lists for browse; cards for rich entities. Do not use the same visual composition for unrelated tasks.
+6. **Visual system craft:** font choices must have actual role logic, optical sizes, numeral behavior and locale glyphs; palette must have semantic contrast-tested tokens; spacing, borders and elevation must reinforce hierarchy rather than paint everything as cards.
+7. **Working implementation:** route-specific responsive layouts, keyboard navigation, focus-visible, error/empty/loading/success/restricted states, useful labels and real interactions. No dummy buttons or decorative numbers on production pages.
+8. **Visual evidence and taste critique:** if browser available, inspect screenshot and interactions at narrow, standard and wide viewports, representative content extremes, zoom and supported themes. Use objective defect checks plus qualitative craft critique. Run brand-blind substitution test and distinguish subjective suggestions from reproducible errors.
+9. **Bounded refinement:** choose the few highest-impact improvements, one writer per file set, recheck targeted tests and preserve approved baselines. Stop when acceptance criteria meet or progress/budget/approval gate is reached.
+
+### Specialized skill pack — ready-to-install companion files
+
+The following 16 full `SKILL.md` files are distributed at `skills/<name>/SKILL.md` alongside this prompt. They are **real skill sources, not mere named aspirations**:
+
+- `webteam-design-direction-and-taste` — Establish a product-specific art direction and critique visual taste before building new or significantly redesigned UI.
+- `webteam-visual-identity-systems` — Engineer distinctive but usable color, surface, icon, texture and visual identity systems backed by semantic design tokens.
+- `webteam-typography-art-direction` — Design editorial-grade typography and font pairing that creates hierarchy, supports the product languages and avoids template-like UI.
+- `webteam-layout-composition-and-rhythm` — Create purposeful, proportionally balanced layouts with editorial rhythm, optical alignment and responsive behavior beyond repeated card grids.
+- `webteam-information-dense-dashboard` — Design task-oriented dashboards and analytical workspaces with appropriate density, hierarchy, metric integrity and actionable data visualization.
+- `webteam-tables-lists-and-cards` — Design sophisticated DataTables, lists, cards, filters and bulk workflows with correct data density and business-task ergonomics.
+- `webteam-landing-and-marketing-experience` — Create distinctive product-specific landing and marketing pages with editorial storytelling, credible proof and conversion-focused layouts.
+- `webteam-auth-profile-settings-ux` — Design trustworthy and polished login/logout, onboarding, profile, account and settings experiences with complete edge states and privacy affordances.
+- `webteam-content-realism-and-localization` — Produce credible interface content, contextual microcopy and localization-ready states without fake dashboards or placeholder-driven design.
+- `webteam-uiux-design-critique` — Conduct evidence-led design critique with measurable UX defects and qualitative craft assessment; reject aesthetic scoring by model taste alone.
+- `webteam-design-system-evolution` — Preserve existing project Design DNA while evolving shared components and tokens safely through explicit migrations.
+- `webteam-ui-visual-e2e-qa` — Verify UI/UX via Playwright interaction and visual tests with deterministic fixtures, meaningful baselines, accessibility evidence and safe repairs.
+- `webteam-research-and-reference-transfer` — Research design references and responsibly adapt transferable principles without cloning brands or losing project identity.
+- `webteam-interaction-motion-feedback` — Define precise interaction behavior, progressive disclosure and meaningful motion with reduced-motion accessibility and functional states.
+
+- `webteam-page-experience-patterns` — Page blueprint catalog for search, record detail, CRUD/wizards, onboarding, permissions, approvals, scheduling, collaboration, files, reporting, CMS, commerce, APIs, AI, maps, help, boards, system states and domain-specific workflows; read the applicable P01–P22 section on demand.
+- `webteam-component-interaction-contracts` — Interaction, accessibility, state, responsive and data contracts for 38 component patterns including navigation, forms, combobox, dates, upload, dialogs, tables/grids, trees, charts, calendars, media and security controls; read applicable C01–C38 sections on demand.
+
+**Companion reference assets:** `skills/webteam-page-experience-patterns/references/PAGE_BLUEPRINTS.md`, `skills/webteam-component-interaction-contracts/references/COMPONENT_CATALOG.md` and `.../ACCEPTANCE_MATRICES.md` are **required** for these two skills, not optional notes. A `SKILL.md` without readable references is only PARTIAL installation. No always-on loading of these catalogs; inspect their headings or retrieve the single relevant section.
+
+**Install:** At Global WebTeam bootstrap, inspect effective OMP profile and copy each companion `skills/<name>/` directory, including **all referenced `references/*.md` assets**, into the **verified native one-level skills root**, after collision review and user approval for global writes. Do NOT overwrite third-party/user-authored same-name skills. In existing WebTeam installations, merge corresponding professional workflows into `webteam-designer` and update its `autoloadSkills` **sparingly** (prefer `webteam-design-direction-and-taste` only for high-impact art-direction tasks; load the rest on demand). `webteam-frontend`, `webteam-qa` and `webteam-reviewer` should read relevant skills when involved; do not eagerly load all 16. Validate discovery via actual OMP skill mechanisms. If companion files are absent, don't claim installed; create fully equivalent skills deliberately and validate before completion.
+
+### Expanded page/component coverage and craft gate
+
+The Designer MUST explicitly choose the page experience pattern (P01–P22) and complex component contracts (C01–C38) **when applicable**, using the two new on-demand skills and their bundled reference files. Page categories are a **reference taxonomy, not a required set of new features**. For example:
+
+- **Search and detail:** faceted search, discovery, saved filters, record detail, master–detail and context-preserving navigation.
+- **Complex forms and operations:** onboarding/invites, multi-step forms, drafts, access/admin, case/approval workflows, calendars and bookings.
+- **Knowledge and communication:** messaging, notifications, activity feeds, help/documentation, file/document management, rich CMS editors and collaboration boards.
+- **Transactions and decision support:** reports/analytics, comparison, pricing/checkout/billing, developer consoles/integrations and AI-assisted review.
+- **Resilience and specialized work:** error/unauthorized/offline/maintenance pages, adaptive mobile workspaces, maps, audit/incident consoles and domain-specific education/finance/etc. patterns.
+
+Every applicable **page contract** must identify the principal job, information source/provenance, decision order, action hierarchy, empty/error/loading/partial/unauthorized/success/conflict states, responsive re-prioritization, keyboard/touch behavior, authentic copy, sensitive actions, test owners and browser evidence. Every applicable **component contract** must document anatomy, semantic variant, state transitions, data contract, keyboard/focus/AT, responsive extremes, security boundaries and verification. Prefer the native HTML control where adequate; do not casually implement `role=grid`/`treegrid`/`menu` without the associated APG keyboard model.
+
+**No generic generation mandate:** Designer should not create a page/component merely because it appears in the catalog. Avoid force-fitting every product into a dashboard+cards shell or a high-friction wizard. Distinct visual identity must not break navigation conventions, text readability, component semantics or existing approved Design DNA.
+
+**Evidence/quality loop:** Designer writes contracts and performs critique; Frontend owns the authorized source patch; Accessibility/QA verify keyboard/manual AT as available and deterministic Playwright states; Reviewer independently checks material changes. Keep report/plan source read-only, `fix` bounded and approved; no silent re-baselining. On an existing repository, use targeted references only—never inject the full catalogs into every agent task to preserve context and token budget.
+
+### Per-page professional acceptance matrix
+
+- **Dashboard:** actionable primary task and explicit metric definitions/units/freshness; filter/drill-down/error states; appropriate density; no purely decorative chart or fabricated KPIs.
+- **Landing/marketing:** credible copy and proof, editorial storytelling, authentic asset provenance, responsive functional CTA, no generic repeated feature blocks.
+- **Login/logout/signup:** secure-flow correctness with Backend/Security, credentials/autofill, accessibility, sessions/expiry/recovery states and restrained art direction.
+- **Profile/settings:** semantic setting groups, unsaved changes, save/error/permission states, reversible versus destructive actions, responsive forms and clear help text.
+- **DataTable/list/card:** choose by information task, support correct widths/column priority, sorting/filter/search/bulk actions when required, keyboard semantics, zero/long/dense/permission states and efficient rendering.
+- **Shared components:** token-aligned variants, real action and feedback, accessible focus, correct hover/disabled/loading states and no one-size-fits-all decorative wrapper.
+
+### UIUX audit / safe fix command integration
+
+`/webteam_uiux --mode=report|plan|fix` is the **dedicated visual/interaction command**. It complements:
+
+- `/webteam_design_audit` = existing Design DNA extraction and consistency assessment, **read-only by default**;
+- `/webteam_visual_test` = Playwright evidence on browser layout and screenshots;
+- `/webteam_audit` = full-stack comprehensive audit.
+
+Only `/webteam_uiux --mode=fix` may initiate UI source corrections in this workflow, still subject to approval gates, single-writer ownership, actual UI tests and no silent screenshot-baseline rewriting. The Markdown command cannot independently enforce these permissions. Always output a project-specific report at `docs/audits/UIUX_AUDIT_<date>.md` or an approved safe project-relative Markdown path.
+
+### Quality rubric (not a fake aesthetic score)
+
+Use anchored observations in: product distinction, real-task hierarchy, composition, typography, palette, component craft, content authenticity, interaction completion, accessibility, and responsive/visual robustness. Mark each defect `objective` or `subjective`; provide route/viewport, evidence, user impact, severity, minimal change, verification and approval. No screenshot → visual quality unverified, not passed. Escalate full branding/redesign choices, never automatically override existing Design DNA, never make a subjective complaint a release-blocking fact.
+
+### Coordination and resource limits
+
+For a targeted CSS bug, prefer Designer+Frontend or just Frontend+QA, not the entire 16-agent team. For major net-new surfaces: Product→Designer→Frontend→Accessibility/QA→Reviewer; for a dense dashboard include Database/Backend when data contracts matter. Medium thinking baseline, High only for genuinely hard visual architecture/complex UX, Max exceptionally and after explicit rationale. Use browser review once after meaningful implementation, then bounded targeted repair instead of unbounded model aesthetic loops. Caveman and CBM, if installed, may help source/component graph discovery; only browser rendering can confirm what the user actually sees.
+
+{end}
+
 ## 8. QA Agent: complete testing engineering mandate (REQUIRED)
 
 **Status:** `webteam-qa` already exists in the 16-agent roster. **Upgrade it; do not create a redundant 17th testing agent.** Give it full professional identity as Principal Test Automation & Quality Engineer. It owns test strategy, infrastructure, automation design, regression evidence and CI quality gates, with implementation cooperation from feature authors. No agent may mark code tested without actual results. Tests are part of development, not an optional late phase.
@@ -800,7 +922,7 @@ This section strengthens the 16 agents in §3. It is **normative**: implement th
 
 **New competencies:** interaction state matrices, design-system versioning, data-density ergonomics, table/dashboard information design, content design and microcopy, RTL/internationalization considerations, reduced-motion planning, real device/viewport coverage, CSS token to component mapping, screenshot artifact triage.
 
-**New skills:** `design-state-matrix`, `data-intensive-interface-design`, `design-system-versioning`, `content-design-and-microcopy`, `responsive-visual-baseline-planning`.
+**New skills:** `design-state-matrix`, `data-intensive-interface-design`, `design-system-versioning`, `content-design-and-microcopy`, `responsive-visual-baseline-planning`, plus the companion specialized UI/UX craft skills in §7A.
 
 **Contract:** for each key screen, describe states (initial/loading/empty/partial/error/success/disabled/unauthorized), mobile and desktop behaviors, token source, component reuse decision and accessibility interaction. For existing projects derive standards from verified Design DNA; mark extraction confidence. Propose visual changes as preserve/standardize/refactor/redesign with explicit approval gate for brand alterations. Deliver reproducible viewports and approved expected screenshots to QA, never silently regenerate a baseline.
 
@@ -1252,7 +1374,7 @@ The bootstrap must execute methodically, not stop at a proposal:
 8. **Create** global operating standards, project templates, onboarding/interview procedures, agent handoff and quality gate reference materials.
 9. **Validate** syntax, OMP discovery, all 16 primary/fallback model profiles, provider-first consent order, effective retry graph including inherited routes, skill discovery, nonconflicting settings, council no-call mode, model participant separation and approved privacy/budget gates; run bounded delegation smoke tests and a safe bootstrap dry run (temporary sandbox or disposable fixture project).
 10. **Audit** every agent/skill reference, missing files, licensing, instructions precedence, false enforcement assumptions, default routing, unreasonable scope, tokens and security. Fix issues found.
-11. **Run the mandatory observed post-install self-orchestration audit** in the effective OMP main session: distinguish static discovery from observed natural-language routing, perform a bounded, safe `task`-delegation smoke test with a synthetic fixture, repair only verified configuration defects with authorization, and re-run after repair. If a fresh-main-session test is unavailable, mark routing UNVERIFIED and do not claim complete verified installation.
+11. **Verify approved live-agent observability preferences** (Agent Hub shortcut and optional pinned roster/live preview) without treating UI visibility as proof of task dispatch. Then **run the mandatory observed post-install self-orchestration audit** in the effective OMP main session: distinguish static discovery from observed natural-language routing, perform a bounded, safe `task`-delegation smoke test with a synthetic fixture, repair only verified configuration defects with authorization, and re-run after repair. If a fresh-main-session test is unavailable, mark routing UNVERIFIED and do not claim complete verified installation.
 12. **Report** inventory, changed files, tests actually run, configuration and model selection, limits, instructions for creating/continuing projects, unresolved issues, and the evidence-based §13D audit scorecard.
 
 When no runtime capability permits a part of the installation, mark that item `unsupported` or `unverified`; implement closest safe supported behavior, not imaginary settings. Do not create a web application just to demonstrate team installation without user request. Work may be partitioned within the current executable session using durable progress files; do not promise background execution.
@@ -1643,11 +1765,12 @@ Native Markdown slash commands are prompt expanders, not tools or permission bou
 
 **Do not overwrite existing same-name commands without diff review and approval.** Global commands should be reusable across projects. Local overrides require an intentional project-specific reason. Detect collisions with built-ins/extensions and verify which handler actually wins. For an unrecognized flag in a prompt-only command, clarify; never interpret raw arguments as executable shell code.
 
-**Companion command registry — exactly 20 flat native command files:**
+**Companion command registry — exactly 23 flat native command files:**
 
 | Slash command | Canonical relative source |
 |---|---|
 | `/webteam_adopt_project` | `commands/webteam_adopt_project.md` |
+| `/webteam_agents` | `commands/webteam_agents.md` |
 | `/webteam_architecture_audit` | `commands/webteam_architecture_audit.md` |
 | `/webteam_audit` | `commands/webteam_audit.md` |
 | `/webteam_create_project` | `commands/webteam_create_project.md` |
@@ -1658,6 +1781,7 @@ Native Markdown slash commands are prompt expanders, not tools or permission bou
 | `/webteam_implement` | `commands/webteam_implement.md` |
 | `/webteam_memory_review` | `commands/webteam_memory_review.md` |
 | `/webteam_models_audit` | `commands/webteam_models_audit.md` |
+| `/webteam_monitor` | `commands/webteam_monitor.md` |
 | `/webteam_plan` | `commands/webteam_plan.md` |
 | `/webteam_quality_loop` | `commands/webteam_quality_loop.md` |
 | `/webteam_reference_analyze` | `commands/webteam_reference_analyze.md` |
@@ -1667,8 +1791,9 @@ Native Markdown slash commands are prompt expanders, not tools or permission bou
 | `/webteam_status` | `commands/webteam_status.md` |
 | `/webteam_test` | `commands/webteam_test.md` |
 | `/webteam_visual_test` | `commands/webteam_visual_test.md` |
+| `/webteam_uiux` | `commands/webteam_uiux.md` |
 
-**Installation protocol:** determine real active profile path; back up WebTeam-owned targets, verify source file hashes and frontmatter, copy only approved files, reload/restart as appropriate, observe autocomplete and actual argument expansion, then test `/webteam_help`, `/webteam_status`, `/webteam_healthcheck` using safe data. Verify `webteam_audit` mode parsing in a disposable project, without treating template discovery as real delegation. If `commands/` companion sources are not accessible, mark the command stage BLOCKED rather than inventing 20 approximations. Do not add upgrade scripts, migration prompts or extra files to this final distribution.
+**Installation protocol:** determine real active profile path; back up WebTeam-owned targets, verify source file hashes and frontmatter, copy only approved files, reload/restart as appropriate, observe autocomplete and actual argument expansion, then test `/webteam_help`, `/webteam_status`, `/webteam_agents --mode=inventory`, `/webteam_monitor --scope=active`, and `/webteam_healthcheck` using safe data. Treat monitor as a one-shot snapshot/guidance command; no command can create a native live panel. Verify `webteam_audit` and `webteam_uiux` mode parsing in a disposable project, without treating template discovery as real delegation. If `commands/` companion sources are not accessible, mark the command stage BLOCKED rather than inventing 23 approximations. Do not add upgrade scripts or migration prompts to the final distribution. The intentionally bundled `skills/*/SKILL.md` and their `references/` assets are authorized professional Designer skill sources, not historical upgrade scripts; validate each of them.
 
 **The audit-specific command** `/webteam_audit` accepts `--mode=report|plan|fix`, `--scope`, `--depth`, `--roadmap`, `--output`, `--max-fixes` and `--budget` as spelled out in its own canonical Markdown file. Its three modes must all produce one redacted project Markdown report under `docs/audits/`, with an evidence ledger, domain coverage, verified findings, prioritized remediation and conditional feature roadmap. `fix` may perform only approved, reversible, bounded local changes; it is not permission for production writes, destructive migrations, global config changes, snapshot rebaselining or deployment.
 
@@ -1772,7 +1897,7 @@ Single canonical report contains before/after ledger and unfixed backlog. Fix co
 
 ## Mandatory completion and truthfulness gate
 
-**Static checks:** validate all agent names (16 exactly), full skill inventory and `SKILL.md` metadata, command count (20), native flat discovery, paths, all referenced supporting files, readable docs, model/provider routing policy, backup/change manifest and no unrelated overwritten settings.
+**Static checks:** validate all agent names (16 exactly), full skill inventory and `SKILL.md` metadata, command count (23), native flat discovery, paths, all referenced supporting files, readable docs, model/provider routing policy, backup/change manifest and no unrelated overwritten settings.
 
 **Observed checks:** prove actual model resolution; verify `task` delegation with a harmless read-only fixture; confirm natural-language web task routing from MAIN and any needed fallback orchestrator mechanism; test at least one safe command expansion; check effective read-only restrictions including MCP/extension grants. Mark each separately PASS_VERIFIED / PARTIAL_VERIFIED / BLOCKED / FAIL. No runtime tools available means BLOCKED or UNVERIFIED—not PASS.
 
@@ -1781,3 +1906,46 @@ Single canonical report contains before/after ledger and unfixed backlog. Fix co
 **Handoff:** state exact files created/changed, decisions recorded, tests really executed with results, unsupported behavior, unfinished components, costs if measurable, required user decisions and how to start a new project or adopt an existing one. Do not claim a fully deployed application at the end of team bootstrap. Preserve user data, credentials and Git changes. If a complete system cannot be installed, provide an honest, resumable implementation ledger with the next unblocked step.
 
 **Begin with read-only environment discovery. Ask the necessary high-impact setup questions, then implement everything permitted in the current OMP session and verify the result.**
+
+
+## Operator agent visibility and monitoring policy
+
+WebTeam should recommend a visibility-friendly OMP display configuration during installation, especially when the user intends to supervise multi-agent execution.
+
+### Recommended display configuration
+
+When supported by the active OMP version and schema, ask whether the user wants to enable the recommended monitoring display:
+
+```yaml
+display:
+  pinnedAgents: full
+  subagentLivePreview: true
+```
+
+This configuration is recommended because it improves observability of active subagents without changing the orchestration policy, provider routing, model selection, Memory behavior, or agent authority boundaries.
+
+### Installation behavior
+
+During bootstrap, the Orchestrator must:
+
+1. Detect whether the active OMP schema supports these display keys.
+2. Ask whether the user wants:
+   - `full` pinned agents with live preview (**recommended**),
+   - a more compact display mode, or
+   - to keep the existing display configuration unchanged.
+3. Apply the configuration only after user approval.
+4. Verify that the resulting configuration is valid under the active OMP version.
+5. Never claim success without confirming that the keys were accepted or written correctly.
+
+### Operator guidance and explicit commands
+
+WebTeam documentation should explicitly teach the operator that:
+
+- `Alt+A` opens Agent Hub and is the most reliable way to inspect which subagents are currently running.
+- The top-level session is not itself listed as a subagent.
+- `/agents` shows configured agents, not necessarily agents currently executing.
+- `/jobs` shows asynchronous tool jobs, not agent ownership or orchestration correctness.
+
+### Safety note
+
+Display settings are monitoring aids only. They do not grant or revoke permissions, do not alter fallback behavior, and do not reduce the need for explicit post-install orchestration checks. Provide `/webteam_monitor` as a read-only, one-shot observation/guidance command and `/webteam_agents` as a read-only roster/discovery inspection; neither may fabricate live telemetry or alter runtime settings. For genuine routing proof, use a separately authorized `/webteam_healthcheck` with observed native `task` calls.

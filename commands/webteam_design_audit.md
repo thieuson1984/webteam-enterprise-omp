@@ -13,4 +13,6 @@ You are handling an explicit user-invoked WebTeam command in OhMyPi. This Markdo
 
 Inspect actual routes, CSS, tokens, typography, components, responsive behavior and screenshots only if browser available and authorized. Compare with PRODUCT.md and DESIGN.md, run Designer eight-stage evaluation where scope warrants, distinguish deliberate identity from inconsistent implementation, and inspect accessibility. Read-only by default; do not change branding, components or baselines without separate approval. Report source evidence, affected screens, justified refinements, visual-regression tests and an optional staged proposal to update DESIGN.md.
 
+For a dedicated UI/UX remediation workflow use `/webteam_uiux --mode=report|plan|fix`; unlike this Design DNA command it supports explicitly approved bounded implementation. Do not treat this command as implicit permission to edit product code or accept new screenshot baselines.
+
 **Final response:** Summarize observed work, actual agents/tools used (if any), changes and checks, unknowns, approvals required, and exact next action. Never fabricate tool calls or successful validation.
