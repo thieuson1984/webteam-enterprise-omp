@@ -14,3 +14,8 @@ You are handling an explicit user-invoked WebTeam command in OhMyPi. This Markdo
 Read current Git state, accepted scope and documented release plan. Coordinate QA, Security, DevOps and Reviewer for bounded test, build, config, migration and rollback evidence. Confirm secrets isolation, critical workflows, accessibility, performance budgets and deployment prerequisites. This command is a readiness REVIEW only, not authorization to commit, push, deploy or modify infrastructure. Output GO / NO_GO / UNVERIFIED with blockers and proposed safe verification.
 
 **Final response:** Summarize observed work, actual agents/tools used (if any), changes and checks, unknowns, approvals required, and exact next action. Never fabricate tool calls or successful validation.
+
+
+## Industrial workflow release gate
+
+If the project interfaces with ERP/MES/WMS or OT telemetry, verify synthetic acceptance evidence for quality holds, genealogy, inventory reconciliation, shift transition, offline catch-up, stale alarms and cross-role approvals, plus separately authorized plant/OT change gate. Missing safety approval is `BLOCKED`, never silently overridden. Do not deploy or actuate equipment from this report.

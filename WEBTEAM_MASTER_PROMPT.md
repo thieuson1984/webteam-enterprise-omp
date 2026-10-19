@@ -2,7 +2,7 @@
 
 **Audience:** An OhMyPi (OMP) coding-agent session with permission to inspect and, with necessary approvals, configure the runtime.  
 **Scope:** Build a reusable Global WebTeam and per-project engineering workspaces; verify their actual behavior.  
-**Deliverables:** 16 discoverable agents, professionally developed specialized skills, project bootstrap/adoption governance, 27 native Markdown commands, complete testing and audit workflows, and a verified orchestration entry point.
+**Deliverables:** 16 discoverable agents, professionally developed specialized skills, project bootstrap/adoption governance, 33 native Markdown commands, complete testing and audit workflows, and a verified orchestration entry point.
 
 > **Important:** This is an installation prompt, not a pre-installed product. Do not claim a capability was installed, enforced, tested, or enabled unless the running OhMyPi session actually verified it. Use the installed OMP version and its real configuration schema as the authority. The companion `commands/*.md` files and `skills/*/SKILL.md` files are the canonical command, advanced Designer and Backend skill sources; do not invent alternate implementations or duplicate conflicting commands.
 
@@ -12,7 +12,7 @@
 2. Read this document as the operating specification. Inspect, then ask the global-installation questions and obtain approvals **before making global configuration changes or installing third-party software**.
 3. Build components incrementally with a manifest/checkpoints; use real native OMP agent/skill/command discovery instead of simulating it in prose.
 4. Install the **exact companion command templates** and the approved advanced Designer and Backend skill files into their verified native directories without overwriting unrelated files. If a source directory is unavailable, report the missing source and pause that installation stage; do not fabricate the command contents.
-5. Validate the bundled 16 Designer, 15 Backend and 41 new Product/Architect/Database packaged skills, their corresponding reference manuals, and the specialized `/webteam_uiux`, `/webteam_backend`, `/webteam_product`, `/webteam_architect`, `/webteam_database` commands in addition to regular OMP agent/skill/command discovery, then run observed, read-only-or-disposable self-orchestration smoke tests before declaring success.
+5. Validate all 172 packaged skills across the Designer, Backend, Product, Architect, Database, Frontend, Security, Performance, QA, Accessibility, Integration and Reviewer packs, their corresponding reference manuals, and the specialized `/webteam_uiux`, `/webteam_backend`, `/webteam_product`, `/webteam_architect`, `/webteam_database`, `/webteam_frontend`, `/webteam_security`, `/webteam_performance`, `/webteam_qa`, `/webteam_accessibility` and `/webteam_integration` commands in addition to regular OMP agent/skill/command discovery, then run observed, read-only-or-disposable self-orchestration smoke tests before declaring success.
 
 ---
 
@@ -165,14 +165,14 @@ Create **16 complete OMP-discoverable agent definitions**. Each file MUST includ
 | `webteam-backend` | Principal Backend Engineer; typed API contracts, domain integrity, authz/tenant security, transactions, async workflows, SRE and production reliability on compatible stacks | medium | high |
 | `webteam-database` | Principal Data/Database Architect; SQLite/MongoDB/PostgreSQL when justified, invariants, concurrency, migrations, tenant isolation, tuning and verified recovery | medium | high |
 | `webteam-security` | Application Security Engineer; threat modeling, authn/authz, secrets, OWASP, supply chain | high | max exceptionally |
-| `webteam-qa` | **Principal Test Automation & Quality Engineer**; unit/component/API/integration/E2E/visual regression, CI quality | medium | high; max only exceptionally |
+| `webteam-qa` | **Principal Test Automation & Quality Engineer**; risk-based/contract/unit/component/API/E2E, production workflow invariants, manufacturing/WMS cases, CI evidence | medium | high; max only exceptionally |
 | `webteam-devops` | Platform/DevOps Engineer; reproducible environments, CI/CD, observability, rollout/rollback | medium | high |
 | `webteam-performance` | Performance Engineer; profiling, Core Web Vitals, budgets, measured optimization | medium | high |
-| `webteam-accessibility` | Accessibility Specialist; WCAG, keyboard, screen readers, contrast and inclusive UX | medium | high |
+| `webteam-accessibility` | Principal Accessibility Specialist; WCAG 2.2 AA, APG, keyboard/screen-reader, dense data grids, inclusive kiosk/operator UX | medium | high |
 | `webteam-reviewer` | Independent Senior Reviewer; correctness, architecture, tests, risk-ranked actionable findings | medium | high |
 | `webteam-researcher` | Technical Researcher; verified docs, dependencies, repository references and provenance | low | medium/high |
 | `webteam-documentation` | Technical Writer; project knowledge, runbooks, API docs, decision history, onboarding | low | medium |
-| `webteam-integration` | Integration Engineer; external APIs, OAuth, webhooks, retries, idempotency, real-time services | medium | high |
+| `webteam-integration` | Principal Enterprise Integration Engineer; APIs/events/ERP-MES-WMS, reconciliation, authorized OPC UA/MQTT telemetry and OT boundaries | medium | high |
 
 ### Domain-specific mandates
 
@@ -183,14 +183,14 @@ Create **16 complete OMP-discoverable agent definitions**. Each file MUST includ
 - **Backend:** Fastify encapsulation/hooks, Zod validation, contract correctness, rate limiting, authn/authz, structured errors/logging, testable service boundaries. Never trust client-supplied roles or ownership.
 - **Database:** choose SQLite or MongoDB based on data model, concurrency, transactions, deployment and scale rather than popularity; test migrations, backup/restore, indexing and failure paths.
 - **Security:** independently verify trust boundaries, secrets, third-party source trust, authorization and dependency risks. Block unapproved dangerous changes.
-- **QA:** own risk-based test strategy, test harness and reproducibility, unit/component/API/integration/Playwright E2E and visual baselines; collaborate closely with Designer and Frontend. See §8 for complete mandatory detail.
+- **QA:** own risk-based test strategy, test harness and reproducibility, unit/component/API/contract/Playwright E2E and visual baselines, and manufacturing-workflow correctness where applicable; collaborate closely with Product, Integration, Designer, Frontend, Backend and Database. See §8 and advanced QA standards.
 - **DevOps:** CI quality gates, repeatable local/CI environments, provenance, deployment and rollback; production changes always approval-gated.
 - **Performance:** set realistic budgets, measure before/after, avoid blind optimization.
-- **Accessibility:** automated plus manual keyboard/screen-reader-oriented checks, WCAG 2.2 AA default target where applicable; avoid declaring compliance solely from a scan.
+- **Accessibility:** WCAG 2.2 AA default target where applicable, APG/keyboard/focus/assistive checks, complex data grids, high-zoom, shop-floor/kiosk UX; avoid declaring compliance solely from automated checks.
 - **Reviewer:** use project-specific standards, distinguish blockers from preferences, flag missing test evidence and architecture drift; reviewer should not self-certify high-risk code.
 - **Researcher:** prefer primary current documentation, cite paths/URLs/revisions, verify versions and security/license facts rather than guess.
 - **Documentation:** write compact discoverable docs, synchronize cross-references, avoid verbose duplicate truth sources.
-- **Integration:** secure credentials, validate webhooks, handle timeout/retry/backoff/idempotency, contract and integration testing.
+- **Integration:** secure credentials, contract/version/data ownership, ERP/MES/WMS consistency, webhook/event replay and reconciliation, OT-zone review and simulated/read-only industrial telemetry; never issue live device commands autonomously.
 
 ### Specialist coordination
 
@@ -209,6 +209,8 @@ Every skill referenced below **must exist** as a real OMP-discoverable `SKILL.md
 **Architecture:** `independent-design-critique`, `architecture-decision-making`, `domain-driven-design`, `modular-monolith-design`, `distributed-systems`, `api-contract-architecture`, `reliability-patterns`, `architectural-review`.
 
 **Frontend:** `advanced-typescript-frontend`, `react-engineering`, `solidjs-engineering`, `tanstack-ecosystem`, `frontend-state-architecture`, `accessible-component-engineering`, `form-validation-engineering`, `frontend-performance`, `design-to-code`, `frontend-testing`.
+
+**Bundled advanced Frontend/Security/Performance skills:** Install the **canonical** 42 `SKILL.md` assets under `skills/webteam-frontend-*`, `skills/webteam-security-*`, `skills/webteam-performance-*` and their 9 reference documents, not autogenerated stubs. See **Advanced Frontend × Security × Performance** below for routing and acceptance. These are extensions of the three existing roles, not additional agents. Activate only task-relevant guidance.
 
 **Backend:** `nodejs-backend-engineering`, `fastify-architecture`, `zod-contract-validation`, `secure-api-design`, `authentication-authorization`, `service-layer-engineering`, `backend-testing`, `backend-observability`, `reliable-background-jobs`.
 
@@ -1095,6 +1097,14 @@ This section strengthens the 16 agents in §3. It is **normative**: implement th
 
 **Contract:** every blocking finding includes affected file/line, precise failure, severity, evidence or reproduction, remedy and verifying test; reviewers distinguish confirmed defects from hypotheses. Never self-review safety-critical changes where separate review is possible.
 
+### Reviewer Independent Quality Gate — authoritative extension
+
+The `webteam-reviewer` agent MUST operate as an independent, evidence-calibrated reviewer, not a formatter or automatic approval service. Reviewer has a **read-only default** and may not implement fixes, update snapshot baselines, deploy, alter policies, or approve code it authored. The MAIN/Orchestrator assigns an exact review charter: source revisions, diff scope, acceptance criteria, known risk boundaries, approved tools and context budget. Reviewer chooses only relevant bundled `webteam-reviewer-*` skills (12 including a selective reference router, with three supporting reference guides), then inspects code and affected consumers. Findings carry stable `RV-*` IDs, evidence grade, severity, confidence, `path:line`, realistic trigger, impact, minimal remediation owner and a verification check. Unverified theories and subjective preferences never block releases by themselves.
+
+**Risk-based policy:** C1/C2 minimal change reviews may remain lightweight. C3 merits one independent pass; C4 adds the relevant domain specialist where risk justifies it; C5 requires owner-aware high-risk gate and explicit unresolved-risk disposition. Do not run duplicate reviewers or multi-model deliberations on routine changes; preserve user cost settings. Never treat a model reviewing its own prior answer as verified independence. If separate reviewer cannot run, mark `UNVERIFIED`. Distinguish `PASS`, `CHANGES_REQUESTED`, `UNVERIFIED` and `BLOCKED`. After the implementer fixes issues, Reviewer uses bounded `verify` mode on the new revision, matching each prior `RV-*` finding; no unbounded fix/review ping-pong. QA owns executed test evidence, Security owns security-specific final technical judgment, Database owns migration safety, Product owns requirement intent, Orchestrator owns workflow coordination, and humans retain required deployment/policy approvals.
+
+**Command:** `/webteam_review --mode=report|plan|verify --scope=diff|commit|branch|files|release [--base=<ref>] [--head=<ref>] [--depth=quick|deep]`. Optional safe report under `docs/reviews/`. Refer to `commands/webteam_review.md` and reviewer skills as executable source-of-truth contracts. Do not claim all files read, tests run or independent approval without direct evidence.
+
 ### 13A.14 Researcher — source-grounded technical intelligence
 
 **Owns:** official-source verification, package/API compatibility, evidence and citation provenance, reference repository triage, license notes, technology comparison, confidence estimates and knowledge expiry. **Does not own:** implementing unverified APIs, executing untrusted source, overriding approved stack choices.
@@ -1834,39 +1844,45 @@ Native Markdown slash commands are prompt expanders, not tools or permission bou
 
 **Do not overwrite existing same-name commands without diff review and approval.** Global commands should be reusable across projects. Local overrides require an intentional project-specific reason. Detect collisions with built-ins/extensions and verify which handler actually wins. For an unrecognized flag in a prompt-only command, clarify; never interpret raw arguments as executable shell code.
 
-**Companion command registry — exactly 27 flat native command files:**
+**Companion command registry — exactly 33 flat native command files:**
 
 | Slash command | Canonical relative source |
 |---|---|
+| `/webteam_accessibility` | `commands/webteam_accessibility.md` |
 | `/webteam_adopt_project` | `commands/webteam_adopt_project.md` |
 | `/webteam_agents` | `commands/webteam_agents.md` |
+| `/webteam_architect` | `commands/webteam_architect.md` |
 | `/webteam_architecture_audit` | `commands/webteam_architecture_audit.md` |
 | `/webteam_audit` | `commands/webteam_audit.md` |
+| `/webteam_backend` | `commands/webteam_backend.md` |
 | `/webteam_create_project` | `commands/webteam_create_project.md` |
+| `/webteam_database` | `commands/webteam_database.md` |
 | `/webteam_design_audit` | `commands/webteam_design_audit.md` |
 | `/webteam_docs_sync` | `commands/webteam_docs_sync.md` |
+| `/webteam_frontend` | `commands/webteam_frontend.md` |
 | `/webteam_healthcheck` | `commands/webteam_healthcheck.md` |
 | `/webteam_help` | `commands/webteam_help.md` |
 | `/webteam_implement` | `commands/webteam_implement.md` |
+| `/webteam_integration` | `commands/webteam_integration.md` |
 | `/webteam_memory_review` | `commands/webteam_memory_review.md` |
 | `/webteam_models_audit` | `commands/webteam_models_audit.md` |
 | `/webteam_monitor` | `commands/webteam_monitor.md` |
+| `/webteam_performance` | `commands/webteam_performance.md` |
 | `/webteam_plan` | `commands/webteam_plan.md` |
+| `/webteam_product` | `commands/webteam_product.md` |
+| `/webteam_qa` | `commands/webteam_qa.md` |
 | `/webteam_quality_loop` | `commands/webteam_quality_loop.md` |
 | `/webteam_reference_analyze` | `commands/webteam_reference_analyze.md` |
 | `/webteam_release_check` | `commands/webteam_release_check.md` |
 | `/webteam_review` | `commands/webteam_review.md` |
+| `/webteam_security` | `commands/webteam_security.md` |
 | `/webteam_security_audit` | `commands/webteam_security_audit.md` |
 | `/webteam_status` | `commands/webteam_status.md` |
 | `/webteam_test` | `commands/webteam_test.md` |
-| `/webteam_visual_test` | `commands/webteam_visual_test.md` |
 | `/webteam_uiux` | `commands/webteam_uiux.md` |
-| `/webteam_backend` | `commands/webteam_backend.md` |
-| `/webteam_product` | `commands/webteam_product.md` |
-| `/webteam_architect` | `commands/webteam_architect.md` |
-| `/webteam_database` | `commands/webteam_database.md` |
+| `/webteam_visual_test` | `commands/webteam_visual_test.md` |
 
-**Installation protocol:** determine real active profile path; back up WebTeam-owned targets, verify source file hashes and frontmatter, copy only approved files, reload/restart as appropriate, observe autocomplete and actual argument expansion, then test `/webteam_help`, `/webteam_status`, `/webteam_agents --mode=inventory`, `/webteam_monitor --scope=active`, and `/webteam_healthcheck` using safe data. Treat monitor as a one-shot snapshot/guidance command; no command can create a native live panel. Verify `webteam_audit`, `webteam_uiux`, and `webteam_backend` mode parsing in a disposable project, without treating template discovery as real delegation. If `commands/` companion sources are not accessible, mark the command stage BLOCKED rather than inventing 24 approximations. Do not add upgrade scripts or migration prompts to the final distribution. The intentionally bundled `skills/*/SKILL.md` and their `references/` assets are authorized professional Designer and Backend skill sources, not historical upgrade scripts; validate each of them.
+**Installation protocol:** determine real active profile path; back up WebTeam-owned targets, verify source file hashes and frontmatter, copy only approved files, reload/restart as appropriate, observe autocomplete and actual argument expansion, then test `/webteam_help`, `/webteam_status`, `/webteam_agents --mode=inventory`, `/webteam_monitor --scope=active`, and `/webteam_healthcheck` using safe data. Treat monitor as a one-shot snapshot/guidance command; no command can create a native live panel. Verify `webteam_audit`, `webteam_uiux`, and `webteam_backend` mode parsing in a disposable project, without treating template discovery as real delegation. If `commands/` companion sources are not accessible, mark the command stage BLOCKED rather than inventing unsupported approximations. Do not add upgrade scripts or migration prompts to the final distribution. The intentionally bundled `skills/*/SKILL.md` and their `references/` assets are authorized professional Designer, Backend, Product, Architect, Database, Frontend, Security, Performance, QA, Accessibility and Integration skill sources, not historical upgrade scripts; validate each of them.
 
 **The audit-specific command** `/webteam_audit` accepts `--mode=report|plan|fix`, `--scope`, `--depth`, `--roadmap`, `--output`, `--max-fixes` and `--budget` as spelled out in its own canonical Markdown file. Its three modes must all produce one redacted project Markdown report under `docs/audits/`, with an evidence ledger, domain coverage, verified findings, prioritized remediation and conditional feature roadmap. `fix` may perform only approved, reversible, bounded local changes; it is not permission for production writes, destructive migrations, global config changes, snapshot rebaselining or deployment.
 
@@ -2021,7 +2037,7 @@ Each supports `--mode=report|plan|fix`; default report emits a new Markdown audi
 
 ## Mandatory completion and truthfulness gate
 
-**Static checks:** validate all agent names (16 exactly), full skill inventory and `SKILL.md` metadata, command count (27), native flat discovery, paths, all referenced supporting files, readable docs, model/provider routing policy, backup/change manifest and no unrelated overwritten settings.
+**Static checks:** validate all agent names (16 exactly), full skill inventory and `SKILL.md` metadata, command count (30), native flat discovery, paths, all referenced supporting files, readable docs, model/provider routing policy, backup/change manifest and no unrelated overwritten settings.
 
 **Observed checks:** prove actual model resolution; verify `task` delegation with a harmless read-only fixture; confirm natural-language web task routing from MAIN and any needed fallback orchestrator mechanism; test at least one safe command expansion; check effective read-only restrictions including MCP/extension grants. Mark each separately PASS_VERIFIED / PARTIAL_VERIFIED / BLOCKED / FAIL. No runtime tools available means BLOCKED or UNVERIFIED—not PASS.
 
@@ -2077,4 +2093,125 @@ Display settings are monitoring aids only. They do not grant or revoke permissio
 
 ### Product/Architect/Database install acceptance
 
-After copying bundled assets, verify exactly 27 flat command files and 72 packaged `SKILL.md` files (16 Designer + 15 Backend + 41 Product/Architect/Database); verify all 10 new references plus previous ones. Run frontmatter and relative reference validation; confirm native OMP discovery in the actual profile and at least one harmless delegation smoke test. If unavailable, report `BLOCKED` rather than claiming installed. Do not change Memory/model provider/Loop or other unrelated agents.
+After copying all bundled assets, verify exactly **33 flat command files**, **172 packaged `SKILL.md` files** (16 Designer + 15 Backend + 41 Product/Architect/Database + 43 Frontend/Security/Performance + 45 QA/Accessibility/Integration + 12 Reviewer), and **41 bundled reference manuals** (29 earlier + 9 QA/Accessibility/Integration + 3 Reviewer). Run frontmatter and relative reference validation; confirm native OMP discovery in the actual profile and at least one harmless delegation smoke test. If unavailable, report `BLOCKED` rather than claiming installed. Do not change Memory/model provider/Loop or other unrelated agents.
+
+
+
+## Advanced Frontend × Security × Performance — packaged implementation standards
+
+**Authoritative rule:** The canonical source for each new advanced skill is `skills/<name>/SKILL.md` plus its scoped `references/` assets. The installer must copy files **verbatim** to the verified OMP active root and smoke-test real discovery; listing a skill name in an agent prompt does not install it. These capabilities extend the existing `webteam-frontend`, `webteam-security`, `webteam-performance` agents; they are **not new agents**. Preserve the existing Product/Architect/Database/Backend/Designer skills, their contracts and global/project policies. Apply workload-dependent routing, not a permanent 16-agent fan-out.
+
+### Frontend: quality, correctness and design craft
+
+- The Frontend agent owns browser and component code, typed server consumption, route/page composition, mutation consistency, forms and responsive behavior; Designer retains ownership of art direction and design token approval, Accessibility independently verifies WCAG, Backend retains server policy and Security checks client trust boundaries.
+- Prefer existing React or SolidJS stack and supported framework versions. Validate React Compiler/build-plugin capabilities before optional compiler adoption, and measure actual user impact instead of adding `memo` everywhere.
+- Every feature's acceptance contract covers initial/loading/empty/partial/error/offline/unauthorized/success states where relevant, URL/deep link, keyboard focus, localization, data ownership, cache invalidation, responsiveness, error recovery and browser-side privacy.
+- Screenshots must use real project fixtures and approved baseline governance; no auto-accepting visual diffs or redesigning an existing mature UI without approval. Client UI hiding is **never** server authorization.
+- Load only 1–2 task-relevant skills. The reference router `webteam-frontend-engineering-reference` contains `FRONTEND_CAPABILITY_BLUEPRINTS.md` (FE01–FE18), `FRONTEND_ENGINEERING_PLAYBOOK.md` and `FRONTEND_QUALITY_AND_ACCEPTANCE.md`.
+
+### Security: independent, risk-ranked control verification
+
+- The Security agent owns threat models, secure SDLC control profiles, data/tool trust boundaries, authorization abuse cases, defensive review and independent security verification. Backend/Database implement server-side controls, DevOps owns deployed IAM/CI/secret operations, Product owns business permission intent, QA maintains repeatable negative tests.
+- Use OWASP Top 10:2025 as an awareness map, OWASP API Security Top 10:2023 for API-specific risks, and OWASP ASVS **5.0.0** for project-applicable verifiable controls. Never claim certification from following a checklist.
+- Security must explicitly cover tenant/object/property/function authz, auth lifecycle, input/output sinks, token/cookie/CSRF/CSP deployment compatibility, supply-chain provenance, secrets privacy, cloud IAM, API abuse and AI/agent/MCP prompt-injection boundaries **when applicable**.
+- Never execute unauthorized penetration scans, touch production secrets, change live IAM, perform incident containment or accept residual security risk without human owner and approval. Risk grade requires evidence, exposure and confidence; a scanner signal is not exploit reproduction.
+- Router `webteam-security-engineering-reference` loads specific `SECURITY_CAPABILITY_BLUEPRINTS.md` (SEC01–SEC18), `SECURITY_ENGINEERING_PLAYBOOK.md` or `SECURITY_QUALITY_AND_ACCEPTANCE.md` sections on demand.
+
+### Performance: measurement-first engineering
+
+- The Performance agent owns measurement design, attribution, budgets, safe test profiles, optimization alternatives and evidence quality. Frontend/Backend/Database are code owners; DevOps owns infrastructure changes; Security vetoes privacy/authz violations and QA owns reproducible regressions.
+- Where applicable use web.dev good CWV reference thresholds (p75): **LCP <= 2.5s, INP <= 200ms, CLS <= 0.1**. Explain these are field-user experience reference targets; no claim based purely on Lighthouse lab scores. Server performance needs latency **distributions** (p95/p99 where sample supports), throughput, error rate and saturation.
+- Require comparable before/after profiles of real user journeys, identical input/environment/caches and honest uncertainty. Investigate slow route, API/DB path, queues, caching and cross-tenant data correctness. No automatic load tests against production/third-party endpoints.
+- OpenTelemetry JavaScript logs and browser instrumentation have maturity limitations according to official guidance; verify current SDK and environment before promising telemetry, and redact secrets/high-cardinality PII.
+- Router `webteam-performance-engineering-reference` loads selected `PERFORMANCE_CAPABILITY_BLUEPRINTS.md` (PERF01–PERF18), `PERFORMANCE_ENGINEERING_PLAYBOOK.md` or `PERFORMANCE_QUALITY_AND_ACCEPTANCE.md` headings.
+
+### Cross-agent task handoff (mandatory)
+
+| Decision/output | Lead owner | Independent involvement | Required evidence |
+|---|---|---|---|
+| Visual component/page implementation | Frontend | Designer, Accessibility, QA | Design DNA, state matrix, responsive/keyboard + visual E2E |
+| Typed UI/API integration | Frontend / Backend for their respective code | Security, QA | Schema contract, race/error tests and authorized-session scope |
+| Threat model/security policy | Security (review), Product for business intent | Architect, Backend/Database, QA | Trust boundary, ASVS control, negative and retest evidence |
+| Security fix inside a service or frontend module | Single code owner of path | Security + QA/Reviewer | Actual diff, permission test, explicit approval for risk |
+| Performance analysis | Performance | Relevant code owner, DevOps, QA | Reproducible metric baseline, trace/profile, correctness invariant |
+| Performance optimization | One owner: Frontend/Backend/Database as applicable | Performance, Security, QA | Matched after run, functional regression, rollback |
+
+**Safe audit commands:** `/webteam_frontend`, `/webteam_security`, `/webteam_performance` support `report`, `plan` and `fix`. Mode `report` permits only its Markdown audit artifact; `plan` adds dependency-aware remediation; `fix` permits no more than a bounded number of reversible authorized local changes, with separate approval for high-risk, production or external effects. `--scope` and flags are untrusted text interpreted by the main OMP model, not parsed or enforced by a shell.
+
+### Native bootstrap and acceptance (do not merely enumerate names)
+
+1. Discover OMP native skill and command roots in the **effective** profile and project; inspect existing definitions/overrides, backup and preserve user edits.
+2. Copy exactly **43 new skill files** (14 Frontend, 15 Security, 14 Performance, including one reference router per agent) and **9 reference manuals**. Preserve all 72 existing bundled skills and 20 existing reference manuals.
+3. Copy the three canonical command files `webteam_frontend.md`, `webteam_security.md`, `webteam_performance.md` without overwriting unrelated project overrides.
+4. Extend existing agent definitions and the main routing instructions **minimally** with these capabilities; do not replace unrelated roles or change models, effort, Mnemopi/Auto-Learn, Caveman, provider fallback or quality-loop settings.
+5. Verify 16 agents remain, all **33 flat commands**, all **172 bundled `SKILL.md` files** and **41 `.md` references** in the distribution; YAML metadata, relative file links, command uniqueness, OMP native discovery and a harmless role/command smoke test when approved.
+6. Record `PASS_VERIFIED / PARTIAL_VERIFIED / BLOCKED / FAIL` separately for static file validation, runtime discovery, agent delegation, security tool permissions and real browser/performance execution. **Package static PASS is not proof of runtime success.**
+
+
+
+## Advanced QA × Accessibility × Integration — packaged implementation standards
+
+These **45 OMP-discoverable bundled skills** (15 QA, 14 Accessibility, 16 Integration; one selective reference navigator per role), **9 reference manuals**, and **3 native Markdown commands** extend the existing 16-agent system without creating or renaming agents. Copy canonical assets, preserve installed user edits/model providers/Mnemopi/Auto-Learn/Loop and validate actual OMP discovery. Do not treat documentation as runtime permission enforcement.
+
+### QA — operationally accurate risk-based quality engineering
+
+- Owner `webteam-qa` is a principal test engineer covering strategy, requirements-to-test traceability, isolated deterministic fixtures, unit/component/API/Pact-style consumer-provider contracts when installed, Playwright journeys, reviewed visual regression, CI flakes, release gates and observable evidence.
+- For manufacturing/warehouse projects extend test strategy to orders/operations/shifts, lot/serial genealogy, material consumption, scrap/rework, quality hold and release, inventory reconciliation, operator role and supervisor approvals, offline operation and late data.
+- Test concurrency, duplicate inbound messages and timeout-after-commit; distinguish exactly-once **business effects** from at-least-once message delivery. Never create fake passes, overwrite visual baseline without independent approval or execute chaos/load tests against production/OT.
+- Risk-based testing selects necessary layers; do not demand full E2E for trivial formatting changes. The applicable acceptance scenario is the source of truth, not number of tests.
+- Load `webteam-qa-engineering-reference` selectively: `QA_CAPABILITY_BLUEPRINTS.md` Q01–Q14, `QA_ENGINEERING_PLAYBOOK.md`, `QA_ACCEPTANCE_MATRIX.md`.
+
+### Accessibility — genuinely inclusive enterprise/industrial interfaces
+
+- Owner `webteam-accessibility` evaluates WCAG **2.2 AA** where applicable, WAI-ARIA APG interaction patterns, manual keyboard/focus and assistive technology, rich data grids, validation and auth, live status, high zoom/reflow, localization/Vietnamese glyphs, mobile/touch, and industrial kiosk/operator constraints.
+- Distinguish accessible HTML tables from interactive ARIA grids; maintain actual focus management if adopting grid semantics. Dense dashboards need understandable labels, value units, stale-state text and non-color alarm semantics.
+- For shop floor, consider noisy environment, shared terminals, glove use, visible shift status and multimodal alarms, but avoid representing a browser UI as a safety interlock or certifying a safety-critical interface.
+- Automated axe/Playwright checks are useful triage, **not** a claim of full WCAG compliance; report coverage, manual limitations and actual environment. Designer owns aesthetic policy, Frontend owns source changes, Accessibility owns inclusive acceptance.
+- Load `webteam-accessibility-engineering-reference` selectively: `ACCESSIBILITY_CAPABILITY_BLUEPRINTS.md` A01–A13, `ACCESSIBILITY_ENGINEERING_PLAYBOOK.md`, `ACCESSIBILITY_ACCEPTANCE_MATRIX.md`.
+
+### Integration — enterprise process and industrial telemetry boundaries
+
+- Owner `webteam-integration` defines actual source-of-truth, identities/units, versioned schema, trust boundary, delivery semantics, idempotency, reconciliation, queues, outbox/inbox, secure webhook signatures, OAuth/service credentials and endpoint error budgets.
+- For manufacturing, **ISA-95/IEC 62264** offers enterprise/MES/control terminology, NOT blanket permission to touch machines. Integrate ERP/MES/WMS workflows with documented owner, lot genealogy, stock movement and shop-floor event quality. Use OPC UA or MQTT Sparkplug only when real infrastructure warrants it and interfaces are independently authorized.
+- **OT safety hard gate:** treat levels 0–2/PLC/SCADA as independently controlled environments; default to simulated, read-only telemetry; no live device control, NCMD/DCMD, configuration writes, network probing or safety interlock changes without explicit OT engineer/security/plant owner authorization and separate validated change procedure. Never treat AI confidence as physical safety evidence.
+- Include UTC/device/ingestion timestamps, timezone/shift semantics, quality indicators, online/offline state, stale event suppression, unit conversions and replay/deduplication. No implicit 'latest value is truth'.
+- Load `webteam-integration-engineering-reference` selectively: `INTEGRATION_CAPABILITY_BLUEPRINTS.md` I01–I15, `INTEGRATION_ENGINEERING_PLAYBOOK.md`, `INTEGRATION_ACCEPTANCE_MATRIX.md`.
+
+### Cross-agent ownership for operational workflows
+
+| Artifact / decision | Responsible | Independent verification | Approval / safety boundary |
+|---|---|---|---|
+| Product acceptance, actor matrix, shift/lot/quality semantics | Product | QA, Integration | Business process owner before changed workflow |
+| UI/keyboard/assistive and kiosk contract | Designer + Accessibility | Frontend + QA | Preserve Design DNA; screen-reader test evidence |
+| Test strategy, deterministic fixtures, traceability and CI | QA | Relevant code owners + Reviewer | Test runs local or approved staging only |
+| ERP/MES/WMS and service adapter contract | Integration | Architect + Backend + QA | Approve provider/network/credentials and production connections |
+| Inventory/source-of-truth, idempotency and migration | Database + Backend | Integration + QA + Security | Never mutate production schema without change plan and approval |
+| OT boundary/security, telemetry integrity and plant operations | OT/plant owner + Security | Integration + DevOps + QA | No remote actuation by agent; default simulation/read-only |
+
+### Native specialist commands
+
+- `/webteam_qa --mode=report|plan|fix` — coverage, product invariants, test reliability and evidence-based remediation.
+- `/webteam_accessibility --mode=report|plan|fix` — WCAG/ARIA, keyboard/screen-reader, data grids and operational kiosk UX.
+- `/webteam_integration --mode=report|plan|fix` — contracts, events, reconciliation and opt-in enterprise/industrial telemetry audits.
+
+All three default to `report`, support bounded `--max-fixes` in `fix`, and write one auditable Markdown report under `docs/audits/`. Native commands are **prompts**, not enforced security controls or guaranteed subagent invocations. Load only warranted specialists and skills; reuse `/webteam_audit` for cross-functional consolidation instead of double-counting duplicate findings.
+
+### Bootstrap, upgrade and validation requirements
+
+1. Inspect the currently effective OMP global/project profile, installed 16 agent definitions, effective `.omp` context and any existing skill/name overrides. Back up before edits.
+2. Install/merge **45 canonical `SKILL.md` files** and **9 adjacent reference `.md` manuals** in the verified skill roots; do not replace unrelated custom skills, model routing, Mnemopi/Auto-Learn, Caveman or Loop configuration.
+3. Install **3 native Markdown commands**: `webteam_qa.md`, `webteam_accessibility.md`, `webteam_integration.md`; update help and documentation, preserving existing user overrides.
+4. Add these agent competencies and cross-agent handoff rules minimally to the existing 16 definitions/MAIN routing; preserve user changes and one-writer-per-path restrictions.
+5. Confirm **33 flat native commands, 172 bundled `SKILL.md` files, and 41 reference manuals** in the distribution; verify metadata/frontmatter, duplicate IDs, links and safe command argument examples.
+6. Run a no-write skill/agent discovery smoke test from the actual OMP runtime when authorized. Then use synthetic, isolated fixtures for QA/A11y/integration tests. Explicitly label `STATIC_PASS` separately from `RUNTIME_VERIFIED` and `NOT_RUN`.
+
+### Primary standards (check revision and project applicability)
+
+- W3C WCAG 2.2: https://www.w3.org/TR/WCAG22/
+- WAI APG: https://www.w3.org/WAI/ARIA/apg/
+- Pact contract testing: https://docs.pact.io/implementation_guides/pact_specification
+- Playwright: https://playwright.dev/docs/intro
+- ISA-95: https://www.isa.org/standards-and-publications/isa-standards/isa-95-standard
+- OPC UA: https://reference.opcfoundation.org/specs/OPC-10000-1/full
+- MQTT Sparkplug: https://github.com/eclipse-sparkplug/sparkplug
+- NIST SP 800-82 Rev 3 (final; Rev 4 draft was published September 2026, not a final standard): https://csrc.nist.gov/pubs/sp/800/82/r3/final

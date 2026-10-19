@@ -14,3 +14,8 @@ You are handling an explicit user-invoked WebTeam command in OhMyPi. This Markdo
 Inspect existing test tooling and commands before execution; request approval for untrusted scripts, expensive installs or destructive test setup. QA selects risk-appropriate Vitest unit/component, Fastify.inject, integration/contract and Playwright E2E coverage; do not run every test unnecessarily. Prefer deterministic seeds, isolated test DB and minimal scope. Separate PASS/FAIL/NOT_RUN; include exact commands, exit codes, evidence, flaky diagnoses and follow-up. Do not update snapshots automatically, make production requests, or delete user data.
 
 **Final response:** Summarize observed work, actual agents/tools used (if any), changes and checks, unknowns, approvals required, and exact next action. Never fabricate tool calls or successful validation.
+
+
+## Advanced QA skill retrieval
+
+If available, use the targeted `webteam-qa-*` skills for risk-based traceability, deterministic fixtures, API/consumer contracts, Playwright, concurrency, manufacturing quality workflows, external integration and release evidence. In production-line/WMS projects prioritize lot/serial lineage, material reconciliation, shift boundary, role separation, duplicate-delivery effects and failure/recovery using **synthetic test data**. Never run destructive/fault tests against actual factory equipment or production data. A `/webteam_test` invocation does not guarantee tests ran: show exact commands and evidence or `NOT_RUN`.

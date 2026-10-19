@@ -110,3 +110,8 @@ Where applicable, refer to authoritative specifications; record their **versions
 
 If a section is irrelevant, say `NOT_APPLICABLE` with reason. Never silently delete a required section to appear complete. No personal data, credentials, leaked secrets or full vulnerability exploit payloads in the report.
 
+
+
+## Manufacturing, warehouse and OT integration scope extension
+
+For projects involving production-line management, MES, WMS, ERP or industrial telemetry, extend applicable audit coverage to: QA-owned shift/lot genealogy, quality holds, material balance, role separation and failure/reconciliation tests; Accessibility-owned kiosk/keyboard/alert/data-grid behaviors; Integration-owned API/event contracts, source of truth, ISA-95 boundaries, offline telemetry, read-only OPC UA or MQTT state where independently authorized. Deduplicate overlapping findings with the specialist commands `/webteam_qa`, `/webteam_accessibility`, `/webteam_integration`. Do **not** contact live plant networks, run production load tests, change machine control, or treat simulation as deployed proof.

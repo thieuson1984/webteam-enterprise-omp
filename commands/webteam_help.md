@@ -23,3 +23,20 @@ Show the available WebTeam commands with concise descriptions and examples, incl
 - `/webteam_database --mode=report|plan|fix --scope=all|schema|integrity|security|queries|migrations|backup|tenant|operations` — storage correctness, SQLite/MongoDB/PostgreSQL, migrations, isolation and recovery.
 
 `report` produces findings, `plan` adds actionable remediation, `fix` permits only bounded low-risk local changes with separate approval for privileged/irreversible operations. All are native Markdown prompt expansions, not scripts or guarantees of live delegation.
+
+### Advanced Frontend / Security / Performance quality commands
+
+- `/webteam_frontend --mode=report|plan|fix --scope=all|contracts|state|routing|a11y|tables|design|i18n|security|performance|testing` — real UI implementation correctness, typed data, accessibility, complex interaction, responsive design and browser trust.
+- `/webteam_security --mode=report|plan|fix --scope=all|threat|identity|authz|injection|api|privacy|supply-chain|cloud|secrets|ai-tools|incident|testing` — OWASP ASVS 5.0 risk verification, threat model, security tests and safe remediation.
+- `/webteam_performance --mode=report|plan|fix --scope=all|vitals|rendering|bundle|assets|api|database|cache|load|queues|telemetry|slo|cost` — field/lab metrics, browser/API/DB performance, safe capacity planning and regression budgets.
+
+Distinct intent: `/webteam_security_audit` is the older focused read-only review, while `/webteam_security` is the deeper report/plan/fix workflow; `/webteam_audit` covers all domains; `/webteam_uiux` owns visual/art-direction critique rather than correctness of arbitrary frontend code. `fix` cannot bypass permission or production gates.
+
+
+### QA, Accessibility and Enterprise Integration
+
+- `/webteam_qa --mode=report|plan|fix --scope=all|contracts|e2e|manufacturing|integration|ci` — business/regression tests, traceability, negative cases and controlled test-harness fixes.
+- `/webteam_accessibility --mode=report|plan|fix --scope=all|wcag|keyboard|grids|kiosk|screenreader` — WCAG 2.2 AA, WAI-ARIA interaction and manually evidenced inclusive UX.
+- `/webteam_integration --mode=report|plan|fix --scope=all|erp|mes|wms|events|opcua|mqtt` — contracts, queues/replay, data reconciliation and strictly approval-gated industrial telemetry.
+
+Industrial integration audits are read-only by default. Never infer plant/network access or safe control capability merely from installed commands.
