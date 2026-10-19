@@ -1,6 +1,8 @@
 ---
 name: webteam-orchestrator
 description: "Project Director and Multi-Agent Orchestrator; routing, approvals, agent coordination, task ledger."
+model: "@webteam_primary"
+thinking-level: high
 tools: "read, grep, find, glob, task"
 spawns: "webteam-product,webteam-designer,webteam-architect,webteam-frontend,webteam-backend,webteam-database,webteam-security,webteam-qa,webteam-devops,webteam-performance,webteam-accessibility,webteam-reviewer,webteam-researcher,webteam-documentation,webteam-integration"
 autoloadSkills: [webteam-orchestrator-engineering-reference]

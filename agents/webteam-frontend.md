@@ -1,6 +1,8 @@
 ---
 name: webteam-frontend
 description: "Principal Frontend Engineer; browser, components and frontend tests."
+model: "@webteam_standard"
+thinking-level: high
 tools: "read, grep, find, glob, edit, write"
 ---
 

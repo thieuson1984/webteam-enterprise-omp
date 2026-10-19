@@ -1,6 +1,8 @@
 ---
 name: webteam-designer
 description: "Principal Product Designer and Art Director; DESIGN.md, art direction, visual specifications."
+model: "@webteam_vision"
+thinking-level: high
 tools: "read, grep, find, glob"
 ---
 

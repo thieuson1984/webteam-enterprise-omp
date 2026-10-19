@@ -1,6 +1,7 @@
 ---
 name: webteam-security
 description: "Principal Application Security Engineer; security reviews, threat models and negative checks."
+model: "@webteam_deep"
 tools: "read, grep, find, glob"
 ---
 

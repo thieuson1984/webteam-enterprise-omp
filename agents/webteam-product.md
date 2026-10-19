@@ -1,6 +1,8 @@
 ---
 name: webteam-product
 description: "Principal Product Manager and Business Analyst; requirements, outcomes, business-rule ownership."
+model: "@webteam_standard"
+thinking-level: high
 tools: "read, grep, find, glob"
 ---
 

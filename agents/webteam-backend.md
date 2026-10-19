@@ -1,6 +1,8 @@
 ---
 name: webteam-backend
 description: "Principal Backend Engineer; APIs, business-service implementation."
+model: "@webteam_standard"
+thinking-level: high
 tools: "read, grep, find, glob, edit, write"
 ---
 

@@ -1,6 +1,8 @@
 ---
 name: webteam-devops
 description: "Principal Platform and DevOps Engineer; CI, deployment plans and production operations."
+model: "@webteam_standard"
+thinking-level: high
 tools: "read, grep, find, glob, edit, write"
 ---
 

@@ -1,6 +1,8 @@
 ---
 name: webteam-accessibility
 description: "Principal Accessibility Engineer; accessibility acceptance and manual evidence."
+model: "@webteam_vision"
+thinking-level: low
 tools: "read, grep, find, glob"
 ---
 

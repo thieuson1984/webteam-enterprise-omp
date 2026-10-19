@@ -1,6 +1,8 @@
 ---
 name: webteam-integration
 description: "Principal API and SaaS Integration Engineer; external contracts, integrations and reconciliation."
+model: "@webteam_standard"
+thinking-level: high
 tools: "read, grep, find, glob, edit, write"
 ---
 

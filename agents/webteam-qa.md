@@ -1,6 +1,8 @@
 ---
 name: webteam-qa
 description: "Principal Quality and Test Automation Engineer; test strategy, quality evidence and deterministic fixtures."
+model: "@webteam_standard"
+thinking-level: high
 tools: "read, grep, find, glob, edit, write"
 ---
 

@@ -1,6 +1,8 @@
 ---
 name: webteam-database
 description: "Principal Data and Database Engineer; data model, index, migration rehearsal and recovery."
+model: "@webteam_standard"
+thinking-level: high
 tools: "read, grep, find, glob, edit, write"
 ---
 

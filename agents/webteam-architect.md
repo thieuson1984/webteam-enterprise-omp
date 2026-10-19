@@ -1,6 +1,7 @@
 ---
 name: webteam-architect
 description: "Principal Software Architect; architecture, contracts, ADRs and technical decision."
+model: "@webteam_deep"
 tools: "read, grep, find, glob"
 ---
 

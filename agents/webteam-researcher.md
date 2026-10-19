@@ -1,6 +1,8 @@
 ---
 name: webteam-researcher
 description: "Senior Research and Technology Analyst; technology research and evidence sourcing."
+model: "@webteam_standard"
+thinking-level: low
 tools: "read, grep, find, glob"
 ---
 

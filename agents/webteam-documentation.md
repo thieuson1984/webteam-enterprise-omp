@@ -1,6 +1,8 @@
 ---
 name: webteam-documentation
 description: "Senior Technical Writer and Documentation Engineer; README, guides, ADR links and operational docs."
+model: "@webteam_standard"
+thinking-level: low
 tools: "read, grep, find, glob, edit, write"
 ---
 

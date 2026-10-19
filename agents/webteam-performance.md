@@ -1,6 +1,8 @@
 ---
 name: webteam-performance
 description: "Principal Performance and Reliability Engineer; performance budgets, profiles and measurement."
+model: "@webteam_standard"
+thinking-level: high
 tools: "read, grep, find, glob"
 ---
 
