@@ -1,713 +1,381 @@
-# WebTeam Enterprise R11 — OhMyPi Installation, Operation, Slash Commands and Upgrade Guide
-**Post-install self-check:** [`WEBTEAM_POST_INSTALL_SELF_ORCHESTRATION_CHECK.md`](./WEBTEAM_POST_INSTALL_SELF_ORCHESTRATION_CHECK.md)  
+# WebTeam Enterprise for OhMyPi
 
-**Release:** R11, document-reviewed · **Language:** English · **Target:** OhMyPi (OMP) · **Team:** 16 specialists + WebTeam Orchestrator
+A reusable, multi-agent software engineering organization for designing, building, testing, auditing, deploying (with approval), and maintaining modern web applications.
 
-**New team (R11):** [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R11.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R11.md)  
-**Existing WebTeam — commands only:** [`WEBTEAM_EXISTING_INSTALL_COMMANDS_ONLY_UPGRADE_PROMPT.md`](./WEBTEAM_EXISTING_INSTALL_COMMANDS_ONLY_UPGRADE_PROMPT.md)  
-**Existing R6 → R10.2 base features (if missing):** [`WEBTEAM_R6_TO_R10_2_UPGRADE_PROMPT.md`](./WEBTEAM_R6_TO_R10_2_UPGRADE_PROMPT.md)  
-**Existing R6/R9/R10 with Memory already installed → Loop only:** [`WEBTEAM_EXISTING_INSTALL_LOOP_ONLY_UPGRADE_PROMPT.md`](./WEBTEAM_EXISTING_INSTALL_LOOP_ONLY_UPGRADE_PROMPT.md)  
-**Existing R6 → Memory only:** [`WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md`](./WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md)  
-**Vietnamese guide:** [`README_VI.md`](./README_VI.md) · **R11 audit:** [`WEBTEAM_R11_AUDIT_REPORT.md`](./WEBTEAM_R11_AUDIT_REPORT.md)
+**This package is a complete installation specification plus 20 native OhMyPi slash-command templates.** It is not pre-installed software, an extension binary, a configured AI provider, or a guarantee of production security. A running OhMyPi session must create, enable, and verify the agent definitions, skills, policies, and command files described by the Master Prompt.
 
-> These documents contain **installation instructions**, not an installed WebTeam. Runtime configuration, MCP permissions, actual model discovery, memory isolation, Loop cancellation and cost must be verified in the user's **installed** OMP. Run **exactly one** installation/upgrade path according to the situation. Do not re-bootstrap an existing team.
-
-## Recommended R11 defaults
-
-- **Global/Project:** install reusable agents/skills once; keep PRODUCT.md, DESIGN.md, ARCHITECTURE.md, memory and project-specific rules isolated per repository.
-- **Memory:** optional consented `mnemopi` with `scoping: per-project`, `autoRetain: false`; Auto-Learn `autoContinue: false`, review-first, and enforce project-local output of learned skills or use supervised manual learning. Do not override an existing approved working setup.
-- **Model routes:** first ask which primary provider to use, then discover its real model catalog; fallback and multi-model deliberation are separate consented features. No provider changes during a Loop.
-- **Quality Loop:** `ASK` policy; continuous native Loop **OFF**. C1/C2: zero extra passes; C3: up to one; C4: up to two; C5: up to three only with risk approval. Use native `/loop` only after version-specific cap/stop/steering/async smoke tests; otherwise use manually orchestrated finite passes.
-- **Tool safety:** Caveman and Codebase Memory are optional and need readiness checks; prompts cannot enforce OS/container or MCP tool restrictions. No unapproved production writes, memory promotion, payment or destructive actions.
-
-The example `loop.mode: prompt` is only a **native loop mode preference**, not an enable switch or a WebTeam `ASK/AUTO` setting. If your current OMP version cannot guarantee safe native stopping, use the manual quality-cycle fallback.
-
-## 1. What Is WebTeam?
-
-**WebTeam** is a multi-agent engineering organization for professional, modern web application development. Its objective is not simply to generate code, but to own a disciplined delivery lifecycle:
-
-**Requirements discovery → Technology decisions → Product design → Implementation → Testing → Independent review → Security → Approved deployment → Maintenance and improvement.**
-
-The preferred backend stack is **Node.js + Fastify + TypeScript + Zod + Biome**; the preferred database is **SQLite or MongoDB**; and the preferred frontend stack is **Vite + TypeScript + React or SolidJS + TanStack + Zod + Biome**. Additional dependencies should be selected for specific technical reasons, not installed indiscriminately because they are popular.
-
-WebTeam provides **16 specialist roles**, but ordinary tasks should invoke only a small, relevant subset. `webteam-orchestrator` interprets requests, chooses specialists, defines boundaries, coordinates reviews, and reports results. The project owner retains authority over consequential decisions.
-
-## 2. Two Levels: Global WebTeam and Project WebTeam
-
-| Level | Responsibility | Scope |
-|---|---|---|
-| **Global WebTeam** | The 16 agents, shared expertise, advanced skills, operational policies, model/routing rules, and project bootstrap workflows | Reused across many repositories |
-| **Project WebTeam** | Product requirements, Design DNA, architecture, model restrictions, coding conventions, tests, ADRs, and roadmap | Belongs to one application |
-
-Illustrative layout (OMP must verify the effective locations and supported configuration schema):
+## Contents
 
 ```text
-~/.omp/agent/
-  agents/
-    webteam-orchestrator.md
-    webteam-product.md
-    ... (16 agent definition files)
-  skills/
-    design-master-workflow/SKILL.md
-    webteam-deliberation-routing/SKILL.md
-    playwright-visual-regression/SKILL.md
-    ...
-  config.yml
-  webteam/                    # optional supporting policies/docs; not assumed recursive agent discovery
-
-my-project/
-  .omp/
-    AGENTS.md
-    RULES.md                  # only when useful and supported by installed OMP
-    config.yml                # only if project overrides are justified
-  docs/
-    PRODUCT.md
-    DESIGN.md
-    ARCHITECTURE.md
-    TECH_STACK.md
-    ROADMAP.md
-    DECISIONS.md
-    TESTING.md
-    design/                   # Design DNA, tokens, components, visual baselines
-    engineering/              # Engineering DNA, coding/API conventions
-    references/               # external repository analysis
-    deliberations/            # redacted records of important model deliberations
-  apps/                       # if a monorepo was selected
-  packages/                   # only if necessary
+WebTeam/
+├── README.md
+├── WEBTEAM_MASTER_PROMPT.md
+└── commands/
+    ├── webteam_create_project.md
+    ├── webteam_adopt_project.md
+    ├── webteam_audit.md
+    └── ... 17 additional commands (20 total)
 ```
 
-### Can WebTeam agents live in their own subdirectory?
+There are **no migration prompts, legacy releases, or alternate-language documents** in this distribution. The standalone Markdown templates in `commands/` are authoritative for slash-command behavior; the Master Prompt defines how to install and coordinate them.
 
-OMP commonly discovers `agents/*.md` **directly**; it should not be assumed to recursively scan `agents/webteam/*.md`. During bootstrap, the installer asks whether you prefer a dedicated subdirectory. Use that layout only if the installed OMP version demonstrates successful discovery and spawning. The safer default is flat, consistently prefixed `agents/webteam-*.md` files. An OMP extension/package can provide a more self-contained distribution, but its installation and discovery behavior must be verified.
+## 1. What WebTeam does
 
-## 3. The 16 WebTeam Agents
+WebTeam is a role-based workflow for engineering a web application with high professional standards and measurable results. It covers product discovery, interface art direction, design systems, frontend/backend implementation, database architecture, security, quality assurance, accessibility, integrations, operations, performance, code review, documentation, and technical research.
 
-| # | Agent | Core responsibilities | Typical activation |
-|---|---|---|---|
-| 01 | `webteam-orchestrator` | Coordination, onboarding, planning, task/effort routing, multi-model council, escalation, quality gates | Entry point for project-level web work |
-| 02 | `webteam-product` | Requirements engineering, user journeys, permissions, testable acceptance criteria | New features, domain logic, scope changes |
-| 03 | `webteam-designer` | Eight-stage UI/UX workflow, design system, palettes, font pairing, anti-AI-slop, visual QA | New interfaces, design changes, Design DNA analysis |
-| 04 | `webteam-architect` | System boundaries, modular design, ADRs, reliability, technical tradeoffs | Platform decisions, architecture, cross-module refactoring |
-| 05 | `webteam-frontend` | React/SolidJS, Vite, TanStack, type-safe forms, accessibility, design-to-code | UI development, state, routing |
-| 06 | `webteam-backend` | Fastify, Node.js, TypeScript, Zod, authorization, API lifecycle, observability | APIs, services, business logic, authentication |
-| 07 | `webteam-database` | SQLite/MongoDB, schema, indexing, transactions, migrations, backup/restore | Data model, queries, schema transitions |
-| 08 | `webteam-security` | Threat modeling, access control, tenant isolation, OWASP, supply chain | Sensitive data, permissions, high-risk changes |
-| 09 | `webteam-qa` | Vitest unit/component/API/integration tests, Playwright E2E and visual regression | Test strategy, bug regression, release verification |
-| 10 | `webteam-devops` | Reproducible environments, CI/CD, containers, monitoring, rollback, runbooks | CI, deployment, operations |
-| 11 | `webteam-performance` | Core Web Vitals, profiling, API/database latency, caching, performance budgets | Slow interfaces, load and latency requirements |
-| 12 | `webteam-accessibility` | WCAG 2.2 AA, keyboard/focus, screen readers, inclusive UX | Interactive UIs, forms, dialogs, dashboards |
-| 13 | `webteam-reviewer` | Independent diff review, correctness, contracts, architectural drift | Changes requiring independent review |
-| 14 | `webteam-researcher` | Official documentation, provider/model capabilities, reference repositories, licenses | Technology/model/API evaluation |
-| 15 | `webteam-documentation` | Docs as code, API docs, project memory, onboarding, runbooks | Durable technical documentation |
-| 16 | `webteam-integration` | OAuth, webhooks, external APIs, retries, idempotency, provider connectivity | Service, AI API, email, payment integration |
+Key characteristics:
 
-**Sixteen agents do not mean sixteen simultaneous models.** An agent is a professional role. Several agents may use the same model, and the Orchestrator should only dispatch the roles required by the task.
+- **16 specialist agents**, coordinated by `webteam-orchestrator` where OMP's effective runtime permits; the main session coordinates directly when nested delegation is unsupported.
+- **Two-level architecture:** reusable Global WebTeam plus per-repository Project WebTeam specifications and configuration.
+- **Native slash commands:** 20 reusable Markdown commands for project creation, adoption, inspection, audit, testing, and delivery.
+- **Project-aware onboarding:** questions about the repository, product, requirements, frontend/backend/database, design, testing, deployment, and AI model routing.
+- **Professional design:** the complete eight-stage design workflow, Design DNA, palettes, font pairing, accessibility, interaction specification, design tokens, and anti-generic-UI checks.
+- **Engineering tests:** Vitest, component and Fastify API tests, integration and contract checks, Playwright E2E, visual regression, and CI quality gates.
+- **Evidence-first project audit:** `/webteam_audit` writes a project Markdown report, prioritized repair plan, and optional future feature roadmap; it can implement tightly bounded safe fixes when explicitly requested.
+- **Adaptive reasoning:** role-specific primary models, per-task effort, optional approved cross-provider fallback, and optional independent multi-model deliberation.
+- **Mnemopi memory:** project-scoped knowledge, explicit promotion gates, and reviewed Auto-Learn/skill improvement where supported.
+- **Caveman and Codebase Memory MCP:** optional integrations used only when installed, healthy, permitted, and suitable for the specialist/task.
+- **Bounded quality cycles:** finite verify–fix–verify passes; continuous native Loop stays off unless version-specific safety controls are demonstrated.
 
-## 4. Key Skills and Capabilities
+### Preferred technology baseline
 
-### 4.1 Product, Architecture, and Engineering
-
-WebTeam discovers and formalizes requirements, generates product documentation, establishes coherent architecture, develops API contracts and ADRs, preserves conventions found in actual source code, and manages migrations, security, and enforceable coding standards.
-
-### 4.2 Designer: Eight-Stage Professional Workflow
-
-1. Product Context & Discovery.
-2. Research & Reference Analysis.
-3. Art Direction & Visual Identity.
-4. Palette & Typography Engineering.
-5. UX Architecture & Interaction Planning.
-6. Design System & Component Specifications.
-7. Design-to-Code Collaboration & Motion.
-8. Visual QA, Anti-AI-Slop & Refinement.
-
-Project decisions are recorded in `docs/DESIGN.md`, design tokens, and component contracts. The team must only claim that a screen has been visually verified when it has actually inspected browser output or screenshots using available tools.
-
-### 4.3 QA, Vitest, and Playwright
-
-Testing is selected according to the change's risk and scope:
-
-- **Unit tests:** Vitest, isolated domain behavior, fixtures, controlled mocks, fake timers, and edge cases.
-- **Component tests:** React/SolidJS Testing Library, interactive states, form validation, and accessible behaviors.
-- **API tests:** Fastify `inject()`, Zod schemas, authentication/authorization, contracts, and negative cases.
-- **Integration tests:** service ↔ database ↔ API behavior, migrations, and tenant/data isolation.
-- **End-to-end tests:** Playwright, critical user journeys, sign-in, navigation, and cross-browser coverage where justified.
-- **Visual regression:** Playwright `toHaveScreenshot()`, desktop/mobile baselines, reviewed diffs, and controls for font/OS/browser variance.
-- **Regression and CI gates:** reproduce real defects, add prevention tests, and enforce risk-proportionate gates.
-
-**Never accept updated visual snapshots solely to turn a failing test green.** Designer and QA must evaluate whether the visual change was intentional.
-
-### 4.4 Learning from Existing Projects and External Source Code
-
-- `webteam-project-design-dna`: discovers actual UI identity, semantic colors, spacing, typography, and component variants.
-- `webteam-engineering-dna`: identifies conventions, module boundaries, APIs, and testing patterns.
-- `webteam-design-preservation`: protects UI contracts, behavior, and visual baselines.
-- `webteam-reference-repository-intelligence`: examines GitHub/GitLab repositories with pinned revisions, license, security, and compatibility analysis.
-- `webteam-standards-evolution`: proposes controlled improvements with an impact assessment, regression plan, and ADRs.
-
-External repository analysis defaults to **Learn Only**. It does not authorize copying source code or rewriting the target project.
-
-## 5. Multi-Model Deliberation (Introduced in R4; Retained in R6)
-
-Multi-model deliberation means **independent proposals and evidence-based criticism from distinct model routes** for important decisions. It is not a requirement to call multiple models for every prompt.
-
-### Three Deliberation Levels
-
-| Mode | When to use it | Behavior |
+| Layer | Preferred technologies | Decision rule |
 |---|---|---|
-| **OFF** | Disabled or straightforward work | Normal specialist execution, tests, and reviews |
-| **CHALLENGE** | Significant uncertainty or correctness risk | Model A proposes; independently selected Model B challenges and seeks counterexamples |
-| **COUNCIL** | High-stakes architecture, authorization, or migration decisions | Usually 2–3 independent approved routes; bounded debate, testing, and Orchestrator arbitration |
+| Backend | Node.js, Fastify, TypeScript, Zod, Biome | Re-evaluate only for a specific requirement |
+| Database | SQLite or MongoDB | Choose by data model, concurrency, deployment, transaction semantics, and operations |
+| Frontend | Vite, TypeScript, **React or SolidJS**, Zod, TanStack, Biome | Select one framework after onboarding; add TanStack libraries when needed |
+| Validation | Vitest, Playwright, browser/integration tools | Risk-driven, reproducible, environment-safe |
+| UI | Project-specific CSS/design-token and component choices | Maintain a coherent and accessible design system |
 
-At initial installation, WebTeam must ask:
+The team does not install every suggested library or launch every specialist for each request.
 
-- Whether deliberation should be available, and whether invocation is **OFF / ASK / AUTO** within an approved policy. **ASK** is the recommended initial setting.
-- Which models/providers are approved for the Primary, Proposer, Critic, and optional Specialist roles.
-- What kinds of decisions justify independent deliberation and the maximum calls/rounds/cost for a decision.
-- Whether source code or internal documents may be sent to each provider. Secrets must be excluded.
-- Whether to enable continuous Advisor/WATCHDOG operation. This is **independent** of deliberation and is not required for council sessions.
+## 2. Architecture and 16 agents
 
-OMP may expose `modelRoles`, per-task model selectors, custom agents, and `advisor`/`WATCHDOG`; installed-version support must be checked. **A model list such as `model: [A, B]` typically represents fallback order, not two independent opinions.** A council requires distinct actual model invocations. Continuous Advisor supervision is not itself a deliberation council.
+| Agent | Responsibility | Representative output |
+|---|---|---|
+| `webteam-orchestrator` | Requirements intake, planning, difficulty classification, task dispatch, cost and risk gates, delivery | Task charters, delegation evidence, roadmap |
+| `webteam-product` | Product discovery, user journeys, permissions and measurable acceptance criteria | `docs/PRODUCT.md` |
+| `webteam-designer` | UI/UX art direction, design-system engineering, existing Design DNA preservation | `docs/DESIGN.md`, tokens, visual rules |
+| `webteam-architect` | Software architecture, technical boundaries, contracts and ADRs | `docs/ARCHITECTURE.md`, ADRs |
+| `webteam-frontend` | React/SolidJS UI, TanStack, validated forms, responsive and accessible components | Browser-facing application code |
+| `webteam-backend` | Fastify API/service implementation, typed schemas, server-side authorization | APIs, services and tests |
+| `webteam-database` | SQLite/Mongo modeling, indexing, migrations, backup and restore | Schema/model/migration strategy |
+| `webteam-security` | Threat modeling, authorization and tenancy, supply chain, privacy, secure defaults | Security evidence and findings |
+| `webteam-qa` | Unit, component, API, integration, Playwright E2E, visual-regression and release tests | Reproducible tests and test reports |
+| `webteam-devops` | Development environments, CI/CD, observability, releases and rollback | CI configuration and runbooks |
+| `webteam-performance` | Core Web Vitals, p95/p99 latency, profiling and budgets | Measured performance reports |
+| `webteam-accessibility` | WCAG 2.2 AA design target, keyboard, focus, screen-reader behavior | Accessibility findings and fixes |
+| `webteam-reviewer` | Independent risk-ranked review of diffs and evidence | Actionable review findings |
+| `webteam-researcher` | Verified technical documentation, framework models, source/license analysis | Evidence-backed technical options |
+| `webteam-documentation` | Docs-as-code, project knowledge, API and operational documentation | Consistent durable docs |
+| `webteam-integration` | Third-party APIs, OAuth, webhooks, retry/idempotency and realtime connectivity | Safe integration contracts/tests |
 
-### Deliberation Process
+**Agent discovery does not prove orchestration.** After installation, WebTeam must observe a representative natural-language request being routed to the correct specialist via OMP's actual `task` interface. The main session is allowed to act as coordinator if nested agent dispatch is unavailable; it must not claim that a nested agent call occurred if it did not.
+
+### Global and project files
+
+A typical layout is:
 
 ```text
-Risk/uncertainty justifies deliberation
-  → Orchestrator frames a narrow question, evidence packet, privacy and cost limits
-  → Model A and Model B analyze INDEPENDENTLY, without seeing each other's conclusions
-  → Bounded criticism and rebuttal (normally one round)
-  → QA/Security/Architect test claims against code and evidence
-  → Orchestrator documents the evidence-based conclusion and dissent
-  → User approves consequential decisions when required
-  → One implementation owner modifies code and executes relevant tests
-  → Save a redacted ADR/deliberation record
+~/.omp/agent/                       # example only; verify current profile
+  agents/webteam-*.md               # 16 globally reusable roles, flat files
+  skills/<skill-name>/SKILL.md      # load relevant skills on demand
+  commands/webteam_*.md             # 20 flat Markdown commands
+  config.yml                        # only approved, verified settings
+
+my-app/
+  .omp/AGENTS.md                     # project entry point and instructions
+  .omp/config.yml                    # only supported project overrides
+  docs/PRODUCT.md
+  docs/DESIGN.md
+  docs/ARCHITECTURE.md
+  docs/TECH_STACK.md
+  docs/ROADMAP.md
+  docs/DECISIONS.md
+  docs/TESTING.md
+  docs/design/                      # project-specific Design DNA
+  docs/engineering/                 # Engineering DNA and conventions
+  docs/governance/MEMORY_POLICY.md  # when project memory is configured
+  docs/audits/                      # comprehensive audit reports
 ```
 
-**Do not decide by simple majority vote.** Correctness evidence, security, and product requirements take precedence. Competing agents must not write to the same working tree at the same time. If only one usable model route exists, use an explicitly named single-model review rather than claiming independent multi-model consensus.
+The real OMP discovery rules depend on version, active profile, current working directory, and nested `.omp` directories. Native commands and native agent files normally use flat `*.md` discovery; do not put them into attractive but unrecognized subfolders. When launching from monorepo subdirectories, inspect both effective context instructions and effective project settings, which need not follow identical lookup rules.
 
-### Adding More Models Later
+## 3. Prerequisites and safe installation
 
-The Orchestrator may **propose**, but must not autonomously enable, additional model providers. A `MODEL_ADDITION_PROPOSAL` must identify the need, verified alternatives, capability/price/privacy implications, smoke tests, and a rollback strategy. Model registration, credentials, and paid inference require appropriate approval.
+You need an installed OhMyPi with access to the intended local files, an approved model provider with credentials configured **outside tracked project files**, and permission to configure your agent profile. For specialist smoke tests, you may also need a disposable project and a working shell/test environment.
 
-## 5B. Provider-First Discovery, Cross-Provider Fallback, and Per-Agent Optimization (R6)
+The native command behavior documented here was checked against OhMyPi **v18.12.2**. Other installations must inspect their actual schema and command precedence instead of assuming every setting or extension is available. Documentation: [OhMyPi repository](https://github.com/can1357/oh-my-pi), [slash command internals](https://github.com/can1357/oh-my-pi/blob/v18.12.2/docs/slash-command-internals.md), [task-agent discovery](https://github.com/can1357/oh-my-pi/blob/v18.12.2/docs/task-agent-discovery.md).
 
-R6 distinguishes three independent mechanisms:
+### First installation
 
-1. **Primary routing:** select a suitable model for each agent from the approved default provider.
-2. **Runtime fallback:** switch when a model/provider is unavailable under a verified, approved fallback policy.
-3. **Multi-model deliberation:** intentionally obtain independent evaluations for a difficult decision.
+1. Download/extract this package to a trusted directory. Review the command files and Master Prompt before using them with an AI coding agent.
+2. Launch OMP in an authorized working directory; confirm its version (`omp --version`) and actual profile/config roots using installed documentation or supported commands.
+3. Supply the complete `WEBTEAM_MASTER_PROMPT.md` to your OMP session **and make the companion `commands/` directory readable to that session**. Request: “Implement this WebTeam installation specification; first inspect the installed runtime and ask me for the required setup choices.”
+4. Answer the compact installation interview: effective agent file placement, **primary model provider first**, usable models, optional additional provider(s) for fallback, optional council, Caveman/Codebase Memory, Mnemopi/Auto-Learn, quality-loop policy and global command scope.
+5. Review the proposed settings, downloads, access permissions, approximate cost implications and file manifest before granting installation authorization. Credentials belong in a supported secure environment, not in Markdown or Git.
+6. Allow OMP to create all 16 agent definitions, actual `SKILL.md` files, approved model mappings, supporting policies, and command files. A named skill without a discoverable `SKILL.md` is not installed.
+7. Require runtime validation: effective discovery, model resolution, real `task` delegation, safe default routing, command expansion, and optional integration health. A static file check alone is **not** a successful install.
+8. Restart/reload OMP when required by the installed runtime; run `/webteam_healthcheck` and `/webteam_help`. Review the results before using WebTeam for critical work.
 
-Enabling one mechanism never silently enables another. Cross-provider fallback is disabled unless explicitly approved.
+**Existing working OMP settings must be preserved.** The installer should back up touched files, merge minimally, avoid duplicate extensions and report where effective restrictions are merely instructions rather than enforced tool permission boundaries.
 
-### 5B.1 Required Questions, in Order, During Initial Installation
+### Are model fallback and councils mandatory?
 
-1. **Ask for the default provider FIRST.** Show provider identities discovered in OMP (for example, DeepSeek, OpenAI, or a configured local/custom provider). Do not automatically assume DeepSeek. `deepseek-flash` is a candidate only when the user selects the matching provider and OMP verifies the alias.
-2. **Only after provider selection, inspect that provider's model catalog.** Capture actual selectors, authentication and availability, reasoning/effort support, context/output limits, tools, vision, pricing when known, and operational status. Save a complete discovered snapshot when feasible, but present a concise shortlist for selection.
-3. **Ask about fallback separately:** **OFF** (no cross-provider switch), **ASK** (confirm each cross-provider switch; recommended initially), or **AUTO** (use only previously approved providers/models, data classes, and cost constraints).
-4. **If fallback is enabled, ask which alternate provider(s) are allowed and in what order; only then discover their models.** Do not enumerate or activate all providers indiscriminately.
-5. **Ask permission to transmit project material and incur costs for each approved provider.** A provider may be authorized for public code but not private code, personal data, or sensitive logs.
-6. **Only then address multi-model deliberation, Caveman, Codebase Memory MCP, agent placement, and other options** specified by the master prompt. Fallback consent does not imply consent for a council.
-7. Preview the final routing/configuration diff and obtain required approval before applying it. Do not run paid test inference without permission.
+No. You can use one approved model throughout. For a multi-provider setup, select the primary provider **before** discovering its model catalog; explicitly opt in to each fallback provider and the classifications of source code permitted to cross provider boundaries. Fallback handles operational availability failures; **multi-model deliberation** intentionally obtains independent advice on difficult decisions. They are separate features, not equivalent retry policies. Default recommendation: **ASK** for provider changes, cross-provider fallback, and expensive council invocations; never silently incur charges or transfer private repository contents.
 
-### 5B.2 Bootstrap Skills for Model Routing
+### Optional Caveman and Codebase Memory MCP
 
-The R6 master prompt requires real OMP-discoverable `SKILL.md` implementations for:
+If you opt in, the OMP installer should check compatibility, exact active profile, existing installation, command/tool availability, data handling, and smoke-test before enabling task-specific use. Do not install a duplicate extension/server, index private secrets, or assume all subagents have identical tools. Caveman is a workflow helper, not a replacement orchestrator; Codebase Memory MCP is an index to guide source navigation, not the authoritative source of correctness.
 
-- `webteam-primary-provider-onboarding`
-- `webteam-model-capability-profiling`
-- `webteam-agent-model-optimizer`
-- `webteam-cross-provider-fallback`
-- `webteam-effective-routing-audit`
-- `webteam-model-compatibility-smoke-tests`
-- `webteam-provider-routing-evolution`
+## 4. Project onboarding and everyday use
 
-These skills are loaded for setup, model failures, and approved policy changes—not for every ordinary coding task.
+Once installation has been **verified**, you usually do **not** need to name a specialist. A normal request such as “Add teacher permissions and tests without changing our Design DNA” should be routed through the WebTeam policy; only necessary specialists are called. Slash commands are helpful explicit workflow triggers when more structure is useful.
 
-### 5B.3 Model Profiles for All 16 Agents
+### Create a new project
 
-Each agent receives an **Agent Model Profile** identifying its primary provider/model, ordered approved fallback routes, supported thinking level, task context/compaction policy, required tool abilities, Caveman/Codebase Memory access, privacy classification, failure behavior, and verification evidence.
+From the intended working directory in OMP:
 
-Architect/Orchestrator/Security may benefit from strong reasoning; Researcher/Documentation may prioritize cost and latency; Designer/Accessibility may require screenshot or vision capabilities for certain tasks; Frontend/Backend/QA require reliable tool use. Selection is based on verified capabilities rather than model reputation alone.
+```text
+/webteam_create_project "School Management Platform"
+```
 
-**Caveman and Codebase Memory are not installed “inside” individual models.** They are OMP/runtime/agent integrations. WebTeam verifies the selected model route's tool-calling compatibility and the agent's actual available tools before enabling a workflow. Fallback does not trigger a full repository reindex by default.
+The onboarding process should establish target users, workflows, MVP features, localization, repository root, frontend (React vs SolidJS), Fastify backend, SQLite vs MongoDB, design direction, authentication, deployment constraints, tests, approved provider/model routing, and any narrower memory/privacy policy. The Orchestrator coordinates generation of **project-specific** PRODUCT/DESIGN/ARCHITECTURE/TECH_STACK/ROADMAP/DECISIONS and relevant QA/security documents. Proposed consequential choices are reviewed with you before implementation.
 
-### 5B.4 Illustrative Native OMP Configuration
+Do not generate boilerplate `DESIGN.md` and label it “validated”. The designer performs the eight-stage workflow and documents approved palettes, font pairs, semantic tokens and component behaviors. Record incomplete choices explicitly as provisional.
 
-OMP documentation describes `retry.modelFallback`, `retry.fallbackChains`, `retry.fallbackRevertPolicy`, and `modelRoles`, subject to installed-version verification. **The following model selectors are placeholders and MUST NOT be copied unchanged into production configuration:**
+### Adopt an existing codebase
+
+```text
+/webteam_adopt_project "/work/existing-school-app"
+```
+
+Adoption starts with read-only source and configuration inspection. It discovers how the application actually works, reconstructs **Design DNA** and **Engineering DNA**, identifies gaps between source and docs, and proposes improvements without overwriting current architecture, existing user changes, component contracts or branding. Reference repository URLs are analyzed for permitted transferable ideas, not blindly copied.
+
+### Typical development session
+
+```text
+/webteam_status
+/webteam_plan "Add role-based access for teachers"
+/webteam_implement "Implement the approved teacher permission plan"
+/webteam_test "Authentication and authorization"
+/webteam_visual_test "Dashboard layouts"
+/webteam_review "Changes since the last approved baseline"
+```
+
+Project artifacts are the durable authority; recalled memory is advisory and can be stale. Avoid requesting an entire-agent council for every isolated change. Run checks proportionate to risk, and require an independent review for sensitive work.
+
+## 5. Complete list of 20 slash commands
+
+All command names are slash commands **inside OMP chat**, not terminal shell commands. Their Markdown bodies are loaded as prompts. The main session interprets arguments and uses actual permitted OMP tools/agents; a command file cannot independently enforce access control.
+
+| Command | Purpose |
+|---|---|
+| `/webteam_create_project` | New application onboarding and project documentation |
+| `/webteam_adopt_project` | Safe takeover of an existing repository |
+| `/webteam_status` | Project status, blockers and routing health |
+| `/webteam_plan` | Scope and stage a feature without coding |
+| `/webteam_implement` | Implement approved, bounded functionality |
+| `/webteam_audit` | Full evidence-based audit, remediation plan and optional safe fixes |
+| `/webteam_design_audit` | Design DNA, UI consistency and visual/design system review |
+| `/webteam_architecture_audit` | System structure, contracts and architecture decisions |
+| `/webteam_security_audit` | Targeted security, privacy, authorization and dependency review |
+| `/webteam_test` | Unit/component/API/integration/E2E tests according to risk |
+| `/webteam_visual_test` | Playwright visual regression, responsive UI validation |
+| `/webteam_review` | Independent code and test-evidence review |
+| `/webteam_reference_analyze` | Inspect external Git repositories for suitable reusable ideas |
+| `/webteam_memory_review` | Mnemopi scope, recall, lesson retention and Auto-Learn review |
+| `/webteam_models_audit` | Effective primary/fallback/council routing and permissions |
+| `/webteam_quality_loop` | Supervised, bounded quality repair cycles |
+| `/webteam_docs_sync` | Synchronize approved project documents with real implementation |
+| `/webteam_healthcheck` | Verify discovery, routing, delegation and tool availability |
+| `/webteam_release_check` | Release readiness assessment, no automatic deployment |
+| `/webteam_help` | Command discovery and usage help |
+
+Native discovery generally looks in the **flat** directory `~/.omp/agent/commands/*.md` (or the real active profile) and project `.omp/commands/*.md`. Exact precedence and collisions require verification. The source package's `commands/` directory is not automatically discoverable until its files are installed to the effective OMP location.
+
+## 6. Comprehensive project audit: `/webteam_audit`
+
+This workflow is meant for mature, evidence-based project review, not a superficial one-paragraph assessment. It reviews applicable dimensions: product completeness, architecture and contracts, frontend and design, accessibility, backend/API, database, security/privacy, automated tests, performance, operations, third-party integrations, and documentation.
+
+Reference targets include the **OWASP Top 10:2025** awareness categories, relevant **OWASP ASVS 5.0.0** verification controls, **WCAG 2.2 AA** where applicable, and the technologies actually deployed. Using these references does not mean the project has passed a formal certification.
+
+### Three operating modes
+
+| Mode | What happens | Product source edits? |
+|---|---|---|
+| `report` (default) | Broad audit, one Markdown report, prioritized findings and optional feature roadmap | No |
+| `plan` | Audit plus detailed dependency-aware fixes, owners, tests and rollback plan | No |
+| `fix` | Audit, create plan, then fix a bounded number of confirmed, safe, reversible local issues | Yes, within approvals |
+
+Examples:
+
+```text
+/webteam_audit
+/webteam_audit --mode=report --scope=full --depth=standard --roadmap=on
+/webteam_audit --mode=plan --scope=security,backend --depth=deep --roadmap=off
+/webteam_audit --mode=fix --scope=full --max-fixes=3 --budget=normal
+/webteam_audit --mode=report --scope=accessibility --output=docs/audits/accessibility-review.md
+```
+
+Supported argument contract (interpreted **by the agent**, not validated by a native CLI parser):
+
+| Parameter | Allowed values | Default |
+|---|---|---|
+| `--mode` | `report`, `plan`, `fix` | `report` |
+| `--scope` | `full` or supported domain(s) | `full` |
+| `--depth` | `quick`, `standard`, `deep` | `standard` |
+| `--roadmap` | `on`, `off` | `on` for report; `off` for plan/fix |
+| `--output` | Safe new relative Markdown path inside `docs/audits/` | Unique dated report |
+| `--max-fixes` | Integer `1..20`; only used for fix | `5` |
+| `--budget` | `small`, `normal`, `extended` | `normal` |
+
+**Report location:** `docs/audits/WEBTEAM_AUDIT_<date>_<unique>.md` by default. Every mode creates one authoritative Markdown report containing executive findings, scope/limitations, coverage matrix, exact checks/outcomes, stable issue IDs with evidence, risk prioritization, remediation plan, conditional feature roadmap, and (in fix mode) before/after validation of changed files.
+
+The command never treats `--mode=fix` as permission to deploy, delete data, run destructive migrations, change primary providers, weaken tests, rebaseline screenshots without review, push Git commits, or write to production. High-risk findings become approval-gated proposals. The audit may report checks as **SKIPPED, BLOCKED or UNVERIFIED**; these are not passing scores. Observed outputs, revisions and source paths are more important than artificial numerical ratings.
+
+**Roadmap vs defects:** Findings identify broken or risky existing behavior. The optional feature roadmap recommends future functionality based on actual product needs. New features are not implicitly authorized by the audit, including in `fix` mode.
+
+### Distinguish related commands
+
+- `/webteam_audit` reviews the whole project or selected domains and produces a consolidated report.
+- `/webteam_security_audit` is a narrower security assessment.
+- `/webteam_design_audit` inspects design consistency and Design DNA.
+- `/webteam_healthcheck` assesses **WebTeam itself** (configuration, discovery, routing and delegation), not application security or business correctness.
+
+## 7. Design quality and visual safety
+
+WebTeam's designer must follow all eight steps:
+
+1. Product context and requirements discovery.
+2. Relevant visual/product research and reference analysis.
+3. Art direction and visual identity design.
+4. Semantic palette and intentional typography/font pairing.
+5. UX information architecture and interactive states.
+6. Versionable design tokens, components and `DESIGN.md` specifications.
+7. Frontend integration and meaningful motion (including reduced motion).
+8. Actual browser/screenshot visual QA, anti-generic-design review and refinement.
+
+For existing projects, preserve established conventions unless an improvement has evidence, impact assessment and approval. Playwright visual baselines must be generated and compared in a controlled environment (font, OS/browser and viewport differences matter). Don't automatically approve snapshot updates just to pass tests.
+
+## 8. Testing and quality gates
+
+The QA agent owns test strategy and reliable test infrastructure, not all implementation work. Unit tests focus on critical logic and boundary conditions, component tests cover interactive states, Fastify `inject()` tests cover API behavior, integration tests cover data and contract boundaries, and Playwright covers critical browser flows. Visual regression protects meaningful UI surfaces. Use fixtures, deterministic data, isolated databases, controlled clocks and reliable cleanup.
+
+Before describing a feature as complete, report which checks were actually executed, their exact results, remaining risks and the limitations of the environment. A missing test run is not a pass. For high-impact changes, obtain independent review and test authn/authz, tenant boundaries, migrations or recovery as applicable.
+
+## 9. Models, fallback, councils and cost efficiency
+
+WebTeam asks for your **primary provider first** and discovers its actual available models, context/output limits, tool support, reasoning capabilities and rate/budget characteristics. It then asks **separately** whether you want fallback to other providers and multi-model deliberation.
+
+- **Primary routing:** assign models and thinking levels by actual agent workload and tested model capabilities. `deepseek-flash` can be an initial alias when it really exists; do not replace verified user aliases with guessed IDs.
+- **Fallback:** handles eligible model availability failures; can cross providers **only with advance approval and an enforceable route/data allowlist**. It must not be used as a backdoor to send private code elsewhere.
+- **Deliberation:** optional OFF / CHALLENGE / COUNCIL workflows for difficult, consequential choices, with independent evaluations, evidence arbitration, cost cap and a single implementation writer.
+- **Context:** use focused retrieval and handoff packets; task working-context budgets are not arbitrary increases to model capacity. Verify actual provider/OMP context limits.
+- **Effort:** Low/Medium for routine work, High for architecture/security complexity, Max only when supported and justified. OMP task effort hints may use different syntax than agent thinking levels.
+
+A useful starting policy is `ASK` for costly fallback/council decisions. Do not create nested deliberation inside automatic loops. Report cost only if it is genuinely measured or based on a documented estimator with assumptions.
+
+## 10. Mnemopi memory and Auto-Learn
+
+The preferred governance model is **Global procedures + project-scoped knowledge**. Ask global technical preferences once during team setup; for each newly initialized or adopted project, ask whether to inherit that approved policy or narrow it. Record the answer in `docs/governance/MEMORY_POLICY.md`.
+
+If the installed OMP schema supports these settings, an initial example is:
 
 ```yaml
-# Illustration only. Use actual, verified selectors and valid keys for your OMP version.
-modelRoles:
-  webteam_primary: "PRIMARY_PROVIDER/PRIMARY_MODEL"
-  webteam_review: "PRIMARY_PROVIDER/REVIEW_MODEL:medium"
-retry:
-  modelFallback: true
-  fallbackRevertPolicy: cooldown-expiry
-  fallbackChains:
-    webteam_primary:
-      - "FALLBACK_PROVIDER/FALLBACK_MODEL:medium"
-    webteam_review: []
+memory:
+  backend: mnemopi
+mnemopi:
+  scoping: per-project
+  autoRecall: true
+  autoRetain: false
+  recallLimit: 6
+  injectionTokenLimit: 2500
+  recallContextTurns: 3
+  llmMode: none
+autolearn:
+  enabled: true
+  autoContinue: false
+  minToolCalls: 8
 ```
 
-Do not invent fallback keys such as `retry.fallbackChains.agent:webteam-qa`. Agent-specific routing must use the actual subagent model ordering and/or overrides supported by the installed OMP version. **An agent's candidate model array is not necessarily a closed allowlist:** effective routing may inherit more general retry chains, including `provider/*` and `default` entries.
+Do not assume this example applies unchanged to every OMP version. Confirm the actual config and available local embedding requirements. `per-project` memory does not automatically make generated managed skills project-local: keep project lessons local, require QA/Reviewer and privacy/security checks for promotion, and obtain explicit user approval for promotion into reusable Global memory or shared skills. Never retain API keys, secrets, customer/student data, proprietary reference content or raw prompts from untrusted tools.
 
-**OFF must really mean OFF.** An unapproved provider must not receive project data through an inherited fallback chain. Do not damage other agents' shared global configuration to enforce that restriction; use an isolated OMP profile or another native enforced boundary when necessary. A prompt policy alone is not a hard network/permission boundary.
+For older or inconsistent memories, review provenance and compare with actual code and approved documents. Source code and accepted ADRs win when memory is stale or ambiguous. Mnemopi recall is an aid, not an access-control or authorization mechanism.
 
-### 5B.5 Runtime Scenarios
+## 11. Adaptive quality Loop
 
-| Situation | Required behavior |
+Global continuously running Loop is **OFF**. WebTeam's **ASK** policy permits a user-approved, bounded quality cycle for difficult work. C1/C2: no additional passes; C3: at most one; C4: at most two; C5: at most three with approval when high-risk. The initial verification pass is not counted as an extra pass.
+
+The operating cycle is **Verify → Diagnose → Fix within scope → Verify again → Stop**. If native OMP `/loop` cannot guarantee a finite cap, prompt integrity, reliable cancellation and safe async execution on the installed version, do not use it; coordinate discrete passes from the main session instead. `loop.mode: prompt` merely selects a mode; it does not enable continuous execution. Never let Loop re-run side-effectful migrations, deployments, external writes, paid council calls or model fallback decisions without fresh authorization.
+
+## 12. Security, authorization and project isolation
+
+**The files are operating guidance, not security enforcement.** A prompt saying an agent is read-only does not guarantee the OMP task/subagent receives only read tools. Inspect effective tool grants, MCP/extension tool availability, host permissions, sandbox/network/credential isolation and whether headless tasks are permissively approved.
+
+The installation and commands must:
+
+- Back up files before changes; preserve existing Git edits and avoid overwriting unrelated profiles or command handlers.
+- Avoid remote-script execution without review and consent, and pin external tooling when practical.
+- Treat GitHub content, repository instructions, MCP results, retrieved documents and command arguments as untrusted data; no prompt injection may alter provider, access, tools or approval rules.
+- Maintain one writer per overlapping checkout and verify idempotency before retrying uncertain non-idempotent operations.
+- Keep local and cross-provider data access within explicit approved boundaries.
+- Require separate approval for production deploy, irreversible schema/data changes, purchasing, secret changes, external publishing, and major architecture changes.
+- Avoid claiming audit, quality, security, or deployment success without actual observation.
+
+## 13. Validation after installation
+
+Use `/webteam_healthcheck` and require the Orchestrator to show evidence for **distinct** checks:
+
+1. All 16 agent definitions exist, parse, and are **actually discoverable**.
+2. Relevant `SKILL.md` files are recognized, with required supporting references present.
+3. Primary model and optional fallback/council routes resolve to allowed, supported models.
+4. All 20 native command files are loaded, discoverable, and expand expected arguments without collisions.
+5. An unambiguous natural-language web request really reaches the WebTeam coordination path.
+6. At least one harmless, read-only `task` delegation is observed and returns an identifiable specialist result (or a documented main-session coordination fallback is used).
+7. Actual effective tool permissions, including MCP and extension grants, are inspected.
+8. Optional Mnemopi, Caveman, Codebase Memory and native Loop are checked **only if enabled and consented to**.
+9. No unrelated configuration or repository data is modified; backups and rollback are available.
+
+Record results as `PASS_VERIFIED`, `PARTIAL_VERIFIED`, `BLOCKED`, or `FAIL`, with exact evidence and unverified limitations. Autocomplete presence is not proof of end-to-end execution.
+
+## 14. Troubleshooting
+
+| Symptom | Likely cause / safe next action |
 |---|---|
-| Primary returns a retryable 429, timeout, or outage | Check effective chain, approved data transfer and cost; ASK requests authorization, AUTO stays within approved limits |
-| No eligible fallback | Report the blocker or propose a model; never silently choose an unapproved one |
-| Fallback has a smaller context window | Produce a compact but sufficient context handoff; stop if a safe transfer is impossible |
-| Fallback lacks required tools or vision | Do not proceed with a tool/screenshot-dependent step; ask for another approved route or change in scope |
-| Migration or side-effectful operation is in progress | Inspect state before retrying; never blindly replay non-idempotent actions |
-| Council participants resolve to the same model via fallback | Do not count them as independent votes; correct the panel or report insufficient diversity |
-| Task is difficult but the primary model is healthy | Escalate effort or propose deliberate review; difficulty alone is not an outage-fallback trigger |
-
-### 5B.6 Auditing or Changing Model Routes Later
-
-Request an audit without allowing immediate changes:
-
-```text
-Audit all WebTeam model routes. Show which primary and fallback models
-all 16 agents actually resolve to, supported reasoning levels,
-effective context limits, tool compatibility, fallback privacy,
-and the health status of Caveman and Codebase Memory MCP.
-Propose improvements only; ask before modifying provider configuration.
-```
-
-Or propose a limited new fallback:
-
-```text
-Propose a new cross-provider fallback for Security and Architect only.
-Discover candidates only after I approve the alternate provider.
-Compare verified capabilities and costs; do not activate any route
-until I approve the final per-agent model matrix.
-```
-
-The Orchestrator should produce a `MODEL_ROUTING_CHANGE_PROPOSAL`, compare before/after behavior, audit all affected agent profiles, obtain approval, record the change, and verify or roll back its activation. Never autonomously enable a new paid provider.
-
-## 6. Installing Global WebTeam with the Master Prompt
-
-### 6.1 Prerequisites
-
-1. Install OhMyPi and verify that its `omp` executable works.
-2. Have at least one available OMP provider/model, or be prepared to authenticate safely when installation asks. **You choose the default provider**; DeepSeek is not mandatory. Retain `deepseek-flash` only if that provider/alias is selected and verified.
-3. Allow appropriate read/write access to the OMP configuration area, with backups or Git available for existing configuration.
-4. **Never paste API keys into prompts, Markdown files, or source control.** Use OMP/provider authentication facilities.
-5. Understand the network, code execution, installation, privacy, and indexing implications before enabling Caveman or Codebase Memory.
-
-Check commands against the installed CLI; representative commands may include:
-
-```bash
-omp --version
-omp models
-omp models find deepseek       # example only; replace with the selected provider/model
-omp config list --json
-omp config path
-```
-
-`omp config path` and other example syntax might differ across versions. If a command is unsupported, consult `omp --help` and the installed command's `--help` output instead of guessing.
-
-### 6.2 Launch OMP and Submit the Master Prompt
-
-Start OMP from a safe working directory. Provide the full contents of [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_2.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_2.md) with the instruction:
-
-> Execute this WebTeam Enterprise R6 bootstrap prompt in my active OhMyPi environment. First inspect the installed runtime, ask the mandatory global installation questions, preserve existing configuration, and implement and verify actual agents, skills, and policies. Do not create a web application yet.
-
-If your OMP session cannot read the Markdown file directly, paste the master prompt text into the session. Do not assume every OMP version supports a particular file-import command.
-
-### 6.3 Mandatory Global Installation Onboarding
-
-The installer must ask the following questions before it modifies configuration:
-
-| Question | Choices / recommendation |
-|---|---|
-| Agent file location | `agents/webteam/` only if discovery is verified; **flat `agents/webteam-*.md`** is safest |
-| **Default provider (ASK FIRST)** | You choose DeepSeek, OpenAI, custom/local, etc.; only then enumerate models from that provider |
-| Models for the 16 primary agent routes | Select from the verified catalog; `deepseek-flash` is optional and must actually resolve |
-| Cross-provider fallback | **OFF / ASK / AUTO**; ASK is recommended initially |
-| Fallback providers/models | Inspect candidates only after you approve each fallback provider; verify effort, context, tools and cost |
-| Fallback data permissions | Approve code/data types and cost scope for each provider |
-| Multi-model deliberation | **ASK** recommended; OFF and approved AUTO are also supported |
-| Council model/provider selection | Use genuinely available and authorized OMP model routes |
-| Code/document sharing | Approve separately per provider; never send credentials or secrets |
-| Inference limits | Number of calls, rounds, time budget, and monetary ceiling when enforceable |
-| Advisor/WATCHDOG | **OFF** unless explicitly requested |
-| Caveman | Yes/No; inspect before installing, install only with approval |
-| Codebase Memory MCP | Yes/No; verify actual OMP connectivity, privacy, and index scope |
-| Agent subdirectory/package | Ask preference; keep flat files if recursive discovery is unsupported |
-| External installers/provider setup | Require prior disclosure and approval of material effects |
-
-If only one model works, council policies can remain configured but unverified/inactive. If a selected required integration fails its smoke test, dependent setup must stop and offer remediation or an explicitly approved skip—not silently claim success.
-
-### 6.4 Caveman and Codebase Memory MCP
-
-Verify current upstream documentation before installing:
-
-- **Caveman:** <https://github.com/JuliusBrussee/caveman>. It may provide an OMP-native installer. Review the current installer and revision before executing remote code.
-- **Codebase Memory MCP:** <https://github.com/DeusData/codebase-memory-mcp>. Provides codebase graph retrieval. Verify index scope/freshness, effective OMP MCP visibility, and exclusions for `.env`, secrets, and private data.
-
-The Orchestrator must avoid duplicate plugin/crew orchestration, perform health checks **within the effective OMP session**, and assign only supported agent-specific policies. Large graph indexing is not warranted for every minor edit.
-
-### 6.5 Expected Bootstrap Results
-
-- All 16 `webteam-*` agents exist and are discoverable through OMP.
-- Relevant specialist skills are real, valid `SKILL.md` files with supporting material, not just skill names.
-- The chosen primary provider resolves; all 16 model profiles have effective effort/context/tool policies and explicitly approved or disabled fallback behavior.
-- Deliberation OFF/ASK/AUTO policy is recorded separately from fallback; approved role selectors resolve.
-- Selected plugins/MCP integrations work or are explicitly classified as blocked/unverified.
-- A smoke-test report includes actual commands, results, paths created, and remaining limitations.
-- No application project is created unless the user separately requests one.
-
-## 7. Initializing a New Web Application
-
-### 7.1 Example Request
-
-```text
-I want to create a new web application using WebTeam.
-Start the new-project onboarding process.
-Help me choose React or SolidJS, SQLite or MongoDB,
-repository structure, design language, provider/model policy,
-security, testing, deployment, and CI.
-After my decisions are confirmed, generate real PRODUCT.md,
-DESIGN.md, ARCHITECTURE.md, TECH_STACK.md, TESTING.md and ROADMAP.md.
-Do not fabricate requirements or make paid/destructive changes without approval.
-```
-
-### 7.2 Expected Workflow
-
-The Orchestrator works through grouped questions: product and audience → repository/runtime → backend/database → frontend/design → inherited or narrowed primary/fallback/council rules → testing/deployment. After confirmation, Product creates `PRODUCT.md`; Designer creates `DESIGN.md`; Architect creates `ARCHITECTURE.md`; QA creates `TESTING.md`; DevOps creates operational guidance; and Orchestrator coordinates `ROADMAP.md`, cross-document validation, and approved implementation.
-
-Not every optional field deserves a separate question. WebTeam should recommend sensible defaults and ask for input only where missing information materially affects product, architecture, permissions, cost, or delivery.
-
-### 7.3 Example: School Management Application
-
-```text
-Build a Vietnamese school-management web application.
-Use Fastify, TypeScript, Zod, Biome, SQLite initially,
-and React + Vite + TanStack. I prefer a calm, highly usable
-enterprise design. Ask me about roles, teacher workflows,
-and report permissions. Reuse global WebTeam and its skills.
-Use multi-model CHALLENGE mode only for permission design,
-data migrations, or unresolved architectural tradeoffs,
-within my approved model/provider policy.
-```
-
-## 8. Adopting an Existing Repository
-
-Start OMP in the existing repository and request:
-
-```text
-Use WebTeam to adopt this existing repository safely.
-Do not scaffold a new application or redesign it.
-Inspect the implemented architecture and design conventions.
-Run Project Design DNA and Engineering DNA discovery.
-Create or reconcile the project documentation with the actual code.
-Preserve current behavior, existing tokens and component APIs.
-Present significant improvements and ask before migrations.
-```
-
-The expected output distinguishes **facts verified in code** from assumptions; captures evidence-backed standards, Design DNA, Engineering DNA, inconsistencies, and testable improvement plans. Existing projects must **not** be blindly rewritten to match a new template.
-
-## 9. Learning from GitHub or Another Reference Repository
-
-```text
-Analyze this repository as an external reference:
-https://github.com/OWNER/REPOSITORY
-Mode: Learn Only.
-Pin the revision, inspect architecture, UI/design system,
-code quality, dependencies, license and security implications.
-Compare it with my current project and suggest transferable ideas.
-Do not execute downloaded scripts or copy code without approval.
-```
-
-After analysis you may approve **Selective Adoption** (adapt suitable patterns) or **Guided Migration** (planned transition). WebTeam records source/revision, permissions and license, compatibility analysis, test plan, and rollback approach. It must not copy protected branding or assets without authorization.
-
-## 10. Requesting a Multi-Model Decision Review
-
-```text
-Use WebTeam's approved multi-model CHALLENGE/COUNCIL protocol
-for the tenant authorization architecture in this repository.
-Have at least two genuinely distinct approved model routes
-produce independent proposals before revealing conclusions.
-Ask a security specialist to produce counterexamples.
-Evaluate with real contract and permission tests,
-record dissent, and ask me to approve any consequential change.
-Do not let competing models write to the same files.
-```
-
-If a second model is unavailable, the Orchestrator must disclose that limitation, propose authorized options, or run a truthfully labeled single-model review.
-
-## 11. Model Roles, Reasoning Effort, and Context
-
-Review **Section 5B** and select/verify the primary provider and fallback routes before editing model configuration. The following example concerns **deliberation roles**, which must be coordinated with the runtime's native fallback policy.
-
-OMP may support role aliases and per-task overrides; confirm the exact syntax in the installed build. The example is **illustrative** and its placeholders must not be copied as working selectors:
-
-```yaml
-# Illustration only. Replace with verified selectors and OMP-supported settings.
-modelRoles:
-  webteam_primary: PROVIDER/PRIMARY_MODEL
-  webteam_critic: PROVIDER/CRITIC_MODEL
-  webteam_specialist: PROVIDER/OPTIONAL_THIRD_MODEL
-# Do not turn on always-on Advisor unless requested.
-advisor:
-  enabled: false
-```
-
-An agent's `model: "@webteam_primary"` may resolve through an alias if the installed runtime supports it. WebTeam policy names `low`, `medium`, `high`, and `max` do **not** necessarily correspond one-to-one with provider API values. OMP may expose coarse per-task effort hints such as `lo|med|hi`; validate the effective behavior of each selected model rather than assuming a setting worked.
-
-**Context policy:** Do not invent 128K/256K/1M capacities. Use verified provider/model limits, task-focused retrieval, concise handoffs, and progressive skill loading. Codebase Memory, if enabled, assists navigation; it does not replace checking source files or running tests.
-
-## 12. Security, Privacy, and Approval Boundaries
-
-Obtain the owner's approval before:
-
-- Switching providers, using paid services, or exceeding approved inference limits.
-- Sending proprietary code, restricted data, or internal materials to newly authorized external providers.
-- Installing extensions, MCP servers, or installers with material system/network privileges.
-- Changing major architecture or database decisions; executing destructive migrations.
-- Deleting important files, deploying to production, or committing/pushing changes without authorization.
-- Replacing an established application's visual identity or design system.
-
-Never expose credentials in documentation, logs, graph indexes, model handoffs, or prompts. Distinguish **native tool permissions** from **policies written in prompts**. A prompt is neither a hard sandbox nor an enforceable spending cap.
-
-## 13. Everyday Task Lifecycle
-
-- **Small CSS defect:** Frontend handles it, runs proportionate checks, and does not invoke a model council.
-- **New API:** Product/Backend develop contract and implementation; QA verifies Fastify/Zod behavior; Security participates when risk warrants.
-- **Important UI:** Designer's eight stages → Frontend implementation → Accessibility/QA → browser and screenshot review.
-- **Risky migration:** Database/Architect/Security/QA coordinate; use CHALLENGE/COUNCIL only when genuine uncertainty justifies it.
-- **Cross-module bug:** Orchestrator may use healthy Codebase Memory to locate dependencies, verifies source, assigns one writer, and runs regression tests.
-
-Each completed task should report actual changed files, executed commands/tests and their results, remaining unverified claims, approvals needed, and next actionable steps.
-
-## 14. Updating, Managing, and Uninstalling WebTeam
-
-### 14.1 Updating Global WebTeam
-
-Run a newer master prompt with an **upgrade-in-place** instruction: detect the installed version, back up files, preview a diff, update only WebTeam-owned files, and preserve unrelated user settings. Recheck agent/skill discovery and model routes after upgrading.
-
-### 14.2 Changing Models or Inference Limits
-
-Ask the Orchestrator to show the model registry and a proposal before making edits. After approval, update routing, verify effective selectors/effort/retry chains/data permissions, and log the change. The entire team does not have to switch models together.
-
-### 14.3 Disabling Deliberation or Advisor
-
-Set WebTeam deliberation to `OFF` in the appropriate global/project policy. Disable any separately enabled native Advisor using the OMP mechanism actually supported by that version (for example, a verified `/advisor off` command or supported `advisor.enabled` setting). These are independent controls.
-
-### 14.4 Uninstalling
-
-Back up first. Build a manifest of files created by WebTeam; remove only WebTeam-owned agents, skills, metadata, and settings. Do not delete shared `.omp/` directories, MCP servers, provider settings, or project documentation without knowing whether other tooling relies on them. Caveman and Codebase Memory removal must be a separate, approved operation.
-
-## 15. Troubleshooting
-
-| Symptom | Likely issue to investigate | Safe resolution |
-|---|---|---|
-| `webteam-orchestrator` is missing | Wrong path/profile, undiscovered subdirectory, invalid agent frontmatter | Inspect effective OMP directory, discovery and spawn; fall back to flat `agents/webteam-*.md` |
-| Fallback switches to an unauthorized provider | Inherited `default` chain, model-specific rule, `provider/*` wildcard, or task override | Suspend cross-provider fallback, audit effective routes, consider an isolated OMP profile, request approval before shared-config changes |
-| Fallback cannot use Caveman/CBM | Model tool protocol, missing subagent permissions, unhealthy MCP/index | Inspect effective tool exposure and perform safe probes; do not treat tools as intrinsic model features |
-| Model alias cannot resolve | Unregistered provider/model, missing auth, wrong role override or selector | Check `omp models`, effective config, and exact selector |
-| “Two-model debate” produces one model's result | Ordered fallback `[A,B]` or runtime fallback mistaken for independent calls | Make separately routed task calls, log resolved model identities, check retry rules |
-| Council is too costly | Always-on Advisor or an unbounded panel | Prefer OFF/ASK, limit participants/rounds, apply approval and cost gates |
-| Advisor duplicates Caveman/Reviewer review | Multiple automatic review loops | Choose one review owner; enable continuous Advisor only when beneficial |
-| Codebase Memory misses relationships | Stale index, wrong branch/scope, invisible tool | Inspect index provenance and freshness; verify against current source |
-| Playwright visual tests are flaky | Different fonts, browser builds, OS, animations, or test data | Pin the environment, keep project-specific baselines, review diffs before updating |
-| Designer unexpectedly changes old UI style | Design DNA not loaded, no visual baseline | Reapply documented contract; approve large redesigns and add visual checks |
-| Project config unexpectedly overrides global | Config precedence or array replacement | Inspect merged effective settings and original backups |
-| Plugin/provider setup fails | Permissions, incompatibility, missing authentication | Record blocker; request approved remediation or skip; never claim installation succeeded |
-
-## 16. Limitations and Verification Checklist
-
-The documents and prompt **have not installed WebTeam into your local OMP environment**. Real success can be established only by running OMP and validating agent discovery, skills, model resolution, testing, integration health, and review routing. A multi-model council cannot guarantee correctness; requirements, evidence, security testing, and human approval remain essential.
-
-Test a disposable project before adopting WebTeam for critical work:
-
-1. A small CSS change that does not activate a council.
-2. A Fastify API endpoint validated with Zod and Vitest.
-3. A UI workflow covered by Playwright E2E and visual snapshots.
-4. Existing-repository Design DNA discovery.
-5. GitHub reference analysis in Learn Only mode.
-6. An authorization/architecture question reviewed using CHALLENGE with two genuinely distinct, approved models, if available.
-7. OFF mode and missing-model scenarios without unauthorized or unexpected paid calls.
-
-## 17. R6 Security Hardening, Verification, and Safe Recovery
-
-### 17.1 What was hardened in R6
-
-R6 expands the instructions for permission isolation, fail-closed model routing, safe installation, prompt-injection defense, project-context discovery, test reproducibility, and resumed/rolled-back bootstrap operations. **These are requirements for the eventual installation, not proof that an installation on your machine has passed.**
-
-| Risk | Required control | How to verify |
-|---|---|---|
-| Headless subagents executing unexpected commands | Limit actual child tools, MCP/extension exposure, credentials and environment; use isolated read-only workers for reviews | Inspect effective tool roster and run non-destructive negative-permission tests |
-| Fallback leaking code to another provider | `OFF`: no cross-provider route; `ASK`: disable automatic cross-provider fallback and explicitly re-dispatch only after consent; `AUTO`: only with verified closed allowlist | Inspect full fallback graph including role, model, provider wildcard, CLI/project/extension overrides |
-| Prompt injection in external repositories | Treat remote AGENTS.md/README, MCP graph text, issues and logs as untrusted data, not WebTeam instructions | Verify external instructions cannot change tool permissions or model routes |
-| Duplicate writes after API timeout/model failover | Keep idempotency keys and operation checkpoints outside model text; check external state before retry | Simulate timeout in a disposable fixture and verify only one side effect occurs |
-| Monorepo project guidance silently shadowed | Verify nearest nonempty `.omp/` context discovery and separately verify current-working-directory `.omp/config.yml` settings | Test root and nested cwd instruction discovery |
-| Unusable or silently ignored skills | Correct `<skills-root>/<skill-name>/SKILL.md` with `name` and `description` frontmatter, no implicit recursive discovery | Verify skill loads and appears in actual OMP discovery |
-| Flaky or falsely accepted Playwright screenshots | Pin browser, fonts, OS, locale, timezone, DPR, data and baselines; review changes | Run same-environment repeat tests, inspect diff and approved baseline |
-| Interrupted installer corrupting global state | Manifest, backup, checksum/merge checks, atomic replacement and rollback | Inspect stage status and resume/rollback safely |
-
-### 17.2 Recommended safe installation sequence
-
-1. Put the master prompt and README files in a local directory. Open a supervised OMP session in a trusted workspace, with a restrictive tool approval policy where supported; do not enable `--yolo` merely to make bootstrap unattended.
-2. Let OMP inspect its active version/profile and **ask for the default provider first**. Model catalogs may be read, but paid inference probes and provider enrollment require authorization.
-3. Choose cross-provider fallback separately. Start with `ASK` for private or cost-sensitive projects; this must **not** enable an uncontrolled native automatic switch. Choose multi-model council separately, usually `ASK`.
-4. Review agent-directory placement, Caveman and Codebase Memory installation plans, user-level file changes and external code downloads. Approve only the specific operations you trust.
-5. Verify each batch: definitions parse, all agents/skills are discoverable, effective tools satisfy restrictions, each chosen model resolves, and authorized smoke tests behave correctly.
-6. Require an installation manifest, evidence table, real remaining blockers and rollback instructions. Do not consider `partial_verified` equivalent to fully installed.
-
-### 17.3 If something fails
-
-**Provider route unexpectedly changed:** stop task execution, disable automatic fallback for that task or use an isolated provider-limited profile, inspect `retry.fallbackChains`, agent model arrays, `task.agentModelOverrides`, active session/project overrides and extension hooks; require new consent before retrying.
-
-**Reviewer has a write/exec/MCP mutation tool:** do not give it sensitive source or credentials; remove access by enforceable tool policy/isolation and repeat the probe. Simply saying “read-only” in its agent prompt is insufficient. OMP subagents may execute headlessly under permissive approval settings.
-
-**Nested project ignores standards:** inspect its nearest nonempty `.omp` context directory; remember settings may load only from the process cwd `.omp/config.yml`. Supply a local context pointer, correct the launch directory or add a supported scoped override; then re-test both context and effective settings.
-
-**Installation stops halfway:** use the manifest/checkpoint, inspect which files were actually written, reconcile any changed user config before resuming, and restore only WebTeam-owned changes if rolling back. Never delete unrelated agents or integrations.
-
-**Playwright screenshots vary:** first inspect environment drift (fonts/browser/OS/timezone/data), not the baseline itself. Never mass-accept snapshot updates as a substitute for review.
-
-### 17.4 What has and has not been verified
-
-The R6 package can be checked statically for Markdown structure, paths and cross-file links. It **cannot** verify the user's actual OMP version, installed integrations, account model access, paid routing, sandbox strength or production behavior without execution on that machine. Consult `WEBTEAM_R10_2_AUDIT_REPORT.md` for confirmed fixes and remaining environment-dependent gates.
-
-## 18. References
-
-- [OhMyPi repository](https://github.com/can1357/oh-my-pi)
-- [OMP task-agent discovery](https://github.com/can1357/oh-my-pi/blob/main/docs/task-agent-discovery.md)
-- [OMP task tool and per-item model selection](https://github.com/can1357/oh-my-pi/blob/main/docs/tools/task.md)
-- [OMP model configuration](https://github.com/can1357/oh-my-pi/blob/main/docs/models.md)
-- [OMP retry, fallback chains, and settings precedence](https://github.com/can1357/oh-my-pi/blob/main/docs/settings.md)
-- [OMP provider authentication and discovery](https://github.com/can1357/oh-my-pi/blob/main/docs/providers.md)
-- [OMP Advisor / WATCHDOG](https://github.com/can1357/oh-my-pi/blob/main/docs/advisor-watchdog.md)
+| Slash commands do not appear | Verify native flat `commands/*.md` location, active OMP profile, ignore rules, command collisions, reload state |
+| A command expands but no specialist runs | Prompt expansion does not spawn agents; inspect MAIN task interface, routing policy, tools and delegation depth |
+| Agents exist but normal web requests bypass WebTeam | Verify MAIN/nearest project instructions and observed natural-language routing; add a supported dispatcher without hijacking unrelated tasks |
+| Skills are mentioned but not available | Check actual `SKILL.md` metadata, location and skill discovery; don't create placeholder names only |
+| Agent uses incorrect model | Compare effective role alias/provider mapping, actual available catalog and fallback inheritance; stop unapproved cross-provider routes |
+| Mnemopi recalls wrong project | Check effective project root, scoping, nested cwd, autoRecall and memory bank; halt sharing until isolation is tested |
+| Auto-Learn creates global skill unexpectedly | Do not assume `per-project` scopes managed skills; disable unsafe automatic publication and use reviewed project-local output |
+| Playwright visual diffs vary between machines | Fix browser/OS/font/viewport/test fixtures and rebaseline only after visual review |
+| Loop does not stop safely | Disable native automation; use supervised finite verify–fix–verify with bounded budget |
+| `/webteam_audit` returns only chat text | Check verified repository path and safe report permissions; do not claim saved report, resolve safe-write blocker |
+| Audit says no vulnerabilities but few tests ran | Treat uncovered areas as UNVERIFIED, rerun applicable checks with consent and revise findings |
+| Caveman or CBM tools cannot be called | Verify actual native OMP plugin/MCP connection and capabilities; use focused source inspection if authorized |
+
+## 15. Limitations, cost and responsibility
+
+- Model outputs can be wrong, and a 16-agent team cannot replace real testing, human product decisions, infrastructure security, or professional audits when required.
+- Every subagent, fallback, council and verification loop can add tokens, runtime and cost. There is no reliable universal “token savings” claim. Use task complexity, bounded tools and actual measurements.
+- Some setup steps, credentials, network installers, production tests, visual screenshots, live model calls, and OS permission changes require access that a standalone prompt cannot grant.
+- A static Markdown lint pass proves only document consistency, **not** OMP runtime security, privacy isolation, or production readiness.
+- Audit reports are bounded, point-in-time assessments, not security or accessibility certifications. Known unknowns must be explicit.
+
+## 16. External references
+
+- [OhMyPi source and user documentation](https://github.com/can1357/oh-my-pi)
+- [OMP native command discovery](https://github.com/can1357/oh-my-pi/blob/v18.12.2/docs/slash-command-internals.md)
+- [OMP task agents](https://github.com/can1357/oh-my-pi/blob/v18.12.2/docs/task-agent-discovery.md)
+- [Playwright visual comparison guidance](https://playwright.dev/docs/test-snapshots)
+- [OWASP Top 10:2025](https://top10.owasp.org/2025/)
+- [OWASP ASVS 5.0.0](https://github.com/OWASP/ASVS)
+- [WCAG 2.2](https://www.w3.org/TR/WCAG22/)
 - [Caveman](https://github.com/JuliusBrussee/caveman)
 - [Codebase Memory MCP](https://github.com/DeusData/codebase-memory-mcp)
-- [Vitest](https://vitest.dev/guide/)
-- [Playwright](https://playwright.dev/docs/writing-tests)
-- [Playwright visual testing](https://playwright.dev/docs/test-snapshots)
 
 ---
 
-**Operational recommendation:** Choose the primary provider first. Keep `deepseek-flash` only if that provider and alias are verified. Start with cross-provider fallback set to **ASK** where desired, allow only verified models, use one model for ordinary tasks, set multi-model deliberation to **ASK**, and invoke independent models only when the stakes justify their cost. Resolve decisions with tests and evidence and retain user approval for consequential changes.
-
-
----
-
-## Mnemopi Profile and R6 In-Place Upgrade
-
-For a **fresh installation**, use `WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_2.md`. If an **existing R6** team needs only memory governance, use `WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md`; if it needs both Memory and Loop, use `WEBTEAM_R6_TO_R10_2_UPGRADE_PROMPT.md`; if Memory is already set up, use `WEBTEAM_EXISTING_INSTALL_LOOP_ONLY_UPGRADE_PROMPT.md`. Mnemopi is a native OhMyPi backend, not Codebase Memory MCP. Recommended initial policy: project-only memory, explicit sanitized retention (`autoRetain: false`), local embeddings with consent, memory LLM disabled (`llmMode: none`) and review-first Auto-Learn (`autoContinue: false`, `minToolCalls: 8`). The R6 upgrade must never recreate 16 agents, delete memories or reset provider/model routing.
-
-For checks use `/memory view`, `/memory stats`, `/memory diagnose`; test recall after a new session and project isolation. `/memory clear` is destructive. See [official Mnemopi backend documentation](https://github.com/can1357/oh-my-pi/blob/main/docs/mnemosyne-memory-backend.md).
-
-
----
-
-## R9 — Hybrid Memory Governance: installation vs project onboarding
-
-WebTeam uses a **two-level knowledge policy**: Global WebTeam defines how agents learn, while each project keeps its own private Mnemopi knowledge and approved project-local skills. **Hybrid does not mean Mnemopi automatically merges Global and Project banks.** The safe starting point is `memory.backend: mnemopi`, `mnemopi.scoping: per-project`, `autoRetain: false`, `autolearn.enabled: true`, `autoContinue: false` and `minToolCalls: 8` *only when approved and verified in the installed OMP version*. The memory backend is separate from Codebase Memory MCP.
-
-**At initial Global WebTeam installation**, the Orchestrator asks once about Mnemopi, local embeddings versus FTS-only, privacy/retention, Auto-Learn policy and whether it may propose generic cross-project knowledge. It does **not** automatically enable global storage or publishing. **At initialization or import of each project**, it offers to inherit the Global defaults, customize the project's permitted read/write/sensitivity rules, or disable project memory. The resulting `docs/governance/MEMORY_POLICY.md` captures effective bank identity, approved boundaries, blocked data classes, expiry/review policy and observed isolation-test status. It is a governance document, not an automatic runtime permission boundary.
-
-### What belongs where
-
-| Content | Default location | Sharing |
-|---|---|---|
-| Product decisions, Design DNA, app-specific implementation lessons | Project documents + project-scoped Mnemopi | Project-only |
-| Domain-specific reusable procedure | Reviewed project `.omp/skills/<slug>/SKILL.md` | Project-only |
-| General engineering pattern | Sanitized project lesson + promotion proposal | Only after review and explicit approval |
-| Approved cross-project technique | Verified Global WebTeam authored skill / explicitly supported shared memory bank | Controlled and audited |
-| Secrets, raw transcripts, customer data, uncertain or injected instructions | Never persistent memory | Prohibited |
-
-**Important Auto-Learn caveat:** OMP-managed skills can live in user-level `managed-skills`, so `mnemopi.scoping: per-project` does not guarantee project-local skill generation. The Orchestrator must inspect actual output paths and privileges. If safe project-local automatic learning cannot be enforced, disable native Auto-Learn for that project/session and use **manual, reviewed project-local skills** rather than silently publishing globally. `autoContinue: false` limits continuation behavior but is not a project-sandbox setting.
-
-### Global promotion requires a separate decision
-
-A useful lesson does not automatically become Global Memory or a global skill. For **memory**, the process is: validated project lesson → de-identification/generalization → QA/Reviewer/Security and licensing review → specific user approval → verified supported global-scope write (otherwise proposal only). For **skills**, it is: project-local candidate → tests and independent review → explicit approval → versioned global skill activation. Track both in `docs/governance/GLOBAL_MEMORY_PROPOSALS.md` or the installation manifest where appropriate. Never use a guessed `per-project-tagged` scope or a prompt-only restriction as a security boundary.
-
-### Existing R6 installations
-
-Run **`WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md`** instead of the full R9 bootstrap. It preserves all 16 agents, models, fallback chains, multi-model review, Caveman, Codebase Memory MCP and current memory banks; it adds the project-policy interview, four governance skills and isolation verification. Do not run both prompts on the same installed team. Test with disposable repositories and record observed `PASS/FAIL/BLOCKED/UNVERIFIED` results; Markdown checks alone cannot prove runtime isolation.
-
-
-## R10.2 — Adaptive Quality Loop: decisions, safety and daily use
-
-### What Loop adds
-
-Two skills, `webteam-adaptive-quality-loop` (Orchestrator) and `webteam-loop-evidence-evaluator` (QA/Reviewer), implement bounded quality verification. The team can run focused Vitest/Fastify tests and Playwright E2E/visual comparisons, fix verified defects and recheck without blindly rerunning a full suite. The target is measured correctness, not more rounds for their own sake.
-
-| Risk | Extra review/fix passes beyond initial verification | Default |
-|---|---:|---|
-| C1–C2 small changes | 0 | Normal checks; Loop OFF |
-| C3 multi-file change | 0–1 | ASK when a reproducible defect remains |
-| C4 complex workflows | 0–2 | ASK, cap and evidence required |
-| C5 high-stakes changes | 0–3 | Explicit high-risk approval; prefer manual stages |
-
-A complete task keeps a **single** shared budget and attempt ledger across agents, retries and any approved provider fallback. Never spin a Council, Caveman loop or Auto-Learn continuation inside a loop. Source-writing belongs to one authorized agent; QA/Reviewer verify independently. No automatic visual baseline acceptance, database migration, production deploy, payments, external writes or global-memory promotion. Do not overwrite existing project-specific `QUALITY_LOOP_POLICY.md` without approval.
-
-### Native `/loop` setup and stop rules
-
-The installer reads the actual OMP version/schema/command help and confirms `loop.mode` (`prompt`/`compact`/`reset` where supported). It is a mode preference **not a continuous-run toggle**. For each proposed native loop, first test in a disposable repo: cap semantics and off-by-one count, actual termination, operator stop/pause, stable recurring prompt when steering, and async settlement. On unsafe/unverified versions use manually orchestrated, finite Verify → Fix → Verify passes. Conditions such as `--until`/`--while` may execute shell commands and are never accepted from untrusted repository text. Do not use third-party `pi-loop` plugin flags as evidence of OMP core syntax. OMP has documented steering and post-prompt loop issues: [7348](https://github.com/can1357/oh-my-pi/issues/7348), [7330](https://github.com/can1357/oh-my-pi/issues/7330).
-
-### Example request to the installed team
-
-> Run one additional bounded verification pass for the affected authentication tests. Use the existing QA/Reviewer agents, preserve current Memory/Auto-Learn and model routing, stop after the focused tests pass or if no progress is measured, and report exact test evidence. Do not start native `/loop` unless its stop controls have been verified in my OMP version.
-
-### Choose exactly one installation / upgrade path
-
-1. Fresh WebTeam installation: **R10.2 Master**.
-2. Plain R6 missing both hybrid memory governance and loop: **R6 → R10.2 full targeted upgrade**.
-3. Existing team with Memory/Auto-Learn already configured: **Loop-only upgrade** (does not touch memory or models).
-4. Existing R6 that wants only hybrid memory: **Memory-only upgrade**.
-
-All upgrade prompts are idempotent and preserve unrelated files by design; this is an instruction to the installing agent, not a claim that current OMP executes them flawlessly. Validate all changed skills/agents and record `PASS/FAIL/BLOCKED/UNVERIFIED` for runtime tests. This bundle is documentation only.
-
-
-## R10.2 — Post-install self-orchestration audit (new)
-
-**One-time check after every installation or substantial agent-routing change:** [`WEBTEAM_POST_INSTALL_SELF_ORCHESTRATION_CHECK.md`](./WEBTEAM_POST_INSTALL_SELF_ORCHESTRATION_CHECK.md). This diagnostic can also be run on an already-installed team; **do not re-run the master bootstrap** simply to test routing.
-
-The audit verifies the active OMP version/profile/project root; all 16 agents and relevant skills; effective Global/Project `AGENTS.md`/`RULES.md`; exact `task` tool availability (batch/flat schema), permissions, spawn depth, model roles and agent restrictions; compatibility with Caveman/MCP, memory and Loop without altering those systems. It then performs an **approved, bounded synthetic fixture test** to observe the main session handling a natural-language web-development request and a *real* specialist dispatch through `task`. A discoverable agent is not proof of automatic routing.
-
-**Expected routing:** main OMP session reads WebTeam policy and either delegates to `webteam-orchestrator`, which may delegate to specialists if nesting is available, or acts as coordinator itself and delegates directly to the correct specialists. Simple C1/C2 requests may be handled directly. This is policy-driven behavior; do not assume a native, hard-coded dispatcher intercepts all prompts.
-
-**Safe repair:** inspection is read-only first. Any configuration change requires relevant approval, backup and limited diff; re-test after repair. Unverifiable runtime routing is reported as `UNVERIFIED`/`PARTIAL_VERIFIED`, never incorrectly marked passed. Never weaken headless subagent permissions to make a test pass or repeat side-effecting operations. OMP headless subagents may use `yolo` approval mode; tool access must be inspected rather than trusted based on Markdown language.
-
-**Quick natural-language smoke-test request** (run in an approved disposable synthetic project, not an important application):
-
-> For this sample web application, assess how to add a role-based onboarding flow with a responsive administrative UI and Fastify API. Identify architecture, accessibility, security and test risks. Give a concise plan. Do not modify any files.
-
-Observe actual `task` calls/Agent Hub, not merely an agent statement that it 'would delegate.' If no fresh main session is possible, carry out the manual test later and keep the audit marked incomplete.
-
-
----
-
-## R11 — Native OhMyPi 18.12.2 slash commands
-
-OMP 18.12.2 supports **native Markdown file slash commands**, in addition to TypeScript custom commands. WebTeam R11 bundles actual reusable command templates in [`WEBTEAM_R11_COMMAND_TEMPLATES/commands/`](./WEBTEAM_R11_COMMAND_TEMPLATES/commands/) and embeds the same templates in the master installer. A slash command is a shortcut that expands to a **prompt for the main session**, not an executable shell script, automatic task spawn or permission enforcement.
-
-**Locations:** Effective active-profile Global `commands/*.md` (typically `~/.omp/agent/commands/`) or project `<repo>/.omp/commands/*.md`. Native discovery is **non-recursive**. Project commands shadow same-name Global commands; built-in, extension or custom handlers may take precedence. Confirm the effective path and name collisions before installation.
-
-**Command examples:**
-
-```text
-/webteam_create_project "School management platform"
-/webteam_adopt_project "/workspace/existing-app"
-/webteam_plan "Add role-based permissions"
-/webteam_implement "Build approved user management feature"
-/webteam_design_audit "Dashboard"
-/webteam_test "Authentication unit and API tests"
-/webteam_visual_test "Responsive dashboard"
-/webteam_review "Current Git diff"
-/webteam_status
-/webteam_healthcheck
-/webteam_help
-```
-
-Additional commands: `/webteam_architecture_audit`, `/webteam_security_audit`, `/webteam_reference_analyze`, `/webteam_memory_review`, `/webteam_models_audit`, `/webteam_quality_loop`, `/webteam_docs_sync`, `/webteam_release_check`.
-
-**New installation:** use [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R11.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R11.md). **Already running WebTeam R6/R10.2 and want commands only:** use [`WEBTEAM_EXISTING_INSTALL_COMMANDS_ONLY_UPGRADE_PROMPT.md`](./WEBTEAM_EXISTING_INSTALL_COMMANDS_ONLY_UPGRADE_PROMPT.md), not the full bootstrap.
-
-**Important:** Commands do not replace natural-language requests, and autocomplete alone does not prove real `task` delegation. Verify OMP discovery, argument expansion and safe bounded invocation, and continue to use the post-install self-orchestration audit for real routing. `$ARGUMENTS` is untrusted user text and must never be interpolated into arbitrary shell execution. Command installation must preserve Memory, Auto-Learn, models/fallback/council, Loop, Caveman and Codebase Memory MCP unchanged.
+**Start with the Master Prompt for a fresh WebTeam installation. After it is genuinely installed and validated, use natural-language requests or the native commands. Use `/webteam_audit` when you need a consolidated evidence-backed audit and a repair/feature roadmap, and use `/webteam_healthcheck` when you need to validate WebTeam itself.**

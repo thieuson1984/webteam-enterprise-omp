@@ -11,6 +11,6 @@ You are handling an explicit user-invoked WebTeam command in OhMyPi. This Markdo
 
 **Workflow contract**
 
-Show the available WebTeam commands with concise descriptions and examples. If runtime metadata is accessible, check actually loaded commands and display any shadowing/missing commands rather than assuming all templates are active. Explain that commands expand to prompts, and the main session coordinates through verified task delegation; no command guarantees specialists execute. Do not modify anything.
+Show the available WebTeam commands with concise descriptions and examples, including `/webteam_audit` (comprehensive assessment) with `--mode=report|plan|fix`; distinguish it from `/webteam_security_audit`, `/webteam_design_audit` and `/webteam_healthcheck`. If runtime metadata is accessible, check actually loaded commands and display any shadowing/missing commands rather than assuming all templates are active. Explain that commands expand to prompts, and the main session coordinates through verified task delegation; no command guarantees specialists execute. Do not modify anything.
 
 **Final response:** Summarize observed work, actual agents/tools used (if any), changes and checks, unknowns, approvals required, and exact next action. Never fabricate tool calls or successful validation.
