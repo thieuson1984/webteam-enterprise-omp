@@ -5,9 +5,9 @@
 WebTeam combines product discovery, deliberately crafted UI/UX, full-stack TypeScript engineering, verification, security, project knowledge, and risk-controlled delivery. It supports new applications and existing repositories without assuming that every task needs every agent.
 
 > [!IMPORTANT]
-> **This repository is an installation and operating distribution—not an already installed OMP extension or a turnkey application.** `WEBTEAM_MASTER_PROMPT.md` instructs a capable, authorized OMP session to create and verify 16 agent definitions and a larger specialist skill ecosystem. This package supplies **24 canonical native Markdown command templates** and **16 ready-to-install advanced Designer skills plus 15 professional Backend skills**. File presence, Markdown validity, and command autocomplete do **not** prove live model routing, safe permissions, working delegation, or production readiness. Those must be verified in the target environment.
+> **This repository is an installation and operating distribution—not an already installed OMP extension or a turnkey application.** `WEBTEAM_MASTER_PROMPT.md` instructs a capable, authorized OMP session to create and verify 16 agent definitions and a larger specialist skill ecosystem. This package supplies **27 canonical native Markdown command templates** and **72 ready-to-install specialist skills** (16 Designer, 15 Backend, 13 Product, 13 Architect and 15 Database). File presence, Markdown validity, and command autocomplete do **not** prove live model routing, safe permissions, working delegation, or production readiness. Those must be verified in the target environment.
 
-**Start here:** [Install WebTeam](#3-installation-and-first-run) · [Agents](#5-team-structure-and-ownership) · [Create/adopt a project](#8-project-onboarding-and-documentation) · [Commands](#16-native-slash-command-reference) · [Project audit](#17-comprehensive-project-audit) · [UI/UX audit](#18-dedicated-uiux-quality-and-remediation) · [Backend audit](#104-webteam_backend-report-plan-and-bounded-safe-fix) · [Verify agents are running](#20-agent-visibility-routing-and-health-checks) · [Troubleshooting](#24-troubleshooting)
+**Start here:** [Install WebTeam](#3-installation-and-first-run) · [Agents](#5-team-structure-and-ownership) · [Create/adopt a project](#8-project-onboarding-and-documentation) · [Commands](#16-native-slash-command-reference) · [Project audit](#17-comprehensive-project-audit) · [UI/UX audit](#18-dedicated-uiux-quality-and-remediation) · [Backend audit](#104-webteam_backend-report-plan-and-bounded-safe-fix) · [Domain specialists](#specialized-product-architecture-and-database-engineering) · [Verify agents are running](#20-agent-visibility-routing-and-health-checks) · [Troubleshooting](#24-troubleshooting)
 
 ---
 
@@ -44,15 +44,18 @@ This distribution deliberately has **no revision-labelled filenames, historical 
 WebTeam/
 ├── README.md                          # this operator and contributor manual
 ├── WEBTEAM_MASTER_PROMPT.md          # canonical bootstrap and operating specification
-├── commands/                         # 24 flat OMP native Markdown command templates
+├── commands/                         # 27 flat OMP native Markdown command templates
 │   ├── webteam_create_project.md
 │   ├── webteam_adopt_project.md
 │   ├── webteam_audit.md
 │   ├── webteam_uiux.md
 │   ├── webteam_backend.md
+│   ├── webteam_product.md
+│   ├── webteam_architect.md
+│   ├── webteam_database.md
 │   ├── webteam_healthcheck.md
 │   └── ...                            # 18 further command templates
-└── skills/                           # 16 Designer + 15 Backend skills
+└── skills/                           # 16 Designer + 15 Backend + 41 Product/Architect/Database skills
     ├── webteam-design-direction-and-taste/SKILL.md
     ├── webteam-page-experience-patterns/
     │   ├── SKILL.md
@@ -66,7 +69,7 @@ WebTeam/
     ├── webteam-backend-engineering-reference/
     │   ├── SKILL.md
     │   └── references/                 # 7 backend technical manuals
-    └── ...                            # other advanced Designer / Backend skills
+    └── ...                            # other advanced Product / Architecture / Database / Designer / Backend skills
 ```
 
 **Source-of-truth hierarchy**
@@ -75,7 +78,7 @@ WebTeam/
 |---|---|---|
 | [`WEBTEAM_MASTER_PROMPT.md`](WEBTEAM_MASTER_PROMPT.md) | Installation, agent contracts, governance, operating model and runtime acceptance | Authoritative for WebTeam architecture and policies |
 | [`commands/*.md`](commands/) | Exact native slash command bodies, supported prompt options and command-specific safety | Copy the canonical files; do not invent approximations |
-| [`skills/*/SKILL.md`](skills/) | Exact advanced Designer and Backend skill instructions | Keep their referenced assets alongside each `SKILL.md` |
+| [`skills/*/SKILL.md`](skills/) | Exact advanced Designer, Backend, Product, Architect and Database skill instructions | Keep their referenced assets alongside each `SKILL.md` |
 | `docs/` inside an initialized **project** | Approved product, architecture, design, quality and operational decisions | Project-specific facts outrank generic reusable examples |
 | Observed OMP runtime and official schema | Which paths, options, tools, models and integrations actually work | Version-specific runtime capability outranks examples in documentation |
 
@@ -86,8 +89,8 @@ The 16 agent definitions and other non-bundled specialist skills are **generated
 ```text
 ~/.omp/agent/                         # illustrative user-level agent root
 ├── agents/webteam-*.md               # 16 generated agent definitions
-├── skills/<skill-name>/SKILL.md      # generated specialist + bundled Designer and Backend skills
-├── commands/webteam_*.md             # 24 flat copied command files
+├── skills/<skill-name>/SKILL.md      # generated specialist + bundled Designer, Backend, Product, Architect and Database skills
+├── commands/webteam_*.md             # 27 flat copied command files
 ├── AGENTS.md                         # concise global entrypoint, if supported
 ├── RULES.md                          # high-priority rules, if supported
 └── config.yml                        # narrowly merged, approved settings
@@ -124,7 +127,7 @@ Do not hard-code these paths for every OMP installation. Inspect the **active us
 3. **Allow read-only environment discovery first.** It should identify OMP version/profile, real configuration schema, existing agents/skills/commands, model/provider inventory, Git state, tools and effective permissions.
 4. **Complete the one-time Global interview.** Select installation scope, model provider, safe model-routing policy, optional integrations, memory/Auto-Learn, optional council/fallback, quality-loop policy, permissions, and Agent Hub display preference.
 5. **Review the proposed plan.** Confirm paths, changes, risk controls, budget, collisions, backups and rollback. Do not approve blind overwrites of unrelated files.
-6. **Install in checkpoints.** Generate substantive 16-agent definitions and domain skills; install exact command and bundled Designer and Backend skill files; merge supported configuration changes carefully; record a manifest of completed and blocked stages.
+6. **Install in checkpoints.** Generate substantive 16-agent definitions and domain skills; install exact command and all 72 bundled specialist skill files, including their reference assets; merge supported configuration changes carefully; record a manifest of completed and blocked stages.
 7. **Run static and observed verification.** Test actual discovery and a harmless delegated `task`, not just file existence or a successful YAML parse. Optional functionality is separately tested only when approved.
 8. **Receive an evidence-based handoff.** Require exact changed paths, results, known limitations, unresolved approval decisions and a reproducible resume/rollback path.
 
@@ -520,6 +523,112 @@ The command is a native **prompt-expander**, not an executable test framework. I
 
 Backend owns service code. **Database** owns schema/migration design, **Security** the independent threat/permission review, **QA** independent test evidence, **Integration** provider contracts, **Performance** measurement, **DevOps** deployment and operations, and **Reviewer** consequential independent diff review. Respect single-writer ownership.
 
+
+## Specialized Product, Architecture and Database engineering
+
+The team ships **41 additional skills**: 13 Product (12 specialist + reference router), 13 Architect (12 specialist + reference router), and 15 Database (14 specialist + reference router). Together with 16 Designer and 15 Backend skills, this distribution includes **72 installable `SKILL.md` files**. The skill folders contain **10 new detailed reference manuals** (plus the existing Designer/Backend manuals) and are loaded selectively, not dumped into every prompt.
+
+### Product — verified customer value and executable requirements
+
+`webteam-product` is the **Principal Product Strategist and Business Analyst**. It owns outcome/problem framing, research quality, personas/actors, product policies, user journeys, roadmap decisions and acceptance criteria. It must not fabricate interviews, market numbers, metric baselines or final legal conclusions. Major features require a linked chain: `outcome → evidence/opportunity → REQ → AC → UX/API/data → QA → metric`.
+
+**Bundled Product skills (13)**:
+
+- **`webteam-product-outcome-discovery`** — Outcome-driven discovery and problem framing.
+- **`webteam-product-research-evidence`** — User research, triangulation and evidence calibration.
+- **`webteam-product-market-strategy`** — Market, alternatives and differentiated positioning.
+- **`webteam-product-requirements-traceability`** — Functional requirements, quality attributes and acceptance engineering.
+- **`webteam-product-domain-workflows`** — Business process modeling and policy state machines.
+- **`webteam-product-prioritization-roadmaps`** — Outcome roadmapping, RICE/WSJF alternatives and capacity tradeoffs.
+- **`webteam-product-measurement-experiments`** — Product analytics, experimentation and instrumentation contracts.
+- **`webteam-product-information-content`** — Information architecture, content strategy and localization.
+- **`webteam-product-trust-privacy-ai`** — Trust, privacy, responsible AI and consent by design.
+- **`webteam-product-stakeholder-governance`** — Stakeholder alignment, decisions and change control.
+- **`webteam-product-commercial-flows`** — Commercial policies, entitlement and lifecycle UX contracts.
+- **`webteam-product-delivery-readiness`** — Product release criteria, adoption and feedback loops.
+- **`webteam-product-engineering-reference`** — load only task-relevant Product playbooks.
+
+**References:** `PRODUCT_DISCOVERY_PLAYBOOK.md`, `PRODUCT_CAPABILITY_BLUEPRINTS.md` (12 applied cases), `PRODUCT_TRACEABILITY_AND_MEASUREMENT.md`. Product discovery should start with outcome hypotheses and evidence confidence, not a pre-selected feature implementation; roadmap and feature recommendations must identify decision gates.
+
+### Architecture — design quality that can be proven
+
+`webteam-architect` owns measurable architecture drivers, bounded-context/module decisions, fit-for-purpose runtime/storage choice, trust boundaries, ADRs, contracts, reliability and change strategy. The default is the simplest architecture that meets verified requirements; C4 views are **communication artifacts**, and fitness functions/tests provide stronger evidence of fitness than diagrams alone.
+
+**Bundled Architect skills (13)**:
+
+- **`webteam-architect-architecture-drivers`** — Architecture drivers, quality-attribute scenarios and fitness.
+- **`webteam-architect-domain-boundaries`** — Bounded contexts and evolutionary modular monolith.
+- **`webteam-architect-architecture-views-adrs`** — C4 views, ADRs and decision provenance.
+- **`webteam-architect-fitness-functions`** — Architecture fitness functions and governance-as-code.
+- **`webteam-architect-integration-evolution`** — API/event integration architecture and compatibility.
+- **`webteam-architect-distributed-consistency`** — Distributed systems, consistency and failure models.
+- **`webteam-architect-reliability-operability`** — Reliability, SLOs, capacity and graceful degradation.
+- **`webteam-architect-threat-data-flows`** — Trust boundaries, threat modeling and privacy architecture.
+- **`webteam-architect-data-platform-decisions`** — Storage selection, data ownership and reporting topology.
+- **`webteam-architect-performance-economics`** — Performance architecture, workload modeling and cost.
+- **`webteam-architect-modernization-migration`** — Strangler modernization, migrations and legacy preservation.
+- **`webteam-architect-deployable-systems`** — Deployment, runtime boundaries and supply-chain architecture.
+- **`webteam-architect-engineering-reference`** — ADRs, C4, fitness and resilience playbooks.
+
+**References:** `ARCHITECTURE_DECISION_PLAYBOOK.md`, `ARCHITECTURE_CAPABILITY_BLUEPRINTS.md` (12 applied cases), `ARCHITECTURE_FITNESS_AND_RELIABILITY.md`. ISO/IEC 25010:2023 and the AWS Well-Architected six pillars are useful *reference models* rather than a certificate or a requirement to adopt AWS.
+
+### Database — correctness, performance, isolation and tested recovery
+
+`webteam-database` owns physical/logical persistence, data dictionaries, database-enforced invariants, indexes, transaction/concurrency boundaries, safe migration sequence, tenant access and backup/restore evidence. Keep the selected project DB unless change is justified and approved.
+
+**Bundled Database skills (15)**:
+
+- **`webteam-database-workload-data-modeling`** — Access-pattern-first relational/document modeling.
+- **`webteam-database-sqlite-engineering`** — SQLite durability, integrity and concurrency practice.
+- **`webteam-database-mongodb-engineering`** — MongoDB documents, validation, atomicity and indexes.
+- **`webteam-database-postgres-engineering`** — PostgreSQL constraints, MVCC, RLS and indexing.
+- **`webteam-database-schema-migration`** — Expand/contract migrations, data backfills and compatibility.
+- **`webteam-database-transaction-concurrency`** — Transactions, race conditions and business invariants.
+- **`webteam-database-query-index-performance`** — Query planning, indexes and workload-based tuning.
+- **`webteam-database-tenant-isolation`** — Tenant-aware partitioning, authorization and data sharing.
+- **`webteam-database-backup-recovery`** — Backup, PITR, restore tests and disaster recovery.
+- **`webteam-database-privacy-lifecycle`** — Classification, retention, deletion, legal holds and audit provenance.
+- **`webteam-database-outbox-integration`** — Outbox/inbox, CDC, sync and derived data correctness.
+- **`webteam-database-reporting-search`** — Reporting/search/analytics data architecture.
+- **`webteam-database-db-observability`** — Database operational monitoring, capacity and regressions.
+- **`webteam-database-data-quality-tests`** — Data quality, representative fixtures and property testing.
+- **`webteam-database-engineering-reference`** — cross-engine checklists and targeted data manuals.
+
+**References:** `DATA_MODELING_ENGINE_GUIDE.md`, `DATABASE_CAPABILITY_BLUEPRINTS.md` (14 applied cases), `MIGRATION_RECOVERY_AND_ISOLATION.md`, `SQLITE_MONGO_POSTGRES_CHECKLISTS.md`.
+
+**Engine-aware rules:** SQLite requires deliberate connection-level foreign-key configuration and safe live backups; WAL does not permit many concurrent writers. MongoDB modeling must balance bounded embedding against cross-document access and verify real transaction deployment prerequisites. PostgreSQL MVCC/RLS considerations apply only when PostgreSQL is used; RLS complements but does not replace application-layer authorization. All migration and recovery advice must be tested on an isolated target before production approval.
+
+### Cross-agent handoff and ownership
+
+| Decision/artifact | Accountable lead | Supporting reviewers | Required evidence |
+|---|---|---|---|
+| Problem / outcomes / role policy intent | Product | Designer, QA, Security | research provenance, REQ/AC, success metric |
+| Structural boundaries / major tradeoffs | Architect | Backend, Database, DevOps | ADR, alternatives, fitness check |
+| Schema, integrity, indexes and migrations | Database | Backend, QA, Security, DevOps | workload, invariants, migration/restore rehearsal |
+| API/business transactions | Backend | Product, Database, Security | validated contracts, idempotency and tests |
+| UX and accessibility | Designer | Product, Frontend, Accessibility, QA | journey and tested interaction contract |
+| Security and operational release | Security/DevOps | Architect, QA, Database | threat model, permissions, rollout/recovery |
+
+No agent can silently change another agent's approved policy or claim a test was run without actual execution. `Product` determines *what/why*, `Architect` *how the structure meets quality*, `Database` *how data remains correct and recoverable*. The orchestrator chooses only the smallest relevant team.
+
+### Three dedicated audit/plan/fix commands
+
+| Command | Report focus | Example |
+|---|---|---|
+| `/webteam_product` | Evidence, outcomes, research, requirements, roadmap and acceptance gaps | `/webteam_product --mode=plan --scope=requirements,roadmap` |
+| `/webteam_architect` | Bounded contexts, dependency contracts, quality fitness, migration and resilience | `/webteam_architect --mode=report --scope=all --depth=deep` |
+| `/webteam_database` | Integrity, indexes, concurrency, tenant isolation, migrations and restore readiness | `/webteam_database --mode=report --scope=all --depth=deep` |
+
+Each uses `--mode=report|plan|fix`, `--scope`, `--depth`, `--roadmap`, optional `--output` (new `.md` in `docs/audits/`) and `--max-fixes` for limited safe local fixes. `report` and `plan` write only the sanitized report; `fix` cannot authorize production DB operations, changing product entitlements/strategy, deploying infrastructure or breaking interfaces. Commands are Markdown **prompt expansions**; flags are interpreted by MAIN, not a typed CLI parser. Re-read each command template for full constraints.
+
+### Targeted operating sequence
+
+1. For new features, have Product validate assumptions and acceptance criteria; Architect document consequential tradeoffs; Database map invariants and workload before Backend writes handlers.
+2. For existing projects, audit actual source/database configuration first, preserving business and storage decisions unless approved for change.
+3. Delegate to QA for negative authorization, concurrency, migration, boundary and recovery checks; require measured evidence before declaring production readiness.
+4. Reuse `/webteam_audit` for cross-discipline reports; link specialized finding IDs rather than duplicating contradictory remediation plans.
+
+
 ## 11. Technical stack and implementation standards
 
 The preferred baseline is a starting point, **not a blanket instruction to install every library**.
@@ -666,7 +775,7 @@ OMP Markdown slash commands are **prompt expanders**. They are not executable sc
 
 Global commands are typically installed under the **active** user-profile `commands/` directory; project commands under `<project>/.omp/commands/`. Discover the real OMP rules and collision precedence before installing. Keep **one flat file per command**.
 
-### All 24 commands
+### All 27 commands
 
 | Command | Purpose and default safety | Canonical file |
 |---|---|---|
@@ -678,6 +787,9 @@ Global commands are typically installed under the **active** user-profile `comma
 | `/webteam_design_audit` | Read-only Design DNA extraction, preservation and consistency review | [`webteam_design_audit.md`](commands/webteam_design_audit.md) |
 | `/webteam_uiux` | Deep visual/UX and component audit, plan or bounded fix | [`webteam_uiux.md`](commands/webteam_uiux.md) |
 | `/webteam_backend` | Backend, API, authz/data, reliability/security audit with report, plan or bounded safe fixes | [`webteam_backend.md`](commands/webteam_backend.md) |
+| `/webteam_product` | Product evidence, requirements, outcome and roadmap audit/plan/bounded fix | [`webteam_product.md`](commands/webteam_product.md) |
+| `/webteam_architect` | Architecture quality, boundaries, ADR, fitness and migration audit/plan/bounded fix | [`webteam_architect.md`](commands/webteam_architect.md) |
+| `/webteam_database` | Database integrity, migrations, tenancy and recovery audit/plan/bounded fix | [`webteam_database.md`](commands/webteam_database.md) |
 | `/webteam_architecture_audit` | System boundaries, contracts, reliability and migration risks | [`webteam_architecture_audit.md`](commands/webteam_architecture_audit.md) |
 | `/webteam_security_audit` | Risk-ranked security analysis, no intrusive testing by default | [`webteam_security_audit.md`](commands/webteam_security_audit.md) |
 | `/webteam_audit` | Full-project evidence-backed report, remediation plan, bounded safe fixes | [`webteam_audit.md`](commands/webteam_audit.md) |
@@ -910,8 +1022,8 @@ Completion is a **measured state**, not a subjective declaration.
 - [ ] Backup/change manifest exists; unrelated settings and user work preserved.
 - [ ] All 16 agent definitions are valid and **discoverable**.
 - [ ] Required specialist skills are substantive, valid, discoverable and their references resolve.
-- [ ] All 16 bundled Designer skills and their on-demand reference assets are present; all 15 bundled Backend skills and seven references are present.
-- [ ] All **24 native commands** are discoverable, do not collide unexpectedly and at least one expands correctly.
+- [ ] All 72 bundled `SKILL.md` files are present (16 Designer, 15 Backend, 13 Product, 13 Architect, 15 Database); all 20 packaged reference manuals exist and resolve from the applicable skill router.
+- [ ] All **27 native commands** are discoverable, do not collide unexpectedly and at least one expands correctly.
 - [ ] Primary model/alias resolves; actual model routing and optional effort mapping checked.
 - [ ] Optional fallback, council, Mnemopi, Auto-Learn and integrations validated **only if enabled and approved**.
 - [ ] Natural-language routing and harmless real `task` delegation observed (or correctly reported blocked).
@@ -948,7 +1060,7 @@ Static Markdown/frontmatter/ZIP checks count as **document integrity** only. The
 
 **Does running a slash command automatically start a subagent?** No. Markdown commands expand prompts. Specialist invocation depends on active OMP delegation tools and routing policy.
 
-**Does the package install every listed specialized skill immediately?** Not by extracting it. The 16 Designer and 15 Backend skills are physically bundled; other specialist skills and agent definitions must be created and verified during bootstrap.
+**Does the package install every listed specialized skill immediately?** Not by extracting it. All 72 specialist `SKILL.md` files described in this release are physically bundled. The 16 agent definitions and any additional baseline skills required by Master Prompt must be generated, merged and runtime-verified during bootstrap. Extraction alone is not installation.
 
 **Can I use only one DeepSeek or other model?** Yes, as long as it resolves, supports required tools, and is allowed by policy. Councils and cross-provider fallback are optional.
 
