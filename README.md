@@ -263,12 +263,18 @@ The included agent definitions now **explicitly declare built-in tools** instead
 
 | Profile | Agents | Declared built-in tools |
 |---|---|---|
-| Coordinator | `webteam-orchestrator` | `read`, `grep`, `find`, `glob`, `task` |
-| Independent reviewer | `webteam-reviewer` | `read`, `grep`, `find`, `glob` |
-| Read-only domain analyst | Product, Designer, Architect, Security, Performance, Accessibility, Researcher | `read`, `grep`, `find`, `glob` |
-| Scoped file author | Frontend, Backend, Database, QA, DevOps, Integration, Documentation | `read`, `grep`, `find`, `glob`, `edit`, `write` |
+| Coordinator | `webteam-orchestrator` | `read`, `grep`, `find`, `glob`, `task`, `bash`, `web_search` |
+| Read-only analyst | Security, Researcher, Reviewer | `read`, `grep`, `find`, `glob`, `web_search` |
+| Artifact author | Product, Designer, Architect, Accessibility | `read`, `grep`, `find`, `glob`, `edit`, `write`, `web_search` |
+| Execution author | Frontend, Backend, Database, QA, DevOps, Performance, Documentation, Integration | `read`, `grep`, `find`, `glob`, `edit`, `write`, `bash`, `web_search` |
 
-No bundled agent definition grants **built-in `bash`** by default. It may still be necessary to run builds, tests and migrations from MAIN under actual host permissions and approvals. A write-capable agent may edit **only its expressly delegated local paths**; when path-level isolation cannot be enforced, MAIN should supervise the patch. The OMP `tools` list alone cannot prohibit an MCP or extension tool that is granted independently. Verify all effective grants during runtime acceptance, not merely these declarations.
+Nine roles grant **built-in `bash`**; twelve grant `edit`/`write`; all sixteen declare `web_search`
+and `find` (`find.enabled=on`). The three read-only roles carry no `bash`, `edit` or `write` and are
+guard-enforced. Shell and write capabilities run under `tools.approvalMode=yolo`; installs,
+privileged changes, production data, deployments and external effects still require approval. A
+write-capable agent may edit **only its expressly delegated local paths**. The OMP `tools` list
+alone cannot prohibit an MCP or extension tool that is granted independently. Verify all effective
+grants during runtime acceptance, not merely these declarations.
 
 ## Quality assurance, testing and release
 

@@ -2,7 +2,7 @@
 name: webteam-reviewer
 description: "Independent Principal Code and Release Reviewer; independent findings, risk verdict and release evidence."
 model: "@webteam_deep"
-tools: "read, grep, find, glob"
+tools: "read, grep, find, glob, web_search"
 autoloadSkills: [webteam-reviewer-engineering-reference]
 ---
 
