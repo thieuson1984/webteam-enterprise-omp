@@ -24,8 +24,6 @@ Supported human-readable option conventions (parse them as text; OMP does not ty
 - `--budget=<user-provided cap>` optional. Do not fabricate provider/model token budgets; stop when actual agreed budget or retry limit is reached.
 - `--dry-run` proposes fixes and only writes the report, even with `--mode=fix`.
 
-For a specified `--pages` or `--component`, select just the matching blueprints/contract references; if absent, mark the area NOT_APPLICABLE or UNVERIFIED instead of inventing a screen.
-
 When unrecognized, contradictory or unsafe options appear, clarify or choose the **least-privileged** valid interpretation. Never paste the raw arguments into shell commands, URL fetch commands or filesystem writes. Resolve exact project, git status, selected routes and approval scope before execution. Never audit production accounts or private user data without authorization.
 
 ## 2. Evidence and project context
@@ -42,13 +40,12 @@ Sample meaningful states, not only ideal home screens: desktop and narrow mobile
 4. **Typography and color:** font pairing, locale glyph coverage, scale/line length, number alignment, semantic tokens, contrast, states, dark theme and restraint.
 5. **Component craft:** real buttons/inputs/filters/tables/lists/cards/dialogs/toolbars; state consistency, predictable controls, purposeful surfaces and icon system.
 6. **Page-specific UX:** dashboard decision hierarchy, KPI integrity/charts, landing storytelling/credible proof/CTA, login/account recovery/logout, profile/settings groups and unsaved changes, searchable/sortable DataTables and bulk actions.
-7. **Extended page/component patterns (when applicable):** select P01–P22 page blueprints and C01–C38 component interaction contracts from the two on-demand skills. Include search/detail, multi-step forms, approval/access, schedules, file management, collaboration, analytics, CMS, billing, developer tools, maps, AI-assisted journeys, help/system states and sophisticated widgets ONLY when actually present or required. Capture task flows, real content, permission boundaries, focus/keyboard, mobile, async/error states and regression evidence. Do not mark a missing irrelevant feature as a defect.
-8. **Real-content integrity:** no fabricated metrics/testimonials, meaningful microcopy, errors/recovery, localization, permission-based states, text extremes.
-9. **Accessibility:** WCAG 2.2 AA target; text and non-text contrast, zoom/reflow, keyboard/focus, visible labels, semantics, touch targets, reduced motion and manual assistive-technology checks when feasible.
-10. **Responsiveness and robustness:** horizontal overflow, collisions, clipping, sticky headers, touch interactions, image/font loading, skeleton shifts and error/failure states.
-11. **UX behavior and performance:** actual completion of important journeys, feedback/error recovery, Core Web Vitals when measurable, asset sizes and browser rendering.
-12. **Design-system fidelity and maintainability:** token/variant reuse, unintended design drift, Design DNA preservation, CSS-specificity debt, regressions across routes.
-13. **QA evidence:** Playwright E2E behaviors, deterministic visual snapshots/diffs, baseline provenance, command outputs and coverage limitations.
+7. **Real-content integrity:** no fabricated metrics/testimonials, meaningful microcopy, errors/recovery, localization, permission-based states, text extremes.
+8. **Accessibility:** WCAG 2.2 AA target; text and non-text contrast, zoom/reflow, keyboard/focus, visible labels, semantics, touch targets, reduced motion and manual assistive-technology checks when feasible.
+9. **Responsiveness and robustness:** horizontal overflow, collisions, clipping, sticky headers, touch interactions, image/font loading, skeleton shifts and error/failure states.
+10. **UX behavior and performance:** actual completion of important journeys, feedback/error recovery, Core Web Vitals when measurable, asset sizes and browser rendering.
+11. **Design-system fidelity and maintainability:** token/variant reuse, unintended design drift, Design DNA preservation, CSS-specificity debt, regressions across routes.
+12. **QA evidence:** Playwright E2E behaviors, deterministic visual snapshots/diffs, baseline provenance, command outputs and coverage limitations.
 
 For each finding record `UX-###`, affected route/component, severity (`critical|high|medium|low`), `type=objective|subjective`, observed evidence/source/screenshot, affected user task, expected result, proposed smallest viable correction, design approval needs, test and risk. Aesthetic taste is never an objective compliance PASS/FAIL. No arbitrary numeric aesthetics scores without an anchored rubric. Mark unverified checks `NOT_RUN`.
 
@@ -69,7 +66,7 @@ Write `docs/audits/UIUX_AUDIT_<date>.md` (or approved `--output`) with these sec
 1. Scope, repository revision, operator approvals, audit method, environment and coverage.
 2. Executive summary (strengths, top risks, project identity and main user tasks).
 3. Evidence inventory and what was/was not tested.
-4. UI/UX rubric findings by category including applicable P01–P22/C01–C38 patterns, concrete defect ledger `UX-###`, severity and confidence.
+4. UI/UX rubric findings by category, concrete defect ledger `UX-###`, severity and confidence.
 5. Current Design DNA and what should remain unchanged.
 6. Prioritized remediation plan and acceptance criteria.
 7. Proposed product/design experience roadmap (optional, clearly separate from defects and unapproved features).
