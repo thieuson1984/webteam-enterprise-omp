@@ -1,0 +1,5 @@
+# This repository is a WebTeam source distribution, not the SMS monorepo.
+# Disable standalone ancestor AGENTS.md discovery so /home/sontt/Documents/AGENTS.md
+# (SMS-specific rules) does not apply here. Native .omp/AGENTS.md still loads.
+disabledProviders:
+  - agents-md
