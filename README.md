@@ -1,976 +1,434 @@
-# WebTeam Enterprise — OhMyPi Multi-Agent Web Engineering
+# WebTeam Enterprise — Operator, Installer & Contributor Handbook
 
-**A reusable, project-aware team of 16 software engineering specialists, coordinated through OhMyPi (OMP) to build, improve, test, audit, and maintain professional web applications.**
+> **A production-minded, reusable multi-agent engineering framework for OhMyPi (OMP).** One canonical Master Prompt, 16 included agent definitions, 35 native slash commands, 201 packaged specialist skills and 49 companion reference manuals. Project-specific files and additional requirements are created only during an authorized project workflow.
 
-WebTeam combines product discovery, deliberately crafted UI/UX, full-stack TypeScript engineering, verification, security, project knowledge, and risk-controlled delivery. It supports new applications and existing repositories without assuming that every task needs every agent.
+**Status:** This distribution has undergone static consistency checks. **It has not been deployed or functionally tested on your particular OMP installation.** Discovery, subagent execution, model access, permissions, MCP behavior and project tests must be verified locally. No Markdown instruction grants tool permissions or certifies security.
 
-> [!IMPORTANT]
-> **This repository is an installation and operating distribution—not an already installed OMP extension or a turnkey application.** `WEBTEAM_MASTER_PROMPT.md` instructs a capable, authorized OMP session to create and verify 16 agent definitions and a larger specialist skill ecosystem. This package supplies **33 canonical native Markdown command templates** and **172 ready-to-install specialist skills** (16 Designer, 15 Backend, 13 Product, 13 Architect, 15 Database, 14 Frontend, 15 Security, 14 Performance, 15 QA, 14 Accessibility, 16 Integration and 12 Reviewer). File presence, Markdown validity, and command autocomplete do **not** prove live model routing, safe permissions, working delegation, or production readiness. Those must be verified in the target environment.
+## Quick navigation
 
-**Start here:** [Install WebTeam](#3-installation-and-first-run) · [Agents](#5-team-structure-and-ownership) · [Create/adopt a project](#8-project-onboarding-and-documentation) · [Commands](#16-native-slash-command-reference) · [Project audit](#17-comprehensive-project-audit) · [UI/UX audit](#18-dedicated-uiux-quality-and-remediation) · [Backend audit](#104-webteam_backend-report-plan-and-bounded-safe-fix) · [Domain specialists](#specialized-product-architecture-and-database-engineering) · [Verify agents are running](#20-agent-visibility-routing-and-health-checks) · [Troubleshooting](#24-troubleshooting)
+[Getting started](#getting-started) · [Architecture](#two-level-architecture) · [Agents](#the-16-specialist-agents) · [Commands](#complete-native-command-reference) · [Skill catalog](#bundled-skills-and-reference-manuals) · [Orchestration](#orchestration-and-task-routing) · [Audit and remediation](#audits-reviews-and-controlled-remediation) · [UI/UX](#professional-product-design-and-frontend) · [Testing](#quality-assurance-testing-and-release) · [Models](#model-routing-effort-and-cost-controls) · [Memory](#memory-and-auto-learn-governance) · [Monitoring](#agent-hub-and-operator-visibility) · [Security](#security-privacy-and-runtime-permissions) · [Troubleshooting](#troubleshooting-and-failure-recovery)
 
 ---
 
-## 1. Mission, scope, and operating principles
+## What WebTeam is — and is not
 
-WebTeam is a **professional engineering workflow implemented through OMP agents, native skills, command templates, project standards, and observed verification**. It is designed to produce maintainable outcomes with clear ownership and evidence rather than large volumes of plausible-looking code.
+WebTeam coordinates specialists for **modern websites, dashboards, back-office and business-management web applications**, including existing codebases. It provides task-centered engineering practices rather than a single immutable stack or visual template. Typical use cases include administration, forms, data grids, workflows, analytics, file management, identities, billing, SaaS integrations and accessible responsive interfaces.
 
-### Capabilities
+Its deliverables can include product plans, project standards, architecture decisions, source changes, automated tests, independent reviews, UI screenshots, audit reports and evidence-backed improvement roadmaps.
 
-- **Product engineering:** discovery, actor and permission modeling, user journeys, measurable acceptance criteria, feature planning, scope control, and roadmaps.
-- **Distinctive product design:** an eight-stage Designer process, art direction, brand-appropriate layout and typography, Design DNA, interaction contracts, realistic content, accessibility, and browser-based critique.
-- **Application development:** frontend, backend, database, integrations, architecture decisions, consistent API contracts, and defensive implementation.
-- **Quality assurance:** risk-based Vitest, component/API/integration testing, Playwright E2E, visual regression, code review, and release checks.
-- **Governed AI execution:** role-aware model selection, task difficulty/effort policies, optional fallback and multi-model challenge, memory isolation, Auto-Learn review, and bounded verification loops.
-- **Existing-project stewardship:** evidence-based codebase adoption, Design DNA/Engineering DNA preservation, dependency awareness, and incremental refactoring.
-- **Audits and improvement plans:** consolidated project audits, specialist audits, fix plans, cautiously authorized local remediation, and optional feature opportunities.
-- **Operational transparency:** tool/agent discovery checks, observed native `task` delegation, permission reviews, truthful test results, and resumable installation checkpoints.
+**It is not:** a guaranteed-autonomous background process; an OMP extension with custom executable code; a replacement for permission enforcement; proof that all 16 agents are running; an automatic assurance that generated applications are secure, accessible or production-ready; or a specialized industrial control/production-line framework. It does not assume specialized safety-critical or physical-equipment control workflows.
 
-### Non-negotiable principles
+**Operating values:** user intent and approvals, evidence over appearance, domain ownership, scope discipline, least privilege, Design DNA preservation, deterministic testing, reversible changes, accurate reporting and efficient context/model use.
 
-1. **Evidence over assertions.** A claim such as *tested*, *deployed*, *secure*, *accessible*, *installed*, or *agent delegated* requires corresponding observed evidence.
-2. **User control.** Obtain required approval for meaningful expenses, network/provider changes, third-party installation, destructive operations, production writes, migrations, secrets, and major design/architecture changes.
-3. **Project isolation.** A project's product facts, source code, Design DNA, memory, and approvals are not automatically shared with another project.
-4. **Least authority.** Prompt instructions are not a sandbox. Effective runtime tool permissions, MCP capabilities, credentials, filesystem and network boundaries determine what an agent can actually do.
-5. **Specialize selectively.** Dispatch only agents and skills warranted by the task; keep one writer per overlapping checkout/path.
-6. **Preserve established identity.** Existing branding, UX patterns, architectural decisions, data contracts, and uncommitted user work remain intact unless a change is justified and approved.
-7. **Finish verifiably.** Reproducible checks and a truthful handoff matter more than simulated completion.
-
-## 2. Distribution contents and authority
-
-This distribution deliberately has **no revision-labelled filenames, historical upgrade prompts, or translated README**.
+## Distribution layout and exact inventory
 
 ```text
-WebTeam/
-├── README.md                          # this operator and contributor manual
-├── WEBTEAM_MASTER_PROMPT.md          # canonical bootstrap and operating specification
-├── commands/                         # 33 flat OMP native Markdown command templates
-│   ├── webteam_create_project.md
-│   ├── webteam_adopt_project.md
-│   ├── webteam_audit.md
-│   ├── webteam_uiux.md
-│   ├── webteam_backend.md
-│   ├── webteam_product.md
-│   ├── webteam_architect.md
-│   ├── webteam_database.md
-│   ├── webteam_healthcheck.md
-│   └── ...                            # 24 further command templates
-└── skills/                           # 172 skill directories covering Designer, Backend, Product, Architect, Database, Frontend, Security, Performance, QA, Accessibility, Integration and Reviewer
-    ├── webteam-design-direction-and-taste/SKILL.md
-    ├── webteam-page-experience-patterns/
-    │   ├── SKILL.md
-    │   └── references/PAGE_BLUEPRINTS.md
-    ├── webteam-component-interaction-contracts/
-    │   ├── SKILL.md
-    │   └── references/
-    │       ├── COMPONENT_CATALOG.md
-    │       └── ACCEPTANCE_MATRICES.md
-    ├── webteam-backend-api-contract-engineering/SKILL.md
-    ├── webteam-backend-engineering-reference/
-    │   ├── SKILL.md
-    │   └── references/                 # 7 backend technical manuals
-    └── ...                            # other advanced Product / Architecture / Database / Designer / Backend skills
+WEBTEAM_FINAL/
+├── WEBTEAM_MASTER_PROMPT.md     # Canonical bootstrap and governance specification
+├── README.md                     # This manual
+├── agents/                       # 16 native agent definitions (.md)
+├── commands/                     # 35 flat native slash commands (.md)
+└── skills/                       # 201 individual skill directories
+    └── <skill-name>/
+        ├── SKILL.md              # OMP discoverable skill file
+        └── references/           # Optional companion documents (49 files in total)
 ```
 
-**Source-of-truth hierarchy**
+The **agent definitions and skills are physically present in the distribution**. Some additional skill names in the Master Prompt are targets for future or installation-time generation and must not be reported as installed until actual files are created and discovered. Source inventory counts may change if the user customizes an installed profile; never delete unrelated assets merely to match this package.
 
-| Source | Responsibility | Rule |
+**Source-of-truth order:** host policies/permissions and user approvals → observed installed OMP capabilities/effective profile → bundled canonical command/agent/skill bodies → `WEBTEAM_MASTER_PROMPT.md` installation/governance policy → this README's illustrative usage → project docs and approved project decisions (which govern their own functional domain but cannot override permissions). If sources disagree, investigate and report—not silently overwrite.
+
+## Getting started
+
+### Prerequisites
+
+- An OMP installation with the native task-agent, Markdown slash-command and skill capabilities enabled. The OMP **v18.12.2** documentation is a tested reference for syntax; inspect the installed version and profile rather than assuming everything documented here exists identically in newer or older builds.
+- An authorized local workspace and shell access sufficient to **inspect** current configuration. Installing or overwriting user-global files must be an intentional, approved action.
+- A working and approved model/provider selection for the agents you will actually run. A `deepseek-flash` alias is valid only if it resolves in your own model catalog; it is not a built-in guarantee.
+- For implementation work, access to the relevant Git repository and its real package manager/runtime. Browser, Playwright, database, CI, credentials and optional MCP integrations are task-dependent and must be checked before use.
+
+### Recommended fresh installation (OMP-assisted)
+
+1. Extract the archive to a temporary directory; inspect `README.md`, `WEBTEAM_MASTER_PROMPT.md`, `agents/`, `commands/` and `skills/`. **Do not run arbitrary repository scripts.**
+2. Open OMP in the intended administrative workspace. Ask it to read the local `WEBTEAM_MASTER_PROMPT.md`, then discover the actual global agent/profile directory, project-level overrides and installed version **before writing anything**.
+3. Authorize the intended installation scope: global reusable WebTeam, project-specific additions or both. Record conflicts and backs up only targets that may be modified. Preserve user customizations, model selectors, extensions and pre-existing files.
+4. Install canonical agent/command/skill files at the discovered native OMP roots. When a same-name file exists, inspect/diff and merge consciously; avoid blind recursive overwrite. Keep each skill's `references/` files adjacent to its `SKILL.md`.
+5. Verify frontmatter, discovery, effective role/model resolution and relevant tool access. Only then perform a **safe, bounded, approved** read-only specialist dispatch and a natural-language orchestration check. Keep high-privilege tests in MAIN when child restrictions are not enforceable.
+6. Record actual `PASS_VERIFIED`, `PARTIAL_VERIFIED`, `BLOCKED`, `FAIL` statuses by check, plus a change manifest and rollback. No claim of complete setup is justified solely by copied files.
+
+### Installing the source files manually
+
+For a conventional profile, **illustrative** destinations are:
+
+| Component | User-level | Project-level |
 |---|---|---|
-| [`WEBTEAM_MASTER_PROMPT.md`](WEBTEAM_MASTER_PROMPT.md) | Installation, agent contracts, governance, operating model and runtime acceptance | Authoritative for WebTeam architecture and policies |
-| [`commands/*.md`](commands/) | Exact native slash command bodies, supported prompt options and command-specific safety | Copy the canonical files; do not invent approximations |
-| [`skills/*/SKILL.md`](skills/) | Exact advanced Designer, Backend, Product, Architect, Database, Frontend, Security and Performance skill instructions | Keep their referenced assets alongside each `SKILL.md` |
-| `docs/` inside an initialized **project** | Approved product, architecture, design, quality and operational decisions | Project-specific facts outrank generic reusable examples |
-| Observed OMP runtime and official schema | Which paths, options, tools, models and integrations actually work | Version-specific runtime capability outranks examples in documentation |
+| Agent definitions | `~/.omp/agent/agents/*.md` | `<repo>/.omp/agents/*.md` |
+| Commands | `~/.omp/agent/commands/*.md` | `<repo>/.omp/commands/*.md` |
+| Skills | `~/.omp/agent/skills/<name>/SKILL.md` | `<repo>/.omp/skills/<name>/SKILL.md` |
+| Skill reference docs | Within each matching skill directory | Within each matching skill directory |
+| Config | Effective OMP agent `config.yml` / installed runtime setting | `<repo>/.omp/config.yml` when supported |
+| Instructions | Effective OMP global instructions | `<repo>/.omp/AGENTS.md` / `RULES.md` according to discovery rules |
 
-The 16 agent definitions and other non-bundled specialist skills are **generated and validated by the bootstrap process**, not supplied as finished files in this package. Do not mistake this distribution for a complete preinstalled `~/.omp/agent/` tree.
+Do not assume `~/.omp/agent` when using a named profile or environment override. OMP discovery has separate rules for skills, slash commands, agents, instructions and settings. A closer non-empty `.omp` can shadow root-level project context; verify from the **cwd actually used**. Project skill discovery can include ancestor `.omp/skills` directories while some other resources use nearest-project rules. Project overrides and collision precedence must be inspected, not guessed.
 
-### Typical installed locations (verify your active profile)
+OMP CLI can provide version/config discovery depending on build; run the installed CLI's help or built-in configuration viewer rather than relying on unverified command strings. Restart/reload when necessary and verify the effective loaded command/skill roster.
+
+### For an existing WebTeam installation
+
+Prefer a **diff-based incremental merge** of canonical source files. Keep existing 16 role names, approved model/provider routes, Mnemopi/Auto-Learn policy, bounded loop controls, Caveman/Codebase Memory MCP, project identity and all user edits. Apply only changed, approved assets; check names/collisions and rerun safe discovery and routing checks. This distribution deliberately contains **no historical upgrade prompts**.
+
+## Two-level architecture
 
 ```text
-~/.omp/agent/                         # illustrative user-level agent root
-├── agents/webteam-*.md               # 16 generated agent definitions
-├── skills/<skill-name>/SKILL.md      # generated specialist + bundled Designer, Backend, Product, Architect, Database, Frontend, Security and Performance skills
-├── commands/webteam_*.md             # 33 flat copied command files
-├── AGENTS.md                         # concise global entrypoint, if supported
-├── RULES.md                          # high-priority rules, if supported
-└── config.yml                        # narrowly merged, approved settings
-
-<project-root>/
-├── .omp/
-│   ├── AGENTS.md                      # concise project routing/context entrypoint
-│   ├── RULES.md                       # optional project-specific invariants
-│   ├── config.yml                     # only necessary supported overrides
-│   ├── agents/                         # rare, intentionally scoped overrides
-│   └── skills/                         # project-specific skills
-├── docs/
-└── <application-source>/
+User request or /webteam_* command
+             |
+             v
+OMP MAIN session (observed runtime and user approval boundary)
+             |
+       WebTeam routing policy
+          /         \
+ Nested route if      MAIN -> specialists directly when nested task is unavailable
+ actually supported
+          |
+  webteam-orchestrator
+          |
+   specialist tasks with bounded scopes
+          |
+  Source owners -> QA / Security / Accessibility / Performance / Reviewer
+          |
+  Verified results, documentation and user handoff
 ```
 
-Do not hard-code these paths for every OMP installation. Inspect the **active user profile, process working directory, installed discovery rules, local overrides, and command collisions**. Native command files are flat `commands/*.md` templates, not nested `commands/webteam/*.md` entries. A project-specific command may intentionally override a global name; unintended shadowing is a configuration defect.
+**Global WebTeam** defines agent responsibilities, reusable knowledge, command workflows and model/privacy policies. **Project WebTeam** maintains its product rules, design identity, architecture, decisions, roadmap and verification evidence. A global skill may be reused by multiple projects, but project secrets, source snippets, customer details and design choices must not be promoted automatically.
 
-## 3. Installation and first run
+The MAIN session may itself perform orchestration when OMP's nesting/depth/spawn limits prevent a child `webteam-orchestrator` from spawning further specialists. The important observable is a successful, authorized **native `task` call** with the right agent—not a promised routing convention.
 
-### 3.1 Prerequisites
+## The 16 specialist agents
 
-- An OMP installation that can inspect files and supports native agents, skills, and prompt commands as confirmed by its installed documentation or help.
-- Authorization to read the selected project/repository and, if installing globally, to write the **active** user-level agent configuration directory.
-- A usable, authenticated AI model/provider or an approved setup path. An alias such as `deepseek-flash` must resolve in the real OMP model catalog; the string alone is not a working model.
-- An initial Git status/backup strategy, so pre-existing work is never overwritten.
-- Optional tools **only if actually needed and approved**: Node.js, a package manager, a browser/Playwright test environment, Caveman, Codebase Memory MCP, or Mnemopi support.
+| Agent | Primary ownership | Key boundary |
+|---|---|---|
+| [`webteam-accessibility`](agents/webteam-accessibility.md) | WCAG/APG, keyboard/focus, assistive technology and inclusive UX | Automated scans are not compliance certification |
+| [`webteam-architect`](agents/webteam-architect.md) | Quality requirements, C4/ADRs, boundaries, failure and evolution design | Avoid speculative distributed architecture |
+| [`webteam-backend`](agents/webteam-backend.md) | Server domain logic, API, authz, transactions and reliability | Backend enforces trust on the server |
+| [`webteam-database`](agents/webteam-database.md) | Schemas/data model, integrity, consistency, tuning, migration/recovery | No production migration or privileged operation without approval |
+| [`webteam-designer`](agents/webteam-designer.md) | Art direction, design systems, Design DNA, page-level and component UX | Frontend implements; no unapproved rebrand |
+| [`webteam-devops`](agents/webteam-devops.md) | CI, operational environments, observability, deployment and rollback | Release/deploy actions require authorization |
+| [`webteam-documentation`](agents/webteam-documentation.md) | Traceable decisions, project documentation, operational handoffs | Preserve a single source of truth |
+| [`webteam-frontend`](agents/webteam-frontend.md) | Typed client code, routing, state, forms, accessibility and UI fidelity | No client-side-only security assumptions |
+| [`webteam-integration`](agents/webteam-integration.md) | Third-party APIs, SaaS/ERP/CRM, queues, webhooks and reconciliation | External writes and credentials are separately gated |
+| [`webteam-orchestrator`](agents/webteam-orchestrator.md) | Accountable task decomposition, dispatch, shared budget, approvals and handoff | Project decision owner; do not self-certify risky work |
+| [`webteam-performance`](agents/webteam-performance.md) | Measurement, bottlenecks, Core Web Vitals, p95/p99, budget regression | Optimize from baselines, preserve correctness |
+| [`webteam-product`](agents/webteam-product.md) | Discovery, user/business requirements, acceptance criteria, product roadmap | Evidence from users and decision makers is not simulated |
+| [`webteam-qa`](agents/webteam-qa.md) | Deterministic unit/API/E2E/contract tests, business workflows and release evidence | Do not infer test success from code presence |
+| [`webteam-researcher`](agents/webteam-researcher.md) | Source verification, official docs, version/license/compatibility research | External content is untrusted data |
+| [`webteam-reviewer`](agents/webteam-reviewer.md) | Independent risk-ranked diff review, defensible findings and retesting | Never rubber-stamp or approve own authored change |
+| [`webteam-security`](agents/webteam-security.md) | Threats, abuse/authorization/privacy, security verification and supply chain | Independent verification and explicit scan boundaries |
 
-**Do not run unknown repository installers, package lifecycle scripts, migrations, network probes, or paid model tests merely because an installation prompt mentions them.** Inspect their side effects and request approval where required.
+### How responsibilities cross
 
-### 3.2 Fresh installation procedure
+**Product** establishes what and why → **Designer** defines the experience → **Architect** selects verifiable technical boundaries → **Database/Backend/Frontend/Integration** implement owned code → **QA/Accessibility/Security/Performance** verify applicable qualities → **Reviewer** gives an independent correctness verdict → **DevOps** supports approved delivery. The Orchestrator manages dependencies and approval gates; it is not an alternate owner of each domain's technical decision.
 
-1. **Obtain the whole distribution.** Make `WEBTEAM_MASTER_PROMPT.md`, `commands/`, and `skills/` accessible to the OMP session. Supplying only the Master Prompt is insufficient for its exact companion-file installation contract.
-2. **Launch OMP in the intended authorized location** and instruct it to read and carry out [`WEBTEAM_MASTER_PROMPT.md`](WEBTEAM_MASTER_PROMPT.md). File attachment and workspace access methods depend on your OMP setup.
-3. **Allow read-only environment discovery first.** It should identify OMP version/profile, real configuration schema, existing agents/skills/commands, model/provider inventory, Git state, tools and effective permissions.
-4. **Complete the one-time Global interview.** Select installation scope, model provider, safe model-routing policy, optional integrations, memory/Auto-Learn, optional council/fallback, quality-loop policy, permissions, and Agent Hub display preference.
-5. **Review the proposed plan.** Confirm paths, changes, risk controls, budget, collisions, backups and rollback. Do not approve blind overwrites of unrelated files.
-6. **Install in checkpoints.** Generate substantive 16-agent definitions and domain skills; install exact command and all 172 bundled specialist skill files, including their reference assets; merge supported configuration changes carefully; record a manifest of completed and blocked stages.
-7. **Run static and observed verification.** Test actual discovery and a harmless delegated `task`, not just file existence or a successful YAML parse. Optional functionality is separately tested only when approved.
-8. **Receive an evidence-based handoff.** Require exact changed paths, results, known limitations, unresolved approval decisions and a reproducible resume/rollback path.
+**Independent review:** Reviewer must be able to see a bounded real diff and supporting evidence. A reviewer response without complete source/test access is `PARTIAL` or `BLOCKED`, not `PASS`. The author cannot approve its own material changes. High-risk permissions/migrations/integrations call for domain-specific verification in addition to Reviewer.
 
-**Suggested request to OMP:**
+## Orchestration and task routing
+
+The objective is **minimal sufficient specialization**, not a 16-agent fan-out for every request.
+
+1. **Intake:** identify product intent, acceptance criteria, impacted modules, working tree/revision, data classification, expected output and environmental constraints; ask only for genuinely blocking decisions.
+2. **Task charter:** for consequential work record `TASK_ID`, C1–C5 risk, owner, read/write scopes, tests, permitted models/providers, relevant skills, expected cost/effort, stop conditions and user approvals.
+3. **Capability preflight:** verify agents are discoverable, selected models resolve, effective `task` and `spawns` topology works, actual tool/MCP permissions and privacy restrictions are enforceable. `tools` filtering in frontmatter is not an isolation guarantee.
+4. **Dependency DAG:** parallelize independent read-only investigation if worthwhile; serialize changes touching the same source, schema, API contract, design tokens or migration. Exactly one writer owns a modified path at a time.
+5. **Compact handoffs:** return relevant file:line evidence, explicit decision, changed paths/contracts, test outcomes, open questions and next owner. Do not paste entire repo or all skills into every child prompt.
+6. **Evidence-based review and final answer:** run task-appropriate tests, independent reviews as justified by risk, handle blockers honestly and provide reproducible results.
+
+**Workload calibration:** C1–C2 should often be handled by one agent or MAIN with no additional quality loop; C3 merits targeted specialist check; C4–C5 may justify independent Reviewer/QA/Security and a bounded correction pass. The Orchestrator must not invoke an expensive multi-provider council, backup fallback chain or iterative QA loop by default. Govern **one shared budget** across all mechanisms.
+
+### Sample natural-language requests
 
 ```text
-Read WEBTEAM_MASTER_PROMPT.md and its companion commands/ and skills/
-directories. First inspect the active OhMyPi runtime and existing setup.
-Present an installation plan, required user choices, permission impacts,
-backups, and model/provider costs before modifications. Install only
-approved components; then run the required observed WebTeam orchestration
-smoke tests. Report PASS_VERIFIED, PARTIAL_VERIFIED, BLOCKED, or FAIL
-with evidence rather than assuming installation success.
+Implement a role-based user management feature in this existing project.
+Preserve the current Design DNA and API conventions. Delegate the right
+specialists, test authorization boundaries, and show actual results.
 ```
-
-If a companion directory is missing, the correct behavior is to mark the corresponding stage **BLOCKED** and request access to the canonical files—not fabricate 23 replacement commands or claim the specialized skills were installed.
-
-### 3.3 One-time installation decisions
-
-| Decision | Recommended starting point | Why it matters |
-|---|---|---|
-| Placement | Global reusable agents/commands/skills; project-local requirements | Prevents cross-project identity and data leakage |
-| Default model | User-selected provider, verified model/alias | Avoids invented names or silent provider changes |
-| Effort routing | Adaptive by agent/task complexity | Limits wasted reasoning/context |
-| Cross-provider fallback | `OFF` or consent-first `ASK` | Keeps cost and data egress under user control |
-| Multi-model deliberation | `OFF`/`ASK` unless specifically warranted | Most tasks do not justify a council |
-| Memory | Project-scoped Mnemopi if supported and approved | Separates project knowledge from global policies |
-| Auto-Learn | Supervised; block unreviewed global skill promotion | Managed skills may live outside project scope |
-| Native continuous Loop | **OFF**; bounded verification policy `ASK` | Prevents runaway retries/cost/side effects |
-| External integrations | Opt-in, version/capability/permission checked | A configured MCP is not necessarily available to subagents |
-| Subagent display | Optional `full` pinned roster + live preview | Helps observe actual work without changing routing |
-| Project governance | Preserve existing data, Git state and Design DNA | Avoids destructive “setup” surprises |
-
-These are recommended policies, **not assumed OMP-native enum values or automatically enforceable controls**. The bootstrap must translate approved policy to the actual runtime syntax and mark unimplemented restrictions explicitly.
-
-### 3.4 Upgrading an existing installation
-
-This distribution does **not** include upgrade-specific prompts. For an existing WebTeam, use the same Master Prompt with instructions to **inventory, compare, back up, merge only missing or approved changes, and revalidate**, without reinstalling or replacing working models, Memory, Auto-Learn or project docs. Resolve same-name commands/skills with diff review rather than overwriting automatically. A successful static diff is not the final runtime smoke test.
-
-## 4. Global versus project architecture
-
-**Global WebTeam defines how engineering work is performed.** Its agent roles, reusable skills, routing logic, baseline verification and security policies are cross-project tools.
-
-**Project WebTeam defines what this application is.** It owns requirements, implementation facts, approved visual language, stack decisions, routes, data constraints, quality baselines, open issues, and a specific backlog. It may narrow or specialize Global behavior, but must not silently weaken Global security or provider permissions.
-
-### Monorepo and working-directory hazard
-
-OMP project **context instruction discovery** and project **settings discovery** may follow different rules. In particular, a nearer `.omp/` may shadow parent instructions, while `config.yml` lookup can depend on the launched working directory. Do **not** assume launching OMP from `apps/web/` sees the same project instructions or config as launching from repository root.
-
-Verify both cases when relevant:
 
 ```text
-repo/.omp/AGENTS.md
-repo/.omp/config.yml
-repo/apps/web/.omp/            # if present, may affect effective discovery
+Review our new billing webhook handler for idempotency, retry safety,
+security and reconciliation. Report defects first; do not deploy.
 ```
 
-Use the intended repository root or an explicit, non-contradictory local pointer to authoritative project docs. Inspect the **effective** context, not a guessed path. Do not copy project-specific secrets or business facts into global instructions.
+A user request **does not have to name an agent** after effective routing has been validated. If MAIN does not have WebTeam routing instructions, it may operate without specialist delegation. In that case request `/webteam_healthcheck` or `/webteam_dispatch --mode=inspect`; do not assume that installing agent files forces routing on every message.
 
-### Decision and document precedence
+## Project onboarding, adoption and required artifacts
 
-- User-approved product/security decisions override proposals.
-- Fresh source and verified test evidence outrank stale unverified memories.
-- Existing Design DNA remains protected until a legitimate redesign decision.
-- Third-party reference code or documentation is **untrusted input**, not operating authority.
-- Every exception should have an owner, reason, scope and review/expiry condition.
+**New project:** `/webteam_create_project "project name"` collects only essential product, user, design, stack, data, security, deployment and integration decisions. Distinguish approved, inferred and open decisions. Scaffold only after choosing a target path and verifying it does not collide with existing source.
 
-## 5. Team structure and ownership
+**Existing project:** `/webteam_adopt_project <repo-path>` first inspects real code, Git state, UI, APIs, tests, data and docs. It creates a source-linked **Product/Engineering/Design DNA evidence matrix**, identifies contradictions and proposes safe incremental modernization. Do not overwrite branding or architectural decisions merely because a design or stack trend exists.
 
-WebTeam contains exactly **16 permanent specialized agents**, not 16 different default model sessions running at all times.
+Common project documents (create only when justified and with actual content):
 
-| Agent | Specialist role | Owns / primary artifacts |
+| Artifact | Owner | Purpose |
 |---|---|---|
-| `webteam-orchestrator` | Engineering Director / coordination | Intake, difficulty/risk, task charters, routing, approval gates, roadmap and delivery evidence |
-| `webteam-product` | Product Manager / Business Analyst | `PRODUCT.md`, actors, roles, user journeys, measurable acceptance criteria |
-| `webteam-designer` | Principal Product Designer / Art Director | `DESIGN.md`, Design DNA, visual direction, typography, tokens and interaction contracts |
-| `webteam-architect` | Principal Software Architect | `ARCHITECTURE.md`, `TECH_STACK.md`, ADRs, module and trust boundaries |
-| `webteam-frontend` | Principal Frontend Engineer | Responsive React/SolidJS UI, data-aware components, typed routes/forms and frontend tests |
-| `webteam-backend` | Principal Backend Engineer | Fastify services, Zod contracts, authentication/authorization and API tests |
-| `webteam-database` | Database Architect | SQLite/MongoDB models, migration strategy, indexes, integrity and restore planning |
-| `webteam-security` | Application Security Engineer | Threat modeling, tenancy/authorization validation, dependency and secrets risk |
-| `webteam-qa` | Principal Test Automation & Quality Engineer | Test strategy, Vitest, API/integration, Playwright E2E/visual, reproducible evidence |
-| `webteam-devops` | Platform / DevOps Engineer | Reproducible environments, CI/CD, observability, release and rollback plans |
-| `webteam-performance` | Performance Engineer | Core Web Vitals, API latency, profiling, resource budgets and measured optimization |
-| `webteam-accessibility` | Accessibility Specialist | WCAG-based checks, keyboard/focus, complex widget semantics and assistive-tech evidence |
-| `webteam-reviewer` | Independent Senior Reviewer | Risk-ranked code/design review and independent quality-gate assessment |
-| `webteam-researcher` | Technical Researcher | Primary-source research, dependency decisions, licensing and provenance |
-| `webteam-documentation` | Technical Writer | Onboarding, API docs, knowledge organization, changelogs and runbooks |
-| `webteam-integration` | Integration Engineer | OAuth/API/webhooks, idempotency, timeouts/retries, events and external contracts |
-
-### Who actually coordinates?
-
-- **Preferred:** WebTeam's Orchestrator governs web-development work and dispatches specialists through OMP's real delegation mechanism.
-- **Supported fallback:** if nested `MAIN → orchestrator → specialist` delegation is not allowed, the **MAIN OMP session** coordinates and calls specialists directly.
-- **Not acceptable:** claiming that a specialized agent worked on a task simply because the prompt mentioned its name.
-
-Natural-language requests are the primary interface. Users normally **do not need to name agents**. For example, “Improve the customer table, preserve our Design DNA, and add E2E tests” should be classified and dispatched to relevant Designer/Frontend/QA roles—not all 16.
-
-### Delegation examples
-
-| Request | Commonly relevant owners | Typical verification |
-|---|---|---|
-| Fix a minor CSS spacing bug | Frontend; Designer if tokens change | Targeted visual and component check |
-| Add role-based access control | Product, Architect, Backend, Security, QA; relevant Frontend/Database | Unauthorized-path tests and contract checks |
-| Build a dense operations dashboard | Product, Designer, Frontend, Accessibility, QA; Backend/Database if needed | Real metric contracts, responsive/browser evidence |
-| Improve a slow data query | Database, Backend, Performance | Profile, query plan, p95 before/after |
-| Add an external payment/webhook provider | Integration, Backend, Security, QA | Signature/replay/idempotency tests, approval gates |
-| Review release readiness | QA, Security, DevOps, Reviewer | CI evidence, rollback readiness, unresolved risks |
-
-**Conflict rule:** assign one implementation owner per overlapping path; delegate read-only independent review in parallel; reconcile conflicting findings through evidence, project decisions, and user approval when needed.
-
-## 6. Specialist skills and context efficiency
-
-The Master Prompt mandates a broad professional skill catalog across Orchestrator, Product, Designer, Architecture, Frontend, Backend, Database, Security, QA, DevOps, Performance, Accessibility, Reviewer, Research, Documentation, Integration, and shared engineering methods. These skills must be **real, discoverable `SKILL.md` files with substantial procedures**, not merely a list of names in an agent prompt.
-
-An adequate skill documents:
-
-- purpose, activation triggers **and exclusions**;
-- prerequisites, inputs and ownership;
-- step-by-step method with examples/recipes and tool constraints;
-- expected outputs and acceptance criteria;
-- security cautions, common failure modes, escalation and rollback;
-- tests and evidence required for a credible Definition of Done;
-- local reference files, if any, via existing relative paths.
-
-Install and smoke-test a skill individually. OMP discovery may not recursively find nested skill directories; references below a skill are intended for **on-demand reading**, not automatic scanning. Unknown `autoloadSkills` references can silently result in an absent capability. Avoid duplicate competing skills for the same concept.
-
-### Context-efficient execution
-
-1. Discover relevant project paths and docs before reading entire repositories.
-2. Activate only the **few relevant** agent skills and, for Designer, only the matching page/component reference sections.
-3. Pass narrowly scoped task charters: target paths, constraints, acceptance criteria, permitted tools, budget and expected evidence.
-4. Reuse trustworthy search/index metadata before full-file reads; verify any index results against live source.
-5. Apply high effort only where the task and risk justify it, and separate parallel read-only analysis from a single authorized writer.
-6. Use bounded verification cycles; do not nest councils, provider fallback and Loop into uncontrolled multiplicative cost.
-
-## 7. Models, reasoning effort, fallback and deliberation
-
-WebTeam can operate with **one approved model**. Optional multiple models/providers can improve particular hard tasks, but are not a prerequisite for the team.
-
-### Primary-provider onboarding and routing
-
-During Global installation, **first** ask the user to select the primary provider; **then** inventory the models actually exposed and credential-ready on that provider. Verify selector syntax, aliases, tool support, context metadata and thinking/effort settings with the installed OMP version. Do not hard-code a hypothetical provider/model combination. An existing alias such as `deepseek-flash` is honored only when it actually resolves.
-
-Illustrative role policy—not an OMP configuration file:
-
-| Workload | Starting effort tendency | Escalate when |
-|---|---|---|
-| Documentation, targeted research and status | Low | Complex ambiguities, high-risk source analysis |
-| UI/UX critique, frontend/backend and QA implementation | Medium | Difficult architecture, debugging or complex cross-cutting UX |
-| Architecture, security and orchestration | High | Exceptional, consequential uncertainty warrants maximum supported effort |
-| Narrow follow-up on an already isolated failure | Low/Medium | Evidence shows repeated failure to resolve |
-
-The Master Prompt defines per-role baselines and adaptive C1–C5 task rules. Translate desired policy to the **real** provider and OMP controls; for example, OMP task effort hints may use `lo`, `med`, `hi`, while some providers expose different `defaultThinkingLevel` or reasoning mappings. Do not write unsupported keys or force a made-up context window.
-
-### Cross-provider fallback (optional)
-
-Fallback addresses model/provider **availability or task compatibility**, not independent design review. Its permitted mode is governed separately from the default model and any council. Recommended starting mode is OFF or ASK:
-
-- **OFF:** do not switch away from the approved primary route.
-- **ASK:** explicitly pause and obtain authorization before a new provider receives data or incurs cost; an automatic inherited route that switches silently is **not** ASK.
-- **AUTO:** only when every executable fallback route—including inherited/session/child/extension paths—can be technically constrained to approved providers, data classifications, tools and budgets.
-
-The Orchestrator must check whether a failed operation already produced side effects before retrying. Never replay payments, emails, migrations, production writes or other non-idempotent actions after an ambiguous timeout.
-
-### Multi-model deliberation (optional)
-
-Deliberation is separate from fallback. Use model diversity sparingly for significant architecture decisions, high-impact design tradeoffs, complex security reviews, and disputed technical evidence:
-
-| Mode | Meaning | Typical use |
-|---|---|---|
-| `OFF` | No extra independent model review | Routine work |
-| `CHALLENGE` | Bounded independent alternative/critique | Difficult but contained decisions |
-| `COUNCIL` | Multiple approved independent perspectives and evidence-based arbitration | Exceptional high-stakes disputes |
-
-The user may opt into an **ASK-before-panel** governance policy. Panel participants are temporary decision roles, **not extra permanent WebTeam agents**. Use independent candidate proposals, explicit dissent, independent tests where possible, and a decision log for consequential choices. Never mistake majority vote or self-reported confidence for ground truth.
-
-### Cost and privacy controls
-
-Specify per-task model call/effort, tool, token or budget limits when enforceable; otherwise use clearly described policy limits and observe actual consumption if exposed. Include **subagents, retries, fallback, councils, browser tests and Loop** in one overall task budget. Obtain approval before new providers receive private code, screenshots, prompts, log contents or external integrations. A document rule without runtime enforcement is `prompt-only`, not a proven security boundary.
-
-## 8. Project onboarding and documentation
-
-### 8.1 New application
-
-Use the native command:
-
-```text
-/webteam_create_project "School Management System"
-```
-
-Or give a natural-language request. Orchestrator should interview progressively about:
-
-1. product goals, intended users, roles/permissions, workflows, MVP and non-goals;
-2. repository root, current code, Git policy, runtime and package manager;
-3. frontend framework, design references, languages, brand, accessibility and target devices;
-4. backend, data storage, authentication, integrations and operational constraints;
-5. inherited model/memory policies, approved costs and data-sharing rules;
-6. tests, CI/CD, hosting, recovery/rollback and release criteria.
-
-Avoid repeated giant questionnaires. Record each consequential choice as **confirmed, accepted default, proposed/provisional, rejected or blocked**. Do not scaffold an approved architecture while a blocking product/data/security decision remains unresolved.
-
-### 8.2 Adopt an existing repository
-
-```text
-/webteam_adopt_project "/path/to/existing-app"
-```
-
-**Discovery comes before edits.** Inspect Git state, manifest and framework versions, routes, UI implementation, design tokens, APIs, data models, tests, deployment files, current documentation and project instructions. Extract **Design DNA** and **Engineering DNA** from verified sources; label conflicting or uncertain findings with confidence. Produce a preservation/adoption plan and only then request approval for project-scoped document changes or refactoring. Do not reset Git, overwrite established design, run unreviewed scripts, or re-scaffold the application.
-
-### 8.3 Project document contract
-
-Documents are created **as warranted by actual project complexity**, not to satisfy a numeric checklist. These are the principal authority boundaries:
-
-| File | Owner | Minimum useful content |
-|---|---|---|
-| `docs/PRODUCT.md` | Product | Goals, actors, permissions, journeys, REQ/AC IDs, acceptance and exclusions |
-| `docs/DESIGN.md` | Designer | Art direction, design choices, typography/palette, flows, states, accessibility |
-| `docs/ARCHITECTURE.md` | Architect | Modules, trust/data flows, API boundaries, integrations, reliability and tradeoffs |
-| `docs/TECH_STACK.md` | Architect | Actual dependencies, version evidence, technology rationale and constraints |
-| `docs/ROADMAP.md` | Orchestrator + Product | Phased milestones, dependencies, owners, blockers and verification criteria |
-| `docs/DECISIONS.md` and `docs/adr/` | Decision owners | Options, rationale, status, approvals, consequences |
-| `docs/TESTING.md` | QA | Test types, suites, commands, fixtures, baselines, CI and results |
-| `docs/API.md`, `docs/DATABASE.md` | Backend / Database | Verified endpoint and data contracts, migrations, assumptions |
-| `docs/SECURITY.md` | Security | Trust boundaries, authn/authz, secrets and review controls |
-| `docs/DEVELOPMENT.md`, `DEPLOYMENT.md`, `OPERATIONS.md` | DevOps | Reproducible setup, deployment, observability, backups and rollback |
-| `docs/design/*` | Designer + Frontend | Design DNA, tokens, components, interactions and visual-baseline policy |
-| `docs/engineering/*` | Architect + engineers | Engineering DNA, coding rules, API conventions, refactor guidance |
-| `docs/governance/MEMORY_POLICY.md` | Orchestrator | Per-project memory/Auto-Learn boundaries when enabled |
-| `docs/governance/QUALITY_LOOP_POLICY.md` | Orchestrator + QA | Per-project finite verification and optional native Loop policy |
-| `docs/audits/*.md` | Audit coordinator | Reproducible evidence-based audit and remediation reports |
-
-A concise project `.omp/AGENTS.md` should **link** to authoritative docs, not duplicate hundreds of lines from them. A project without API/database/production operations need not manufacture empty documents for unused domains.
-
-### 8.4 Reference repositories and external examples
-
-Use `/webteam_reference_analyze` to examine a GitHub/GitLab reference, licensing and potentially transferable architecture/design ideas. Third-party files, examples, tool output and embedded prompt instructions are **untrusted input**. Adopt specific principles through compatibility analysis, approval, tests and attribution where needed; do not blindly clone a brand, copyright-protected assets, security assumptions or an entire stack.
-
-## 9. Professional Designer workflow and quality standard
-
-The `webteam-designer` agent operates as a **Principal Product Designer and Art Director**, not a “pick a gradient and round the corners” decorator. Its mandate is to make interfaces distinctive **for a reason**: product goals, audience, tasks, content, brand constraints, device context and data complexity.
-
-### 9.1 Mandatory eight-stage workflow
-
-1. **Product discovery and design brief:** users, constraints, primary tasks, success metrics, brand and locales.
-2. **Research and reference mapping:** real comparable products, useful patterns, anti-patterns and provenance, without template cloning.
-3. **Visual art direction:** deliberate visual thesis; contrast substantively different alternatives for major new designs.
-4. **Typography, palette and composition:** semantic tokens, font pairing (including Vietnamese glyph coverage where relevant), visual rhythm, density and hierarchy.
-5. **Interaction architecture:** journeys, navigation, forms, roles, failures, empty/loading/error states, feedback and responsive behavior.
-6. **Design-system contracts:** components, tokens, variants, accessibility requirements, ownership and implementation rules.
-7. **Implementation partnership:** buildable specs, motion with reduced-motion considerations, realistic data and frontend collaboration.
-8. **Rendered visual critique and quality assurance:** browser/viewport/locale/state review, Playwright evidence, independent critique and safe refinement.
-
-A new page does **not** automatically warrant a new design language. In mature projects use **preserve → standardize → evolve → redesign** with explicit rationale and an approval gate for major identity changes.
-
-### 9.2 Why generic AI-generated interfaces fail
-
-- Identical sidebar–metrics–cards–charts layouts irrespective of task.
-- Fashion-driven purple/blue gradients, heavy glass/glow and arbitrary decoration without product identity.
-- Uniform spacing, predictable card radius, stock imagery and generic buttons/typography across unrelated products.
-- False KPI figures, placeholder-heavy content, awkward labels and no meaningful information architecture.
-- Decorative charts with undefined units, data freshness, comparison basis or drill-down.
-- Screenshots captured only in the default happy state, with no mobile, error, empty, dense or keyboard review.
-- Subjective “looks modern” scores unsupported by actual UI/browser evidence.
-
-WebTeam addresses these through **product-specific information hierarchy, editorial craft, real content, semantic tokens, individual page design, explicit component behavior and verified interaction states**. Novelty is not a license to break familiar controls or WCAG targets.
-
-### 9.3 Sixteen bundled Designer skills
-
-Every entry below is a real [`SKILL.md`](skills/) in this distribution, not just a name mentioned in the Master Prompt.
-
-| Skill | Specialized responsibility |
-|---|---|
-| [`webteam-design-direction-and-taste`](skills/webteam-design-direction-and-taste/SKILL.md) | Art direction, product-specific creative thesis and critique |
-| [`webteam-research-and-reference-transfer`](skills/webteam-research-and-reference-transfer/SKILL.md) | Reference research and responsible transfer without cloning |
-| [`webteam-visual-identity-systems`](skills/webteam-visual-identity-systems/SKILL.md) | Brand-relevant palette, surfaces, icons and semantic tokens |
-| [`webteam-typography-art-direction`](skills/webteam-typography-art-direction/SKILL.md) | Font selection/pairing, hierarchy, editorial rhythm and language coverage |
-| [`webteam-layout-composition-and-rhythm`](skills/webteam-layout-composition-and-rhythm/SKILL.md) | Proportions, hierarchy, whitespace, optical alignment, responsive composition |
-| [`webteam-information-dense-dashboard`](skills/webteam-information-dense-dashboard/SKILL.md) | Task-driven KPIs, dashboards, data-density ergonomics, honest visualization |
-| [`webteam-landing-and-marketing-experience`](skills/webteam-landing-and-marketing-experience/SKILL.md) | Editorial storytelling, credible proof, conversion actions |
-| [`webteam-auth-profile-settings-ux`](skills/webteam-auth-profile-settings-ux/SKILL.md) | Login/logout, recovery, account/profile/preferences, trustworthy states |
-| [`webteam-tables-lists-and-cards`](skills/webteam-tables-lists-and-cards/SKILL.md) | DataTable, lists/cards, filtering, bulk operations and content density |
-| [`webteam-interaction-motion-feedback`](skills/webteam-interaction-motion-feedback/SKILL.md) | Functional feedback, meaningful motion, reduced-motion behavior |
-| [`webteam-content-realism-and-localization`](skills/webteam-content-realism-and-localization/SKILL.md) | Authentic microcopy, realistic states, locale readiness |
-| [`webteam-design-system-evolution`](skills/webteam-design-system-evolution/SKILL.md) | Preserving and evolving components/tokens without accidental rebranding |
-| [`webteam-uiux-design-critique`](skills/webteam-uiux-design-critique/SKILL.md) | Evidence-led design critique; separate objective defects from taste |
-| [`webteam-ui-visual-e2e-qa`](skills/webteam-ui-visual-e2e-qa/SKILL.md) | Deterministic Playwright interaction, screenshots and review |
-| [`webteam-page-experience-patterns`](skills/webteam-page-experience-patterns/SKILL.md) | On-demand page blueprints for 22 page families |
-| [`webteam-component-interaction-contracts`](skills/webteam-component-interaction-contracts/SKILL.md) | On-demand contracts for 38 component families |
-
-#### Page-specific UX catalog: 22 pattern families
-
-The [`PAGE_BLUEPRINTS.md`](skills/webteam-page-experience-patterns/references/PAGE_BLUEPRINTS.md) reference covers additional patterns for search/filter/results, record details and master–detail, comparison, CRUD and multi-step workflows, onboarding, administration/permissions, approval queues, calendars/booking, collaboration/messages/notifications, Kanban, activities, file management and versioning, CMS/editors, analytics and reports, developer/API consoles, AI-assisted workflows, billing/checkout, maps, and offline/error/maintenance/incident states. **The canonical reference contains the exact P01–P22 definitions**; read the matching section for the current surface instead of flattening the catalog into a generic dashboard template.
-
-#### Component catalog: 38 pattern families
-
-The [`COMPONENT_CATALOG.md`](skills/webteam-component-interaction-contracts/references/COMPONENT_CATALOG.md) and [`ACCEPTANCE_MATRICES.md`](skills/webteam-component-interaction-contracts/references/ACCEPTANCE_MATRICES.md) define behavior for complex navigational, filtering, form, data, status and authoring components: menus, breadcrumbs, tabs, command palette, combobox, date-range picker, validation, OTP, uploads, dialogs, drawers, toasts, popovers/tooltips, tables/grids/treegrids, charts, editors, scheduling, selection and more.
-
-A valid **component interaction contract** identifies:
-
-1. intended task and rationale for selecting this control;
-2. information hierarchy, semantic tokens, responsive layout and truncation/overflow behavior;
-3. applicable default/loading/empty/error/success/disabled/selected/unauthorized states;
-4. pointer, keyboard, focus, screen-reader and touch behavior;
-5. long text/large datasets, localization, permissions and error recovery;
-6. measurable acceptance checks, tests and reviewer responsibility.
-
-Read **only the applicable P/C sections** to keep prompts and context proportionate.
-
-### 9.4 Designer quality gates
-
-Review at least: product distinction, task hierarchy, composition, typography, palette and surface semantics, component craft, real data/copy, interaction completion, accessibility and responsive reliability. Record each meaningful finding with **route, viewport, affected state, evidence, severity, user impact, minimal repair, test and confidence**.
-
-- **No running browser?** Static critique only; visual quality `NOT_RUN` or `UNVERIFIED`.
-- **No actual user evidence?** Mark aesthetic assumptions clearly; do not invent user preference statistics.
-- **Existing design system?** Preserve its intended invariants; request approval for identity-breaking changes.
-- **Accessibility?** Automated checks help, but manual keyboard/assistive-tech testing is still necessary where applicable.
-- **Visual baselines?** Never silently replace screenshots to make a regression pass.
-
-## 10. Professional Backend Engineering: Production Grade
-
-The Backend specialist is a **Principal Backend Engineer**, not merely a Fastify route generator. The extension includes **14 task-activated Backend engineering skills plus one reference router (15 `SKILL.md` files)** and seven companion manuals, sourced from the actual distribution. It requires domain invariants, typed API contracts, object/property/tenant authorization, transactional integrity, failure-safe side effects, observability, focused testing and migration-aware releases. Existing frameworks other than Fastify remain valid; the stack defaults are preferences, never reasons for unsolicited rewrites.
-
-### 10.1 The 15 bundled backend skills
-
-| Bundled skill | Responsibility |
-|---|---|
-| [`webteam-backend-domain-architecture`](skills/webteam-backend-domain-architecture/SKILL.md) | Business capabilities, modular architecture, invariants and boundaries |
-| [`webteam-backend-api-contract-engineering`](skills/webteam-backend-api-contract-engineering/SKILL.md) | Request/response schemas, OpenAPI compatibility, pagination and API evolution |
-| [`webteam-backend-fastify-typescript-engineering`](skills/webteam-backend-fastify-typescript-engineering/SKILL.md) | Fastify encapsulation, validators, serializers, Node/TS lifecycle and safe config |
-| [`webteam-backend-authz-multitenancy`](skills/webteam-backend-authz-multitenancy/SKILL.md) | Session/OAuth where applicable, fine-grained permissions and tenant boundaries |
-| [`webteam-backend-data-protection-inputs`](skills/webteam-backend-data-protection-inputs/SKILL.md) | Input complexity, SSRF, injection, sensitive output and log protection |
-| [`webteam-backend-persistence-consistency`](skills/webteam-backend-persistence-consistency/SKILL.md) | Transactions, concurrency, indexes, migration expand/contract |
-| [`webteam-backend-async-workflows`](skills/webteam-backend-async-workflows/SKILL.md) | Queues, outbox/inbox, idempotency, background jobs and replay |
-| [`webteam-backend-reliability-engineering`](skills/webteam-backend-reliability-engineering/SKILL.md) | Deadlines, bounded retries/jitter, backpressure, graceful shutdown |
-| [`webteam-backend-observability-sre`](skills/webteam-backend-observability-sre/SKILL.md) | Metrics, traces, redacted logs, SLI/SLO and operations |
-| [`webteam-backend-performance-engineering`](skills/webteam-backend-performance-engineering/SKILL.md) | Measured p95/p99, query profiling, cache correctness, capacity |
-| [`webteam-backend-testing-quality`](skills/webteam-backend-testing-quality/SKILL.md) | Fastify inject, auth/tenant negatives, API contracts, race/fault tests |
-| [`webteam-backend-external-integrations`](skills/webteam-backend-external-integrations/SKILL.md) | OAuth providers, inbound webhooks, retries, secrets and provider failures |
-| [`webteam-backend-files-realtime-search`](skills/webteam-backend-files-realtime-search/SKILL.md) | Upload/download, streaming, SSE/WebSockets, safe search |
-| [`webteam-backend-production-readiness`](skills/webteam-backend-production-readiness/SKILL.md) | Release safety, restores, version support and operational readiness |
-| [`webteam-backend-engineering-reference`](skills/webteam-backend-engineering-reference/SKILL.md) | Load only the matching reference documents and capability blueprints |
-
-### 10.2 Reference manuals, loaded on demand
-
-The router links seven authored sources under [`skills/webteam-backend-engineering-reference/references/`](skills/webteam-backend-engineering-reference/references/):
-
-1. [`API_CONTRACT_PLAYBOOK.md`](skills/webteam-backend-engineering-reference/references/API_CONTRACT_PLAYBOOK.md) — HTTP semantics, request/response schema, errors and client compatibility.
-2. [`SECURITY_ABUSE_CASES.md`](skills/webteam-backend-engineering-reference/references/SECURITY_ABUSE_CASES.md) — object/property/tenant authorization matrix, abuse tests, OAuth and privacy.
-3. [`DATA_CONSISTENCY_PATTERNS.md`](skills/webteam-backend-engineering-reference/references/DATA_CONSISTENCY_PATTERNS.md) — race control, transactions, safe migrations and durable idempotency.
-4. [`ASYNC_RELIABILITY_PATTERNS.md`](skills/webteam-backend-engineering-reference/references/ASYNC_RELIABILITY_PATTERNS.md) — outbox/inbox, jobs, webhooks, timeouts/retries.
-5. [`FASTIFY_NODE_RECIPES.md`](skills/webteam-backend-engineering-reference/references/FASTIFY_NODE_RECIPES.md) — Fastify hooks/encapsulation, schemas, TS and process lifecycle.
-6. [`OPERATIONS_AND_TEST_MATRIX.md`](skills/webteam-backend-engineering-reference/references/OPERATIONS_AND_TEST_MATRIX.md) — operational SLO evidence, CI/contract/authz/chaos tests.
-7. [`BACKEND_CAPABILITY_BLUEPRINTS.md`](skills/webteam-backend-engineering-reference/references/BACKEND_CAPABILITY_BLUEPRINTS.md) — **B01–B24**, covering identity, roles, search, billing, scheduling, uploads, queues, webhooks, realtime, reports, AI endpoints and more.
-
-These reference materials are **not automatically injected wholesale** into every backend task. Select one or two relevant skills and only matching reference headings, while preserving existing project choices and observed facts.
-
-### 10.3 Typical backend implementation flow
-
-1. **Discover evidence:** read actual API code, consumers, DB/store, deployment versions, permissions, tests and uncommitted changes; mark uncertain facts.
-2. **Define contract:** actor/action/resource, data sensitivity, invariant, request+response schema, error/status behavior, side effects and failure mode.
-3. **Choose minimal architecture:** prefer a modular monolith and store/provider patterns already justified by requirements. Avoid speculative brokers, microservices and event sourcing.
-4. **Implement safely:** authz server-side at object and property level, guard transactions and unknown write outcomes, bound I/O, preserve backward compatibility and test migrations off production.
-5. **Verify adversarially:** negative permissions, duplicate writes, two-writer races, exhausted resources, partial network failure and real response serialization when relevant.
-6. **Report evidence:** tests actually executed, observed cost/latency only, residual risk, rollout/rollback, owner approvals for consequential changes.
-
-### 10.4 `/webteam_backend`: report, plan and bounded safe fix
-
-Run from the intended project root after checking OMP command discovery:
-
-```text
-/webteam_backend --mode=report --scope=all --depth=deep --roadmap=on
-/webteam_backend --mode=plan --scope=api,auth,data
-/webteam_backend --mode=report --scope=async --routes=/api/jobs
-/webteam_backend --mode=fix --scope=api --max-fixes=3
-/webteam_backend --mode=fix --scope=all --dry-run
-```
-
-- **`report`** (default): read-only application inspection, write an evidence-based Markdown report under `docs/audits/`, list `BE-*` findings and optional separate capability roadmap.
-- **`plan`**: additionally write ordered `P0–P3` work packages with API/migration compatibility, required tests, owners and rollback. No source edits.
-- **`fix`**: implement only a few **already approved, reversible local corrections**, and verify the changed scope. The flag does **not** authorize production writes, security policy changes, destructive migrations, payment operations, secret rotations, provider changes or deployment. Those always need separate approval.
-
-The command is a native **prompt-expander**, not an executable test framework. It does not by itself prove that `webteam-backend` was called; observe actual native `task` delegation and tool output. Its report must distinguish `PASS_VERIFIED`, `PARTIAL_VERIFIED`, `FAIL`, `BLOCKED`, `NOT_RUN` and `NOT_APPLICABLE` rather than asserting compliance.
-
-### 10.5 Professional standards and versioning
-
-- **OWASP ASVS 5.0.0** and API Security Top 10 (2023) inform specific abuse tests; an audit is not a security certification.
-- **RFC 9457** provides Problem Details for HTTP APIs; **RFC 9700** provides OAuth 2.0 security best current practices when OAuth is used.
-- **Fastify** compiles application-provided JSON Schemas and recommends response schemas; do not compile untrusted schemas or place DB I/O into initial validators.
-- **OpenAPI 3.2.0** exists, but generators may support only earlier versions: verify actual tool compatibility.
-- **OpenTelemetry JavaScript** tracing/metrics are stable; the logging SDK maturity and selected semantic conventions should be checked before adopting them.
-- **Node production version** should be an active/maintenance LTS compatible with project dependencies; verify lifecycle status at execution time.
-
-Backend owns service code. **Database** owns schema/migration design, **Security** the independent threat/permission review, **QA** independent test evidence, **Integration** provider contracts, **Performance** measurement, **DevOps** deployment and operations, and **Reviewer** consequential independent diff review. Respect single-writer ownership.
-
-
-## Specialized Product, Architecture and Database engineering
-
-The team ships **41 additional skills**: 13 Product (12 specialist + reference router), 13 Architect (12 specialist + reference router), and 15 Database (14 specialist + reference router). Together with 16 Designer, 15 Backend, 14 Frontend, 15 Security, 14 Performance, 15 QA, 14 Accessibility, 16 Integration and 12 Reviewer skills, the distribution now contains **172 installable `SKILL.md` files**. Product/Architect/Database supply 10 references, Frontend/Security/Performance supply 9, QA/Accessibility/Integration supply 9, Reviewer supplies 3, and earlier Designer/Backend supply the remaining 10: **41 bundled reference Markdown manuals**, loaded selectively, not dumped into every prompt.
-
-### Product — verified customer value and executable requirements
-
-`webteam-product` is the **Principal Product Strategist and Business Analyst**. It owns outcome/problem framing, research quality, personas/actors, product policies, user journeys, roadmap decisions and acceptance criteria. It must not fabricate interviews, market numbers, metric baselines or final legal conclusions. Major features require a linked chain: `outcome → evidence/opportunity → REQ → AC → UX/API/data → QA → metric`.
-
-**Bundled Product skills (13)**:
-
-- **`webteam-product-outcome-discovery`** — Outcome-driven discovery and problem framing.
-- **`webteam-product-research-evidence`** — User research, triangulation and evidence calibration.
-- **`webteam-product-market-strategy`** — Market, alternatives and differentiated positioning.
-- **`webteam-product-requirements-traceability`** — Functional requirements, quality attributes and acceptance engineering.
-- **`webteam-product-domain-workflows`** — Business process modeling and policy state machines.
-- **`webteam-product-prioritization-roadmaps`** — Outcome roadmapping, RICE/WSJF alternatives and capacity tradeoffs.
-- **`webteam-product-measurement-experiments`** — Product analytics, experimentation and instrumentation contracts.
-- **`webteam-product-information-content`** — Information architecture, content strategy and localization.
-- **`webteam-product-trust-privacy-ai`** — Trust, privacy, responsible AI and consent by design.
-- **`webteam-product-stakeholder-governance`** — Stakeholder alignment, decisions and change control.
-- **`webteam-product-commercial-flows`** — Commercial policies, entitlement and lifecycle UX contracts.
-- **`webteam-product-delivery-readiness`** — Product release criteria, adoption and feedback loops.
-- **`webteam-product-engineering-reference`** — load only task-relevant Product playbooks.
-
-**References:** `PRODUCT_DISCOVERY_PLAYBOOK.md`, `PRODUCT_CAPABILITY_BLUEPRINTS.md` (12 applied cases), `PRODUCT_TRACEABILITY_AND_MEASUREMENT.md`. Product discovery should start with outcome hypotheses and evidence confidence, not a pre-selected feature implementation; roadmap and feature recommendations must identify decision gates.
-
-### Architecture — design quality that can be proven
-
-`webteam-architect` owns measurable architecture drivers, bounded-context/module decisions, fit-for-purpose runtime/storage choice, trust boundaries, ADRs, contracts, reliability and change strategy. The default is the simplest architecture that meets verified requirements; C4 views are **communication artifacts**, and fitness functions/tests provide stronger evidence of fitness than diagrams alone.
-
-**Bundled Architect skills (13)**:
-
-- **`webteam-architect-architecture-drivers`** — Architecture drivers, quality-attribute scenarios and fitness.
-- **`webteam-architect-domain-boundaries`** — Bounded contexts and evolutionary modular monolith.
-- **`webteam-architect-architecture-views-adrs`** — C4 views, ADRs and decision provenance.
-- **`webteam-architect-fitness-functions`** — Architecture fitness functions and governance-as-code.
-- **`webteam-architect-integration-evolution`** — API/event integration architecture and compatibility.
-- **`webteam-architect-distributed-consistency`** — Distributed systems, consistency and failure models.
-- **`webteam-architect-reliability-operability`** — Reliability, SLOs, capacity and graceful degradation.
-- **`webteam-architect-threat-data-flows`** — Trust boundaries, threat modeling and privacy architecture.
-- **`webteam-architect-data-platform-decisions`** — Storage selection, data ownership and reporting topology.
-- **`webteam-architect-performance-economics`** — Performance architecture, workload modeling and cost.
-- **`webteam-architect-modernization-migration`** — Strangler modernization, migrations and legacy preservation.
-- **`webteam-architect-deployable-systems`** — Deployment, runtime boundaries and supply-chain architecture.
-- **`webteam-architect-engineering-reference`** — ADRs, C4, fitness and resilience playbooks.
-
-**References:** `ARCHITECTURE_DECISION_PLAYBOOK.md`, `ARCHITECTURE_CAPABILITY_BLUEPRINTS.md` (12 applied cases), `ARCHITECTURE_FITNESS_AND_RELIABILITY.md`. ISO/IEC 25010:2023 and the AWS Well-Architected six pillars are useful *reference models* rather than a certificate or a requirement to adopt AWS.
-
-### Database — correctness, performance, isolation and tested recovery
-
-`webteam-database` owns physical/logical persistence, data dictionaries, database-enforced invariants, indexes, transaction/concurrency boundaries, safe migration sequence, tenant access and backup/restore evidence. Keep the selected project DB unless change is justified and approved.
-
-**Bundled Database skills (15)**:
-
-- **`webteam-database-workload-data-modeling`** — Access-pattern-first relational/document modeling.
-- **`webteam-database-sqlite-engineering`** — SQLite durability, integrity and concurrency practice.
-- **`webteam-database-mongodb-engineering`** — MongoDB documents, validation, atomicity and indexes.
-- **`webteam-database-postgres-engineering`** — PostgreSQL constraints, MVCC, RLS and indexing.
-- **`webteam-database-schema-migration`** — Expand/contract migrations, data backfills and compatibility.
-- **`webteam-database-transaction-concurrency`** — Transactions, race conditions and business invariants.
-- **`webteam-database-query-index-performance`** — Query planning, indexes and workload-based tuning.
-- **`webteam-database-tenant-isolation`** — Tenant-aware partitioning, authorization and data sharing.
-- **`webteam-database-backup-recovery`** — Backup, PITR, restore tests and disaster recovery.
-- **`webteam-database-privacy-lifecycle`** — Classification, retention, deletion, legal holds and audit provenance.
-- **`webteam-database-outbox-integration`** — Outbox/inbox, CDC, sync and derived data correctness.
-- **`webteam-database-reporting-search`** — Reporting/search/analytics data architecture.
-- **`webteam-database-db-observability`** — Database operational monitoring, capacity and regressions.
-- **`webteam-database-data-quality-tests`** — Data quality, representative fixtures and property testing.
-- **`webteam-database-engineering-reference`** — cross-engine checklists and targeted data manuals.
-
-**References:** `DATA_MODELING_ENGINE_GUIDE.md`, `DATABASE_CAPABILITY_BLUEPRINTS.md` (14 applied cases), `MIGRATION_RECOVERY_AND_ISOLATION.md`, `SQLITE_MONGO_POSTGRES_CHECKLISTS.md`.
-
-**Engine-aware rules:** SQLite requires deliberate connection-level foreign-key configuration and safe live backups; WAL does not permit many concurrent writers. MongoDB modeling must balance bounded embedding against cross-document access and verify real transaction deployment prerequisites. PostgreSQL MVCC/RLS considerations apply only when PostgreSQL is used; RLS complements but does not replace application-layer authorization. All migration and recovery advice must be tested on an isolated target before production approval.
-
-### Cross-agent handoff and ownership
-
-| Decision/artifact | Accountable lead | Supporting reviewers | Required evidence |
-|---|---|---|---|
-| Problem / outcomes / role policy intent | Product | Designer, QA, Security | research provenance, REQ/AC, success metric |
-| Structural boundaries / major tradeoffs | Architect | Backend, Database, DevOps | ADR, alternatives, fitness check |
-| Schema, integrity, indexes and migrations | Database | Backend, QA, Security, DevOps | workload, invariants, migration/restore rehearsal |
-| API/business transactions | Backend | Product, Database, Security | validated contracts, idempotency and tests |
-| UX and accessibility | Designer | Product, Frontend, Accessibility, QA | journey and tested interaction contract |
-| Security and operational release | Security/DevOps | Architect, QA, Database | threat model, permissions, rollout/recovery |
-
-No agent can silently change another agent's approved policy or claim a test was run without actual execution. `Product` determines *what/why*, `Architect` *how the structure meets quality*, `Database` *how data remains correct and recoverable*. The orchestrator chooses only the smallest relevant team.
-
-### Three dedicated audit/plan/fix commands
-
-| Command | Report focus | Example |
-|---|---|---|
-| `/webteam_product` | Evidence, outcomes, research, requirements, roadmap and acceptance gaps | `/webteam_product --mode=plan --scope=requirements,roadmap` |
-| `/webteam_architect` | Bounded contexts, dependency contracts, quality fitness, migration and resilience | `/webteam_architect --mode=report --scope=all --depth=deep` |
-| `/webteam_database` | Integrity, indexes, concurrency, tenant isolation, migrations and restore readiness | `/webteam_database --mode=report --scope=all --depth=deep` |
-
-Each uses `--mode=report|plan|fix`, `--scope`, `--depth`, `--roadmap`, optional `--output` (new `.md` in `docs/audits/`) and `--max-fixes` for limited safe local fixes. `report` and `plan` write only the sanitized report; `fix` cannot authorize production DB operations, changing product entitlements/strategy, deploying infrastructure or breaking interfaces. Commands are Markdown **prompt expansions**; flags are interpreted by MAIN, not a typed CLI parser. Re-read each command template for full constraints.
-
-### Targeted operating sequence
-
-1. For new features, have Product validate assumptions and acceptance criteria; Architect document consequential tradeoffs; Database map invariants and workload before Backend writes handlers.
-2. For existing projects, audit actual source/database configuration first, preserving business and storage decisions unless approved for change.
-3. Delegate to QA for negative authorization, concurrency, migration, boundary and recovery checks; require measured evidence before declaring production readiness.
-4. Reuse `/webteam_audit` for cross-discipline reports; link specialized finding IDs rather than duplicating contradictory remediation plans.
-
-
-## 11. Technical stack and implementation standards
-
-The preferred baseline is a starting point, **not a blanket instruction to install every library**.
-
-| Area | Typical option | Selection guidance |
-|---|---|---|
-| Language/runtime | TypeScript, Node.js | Verify versions, deployment/runtime constraints |
-| Backend framework | Fastify | Typed, modular APIs, service boundaries, hooks/encapsulation |
-| Validation | Zod | Runtime boundary validation and coherent contracts |
-| Formatting/lint | Biome | One compatible, consistent project policy |
-| Frontend | Vite + React **or** SolidJS | Choose one based on project context and requirements |
-| Client libraries | Appropriate TanStack packages when needed | Router/Query/Table/Form/Virtual only if justified |
-| Database | SQLite **or** MongoDB | Choose based on query/transaction model, scale and operations |
-| Tests | Vitest, Fastify `inject`, Playwright | Unit, component, integration, API and UI evidence |
-| UI implementation | Semantic HTML, CSS/design tokens, justified accessible primitives | Design identity, states, keyboard support, actual content |
-| Delivery | Suitable CI, containers and observability | Reproducible environments, least privilege, rollback |
-
-Major choices belong in `TECH_STACK.md`/ADRs. Prefer maintainable modular structure over speculative microservices; confirm existing contracts before changing frameworks or persistence.
-
-### Engineering expectations
-
-- Explicit server-side authn/authz; never trust client-provided role or tenancy boundaries.
-- Safe inputs, bounded resource usage, consistent errors and structured redacted logs.
-- Reversible migrations with tested restore paths when data is involved.
-- Typed API and database boundaries, idempotent external actions and observability.
-- Async UI state correctness: loading, empty, partial, retry, error, stale, unauthorized and success.
-- Responsive and accessible interactions across representative real devices/viewports.
-- Dependency and license review before introducing third-party code or assets.
-
-## 12. Testing strategy and evidence-based quality gates
-
-`webteam-qa` owns the overall quality strategy and harness; code authors contribute tests but cannot independently certify critical changes without appropriate review. Quality is **built during implementation**, not appended at the end.
-
-| Layer | Representative techniques | Evidence required |
-|---|---|---|
-| Unit | Vitest functions, guards, validators and core business rules | Commands/results, assertions and negative paths |
-| Component | React/SolidJS interaction tests | User-visible state, keyboard, errors and validation |
-| API | Fastify `inject`, schema and auth tests | Request/response contract, errors, ownership/tenancy |
-| Integration | Disposable DB, contracts, workers, external mocks | Boundaries, data integrity, retries/idempotency |
-| End-to-end | Playwright critical user journeys | Accessible flow completion, relevant fixtures and browsers |
-| Visual | Playwright screenshot comparisons | Pinned browser/OS/fonts/viewport/data/locale/theme |
-| Security | Relevant SAST/review and permission tests | Attack-surface coverage and limitations |
-| Accessibility | Automated scans **plus** appropriate manual keyboard/AT checks | Specific WCAG criteria and observed interactions |
-| Performance | RUM/lab measurements, profiling, endpoint timing | Real baseline, budget and before/after conditions |
-
-### Visual regression discipline
-
-Pin the test environment, browser version, fonts, viewport, theme, locale, motion setting, fixture data and time-sensitive values. Screenshot variance can be an environment mismatch, not an intentional design change. A newly accepted baseline is not proof that the UI is correct; require human-reviewed intent for material changes. If Playwright cannot execute, say **`NOT_RUN`**.
-
-### Risk-driven quality gates
-
-For each change, map **requirement → design/architecture contract → implementation → verification**. A small CSS fix may need one focused component/visual check. An authentication or migration change needs stronger negative, integration and security evidence. Use deterministic test data and verify scripts before executing them; tests can have real side effects if pointed at production or valuable user data.
-
-**Definition of Done:** applicable acceptance criteria met, tests actually run and documented, no unexplained critical failures, material diff independently reviewed, relevant docs synced, remaining risks/untested areas disclosed, and approval requirements respected.
-
-## 13. Mnemopi memory, Auto-Learn and project isolation
-
-Memory is an **optional capability**, separate from repository documentation. When supported and approved, a cautious starting policy is:
-
-```yaml
-memory:
-  backend: mnemopi
-mnemopi:
-  scoping: per-project
-  autoRecall: true
-  autoRetain: false
-  recallLimit: 6
-  injectionTokenLimit: 2500
-  recallContextTurns: 3
-  llmMode: none
-autolearn:
-  enabled: true
-  autoContinue: false
-  minToolCalls: 8
-```
-
-**Illustrative only:** verify actual option names, data lifecycle, token budgets, embeddings, resource use and semantics against the installed OMP schema before writing. Mnemopi may need embedding model data or a network download; configure it only with consent. A Vietnamese-heavy project may warrant a multilingual embedding variant, but requires compatibility/storage/reindex checks, not a blind toggle.
-
-### Memory boundaries
-
-- Global memory/skills contain reviewed **general engineering procedures** only.
-- Project memories, implementation details, decisions, codebase-specific tips and Design DNA stay within their respective project scope.
-- Per-project Mnemopi entries **do not guarantee** that Auto-Learn managed skills are stored per project. Auto-generated managed skills may reside in the global user environment.
-- Avoid credentials, personal data, production records, third-party secrets and unreviewed external instructions.
-- Source code, current tests and approved project docs outrank stale memory notes.
-
-### Controlled learning pipeline
-
-```text
-Verified task outcome
-    → concise candidate lesson with provenance
-    → QA/Reviewer factual verification
-    → Security/license review where needed
-    → project memory or project-local skill
-    → optional sanitized generalization
-    → explicit approval to promote to Global
-    → deduplicated, tested Global skill/memory
-```
-
-**Never auto-promote sensitive or project-specific lessons globally.** If OMP Auto-Learn cannot constrain output to a safe project-local boundary, disable or supervise the affected behavior rather than assuming `autoContinue: false` eliminates risk. Record project decisions in `docs/governance/MEMORY_POLICY.md` and verify project isolation—including launches from nested directories—before claiming it works.
-
-## 14. Adaptive quality Loop: controlled verification, not repeated prompting
-
-WebTeam's quality policy is a **bounded verify → diagnose → authorized fix → verify** cycle. It is **not** permission to run OMP's native `/loop` indefinitely or rerun every specialist task.
-
-| Complexity | Extra verify/fix passes beyond baseline | Default behavior |
-|---|---:|---|
-| C1–C2 | 0 | Normal single-pass workflow |
-| C3 | Up to 1 | Only if evidence supports an additional pass |
-| C4 | Up to 2 | Predefined budget, tests and stop conditions |
-| C5 | Up to 3 | Consequential decisions require approval and escalation |
-
-**Count baseline verification as pass 0.** Native `/loop` count semantics may differ; verify before using it. Normal setting is **native continuous Loop OFF, task-scoped policy ASK**. Only enable native automation if the installed OMP version demonstrably supports finite bounds, stop/cancel, safe async settlement and non-idempotent-operation protection in a disposable test.
-
-The bootstrap should create `webteam-adaptive-quality-loop` and `webteam-loop-evidence-evaluator` as real skills. Each extra pass needs a changed hypothesis and fresh reproducible evidence, not mere dissatisfaction. Stop on PASS, no progress, regression, risk/permission conflict, exhausted budget, deadline, or unreliable runtime control. A retry or model fallback **does not reset** the pass counter; do not nest model councils, fallback and repeated tools into runaway cost.
-
-Use `/webteam_quality_loop` to propose or run an appropriately approved bounded cycle. No Loop may approve its own destructive operation, provider change, production deployment, snapshot re-baseline or Global memory promotion.
-
-## 15. Optional runtime integrations
-
-### Caveman — `JuliusBrussee/caveman`
-
-If installed and compatible with the active OhMyPi runtime, Caveman can assist with focused investigation, edits or task workflows. Verify the actual extension, exposed capabilities, health, current permissions and interactions with existing orchestration before use. Do not assume OpenCode-oriented instructions work in OMP, or accidentally create a second autonomous multi-agent hierarchy.
-
-### Codebase Memory MCP — `DeusData/codebase-memory-mcp`
-
-When connected and approved, a code graph/index may help discover symbols, dependencies, references and implementation impact. Scope indexes to the authorized project, check freshness and exclusions, and confirm returned facts against actual code. **MCP tools may be visible/additive to subagents even when a prompt says “read only”; verify effective privileges.** Do not index secrets or neighboring projects automatically.
-
-### Browser and test tooling
-
-Use the actual available browser, Playwright installation and configured safe environments. Screenshots, visual comparisons, app launches, test fixtures and paid services may require explicit authorization. Optional tool absence is reported clearly; it is not a reason to fabricate test evidence.
-
-### Integration readiness checklist
-
-- Package/connector is installed, compatible, accessible and authorized.
-- Effective subagent tools and credentials are constrained by the host runtime.
-- Network/data egress and index scope are approved.
-- Runtime smoke test is harmless and recorded.
-- Failure falls back to a documented native/manual workflow, not invented tool output.
-
-## 16. Native slash command reference
-
-OMP Markdown slash commands are **prompt expanders**. They are not executable scripts, formal CLI parsers, tool-permission boundaries or guaranteed agent launchers. The command filename supplies the slash name; `$ARGUMENTS` is inserted as **untrusted text**. The MAIN session interprets documented flags, enforces authorizations and delegates through OMP's actual `task` tool when available.
-
-Global commands are typically installed under the **active** user-profile `commands/` directory; project commands under `<project>/.omp/commands/`. Discover the real OMP rules and collision precedence before installing. Keep **one flat file per command**.
-
-### All 33 commands
-
-| Command | Purpose and default safety | Canonical file |
-|---|---|---|
-| `/webteam_create_project` | Progressive new-project onboarding and docs; consent before scaffolding | [`webteam_create_project.md`](commands/webteam_create_project.md) |
-| `/webteam_adopt_project` | Evidence-based existing-repository adoption; discovery first | [`webteam_adopt_project.md`](commands/webteam_adopt_project.md) |
-| `/webteam_status` | Read-only project status, blockers and current verified work | [`webteam_status.md`](commands/webteam_status.md) |
-| `/webteam_plan` | Dependency-aware plan and acceptance criteria; no code by default | [`webteam_plan.md`](commands/webteam_plan.md) |
-| `/webteam_implement` | Implement scoped, authorized features with relevant specialists | [`webteam_implement.md`](commands/webteam_implement.md) |
-| `/webteam_design_audit` | Read-only Design DNA extraction, preservation and consistency review | [`webteam_design_audit.md`](commands/webteam_design_audit.md) |
-| `/webteam_uiux` | Deep visual/UX and component audit, plan or bounded fix | [`webteam_uiux.md`](commands/webteam_uiux.md) |
-| `/webteam_backend` | Backend, API, authz/data, reliability/security audit with report, plan or bounded safe fixes | [`webteam_backend.md`](commands/webteam_backend.md) |
-| `/webteam_product` | Product evidence, requirements, outcome and roadmap audit/plan/bounded fix | [`webteam_product.md`](commands/webteam_product.md) |
-| `/webteam_architect` | Architecture quality, boundaries, ADR, fitness and migration audit/plan/bounded fix | [`webteam_architect.md`](commands/webteam_architect.md) |
-| `/webteam_database` | Database integrity, migrations, tenancy and recovery audit/plan/bounded fix | [`webteam_database.md`](commands/webteam_database.md) |
-| `/webteam_frontend` | Evidence-based frontend architecture, rendering, accessibility and client-correctness audit, plan and bounded fixes | [`webteam_frontend.md`](commands/webteam_frontend.md) |
-| `/webteam_security` | Risk-based application security verification, threat model, OWASP ASVS controls, remediation plan and restricted fixes | [`webteam_security.md`](commands/webteam_security.md) |
-| `/webteam_performance` | Measured frontend/API/database capacity and reliability performance audit, plan and bounded safe optimization | [`webteam_performance.md`](commands/webteam_performance.md) |
-| `/webteam_qa` | Comprehensive quality/testing audit, plan, bounded safe test-harness remediation | [`webteam_qa.md`](commands/webteam_qa.md) |
-| `/webteam_accessibility` | WCAG 2.2 AA, ARIA/keyboard/assistive, grid and industrial kiosk audit | [`webteam_accessibility.md`](commands/webteam_accessibility.md) |
-| `/webteam_integration` | API/events, ERP/MES/WMS, reconciliation and strictly governed industrial telemetry | [`webteam_integration.md`](commands/webteam_integration.md) |
-| `/webteam_architecture_audit` | System boundaries, contracts, reliability and migration risks | [`webteam_architecture_audit.md`](commands/webteam_architecture_audit.md) |
-| `/webteam_security_audit` | Risk-ranked security analysis, no intrusive testing by default | [`webteam_security_audit.md`](commands/webteam_security_audit.md) |
-| `/webteam_audit` | Full-project evidence-backed report, remediation plan, bounded safe fixes | [`webteam_audit.md`](commands/webteam_audit.md) |
-| `/webteam_test` | Risk-selected unit/component/API/integration/E2E checks | [`webteam_test.md`](commands/webteam_test.md) |
-| `/webteam_visual_test` | Deterministic Playwright screenshot/visual evaluation | [`webteam_visual_test.md`](commands/webteam_visual_test.md) |
-| `/webteam_review` | Independent diff/code/design review | [`webteam_review.md`](commands/webteam_review.md) |
-| `/webteam_reference_analyze` | Analyze external Git references, provenance, license and adoption risk | [`webteam_reference_analyze.md`](commands/webteam_reference_analyze.md) |
-| `/webteam_memory_review` | Mnemopi/Auto-Learn boundaries, quality and isolation review | [`webteam_memory_review.md`](commands/webteam_memory_review.md) |
-| `/webteam_models_audit` | Verify model roles, default provider, fallback and council policy | [`webteam_models_audit.md`](commands/webteam_models_audit.md) |
-| `/webteam_quality_loop` | Govern finite evidence-based verify/fix passes | [`webteam_quality_loop.md`](commands/webteam_quality_loop.md) |
-| `/webteam_docs_sync` | Detect inconsistencies among code, product, design and tests | [`webteam_docs_sync.md`](commands/webteam_docs_sync.md) |
-| `/webteam_healthcheck` | Consented, harmless observed orchestration/delegation smoke tests | [`webteam_healthcheck.md`](commands/webteam_healthcheck.md) |
-| `/webteam_release_check` | Release readiness assessment **without automatic deployment** | [`webteam_release_check.md`](commands/webteam_release_check.md) |
-| `/webteam_monitor` | One-shot read-only subagent activity/Agent Hub visibility snapshot | [`webteam_monitor.md`](commands/webteam_monitor.md) |
-| `/webteam_agents` | Read-only 16-agent discovery/model/skill inventory | [`webteam_agents.md`](commands/webteam_agents.md) |
-| `/webteam_help` | Explain command usage and applicable workflow | [`webteam_help.md`](commands/webteam_help.md) |
-
-### Useful everyday command examples
-
-```text
-/webteam_help
-/webteam_create_project "Attendance and School Equipment Management"
-/webteam_adopt_project "/path/to/current-app"
-/webteam_status
-/webteam_plan "Add granular user permissions and audit history"
-/webteam_implement "Add the approved permission matrix and tests"
-/webteam_test "API authorization and teacher dashboard"
-/webteam_visual_test "/dashboard"
-/webteam_review "Current uncommitted diff"
-/webteam_docs_sync
-/webteam_release_check "staging"
-```
-
-**Commands are optional entry points.** The same intentions can be expressed in natural language. Agent routing must still be verified through observed delegation, not assumed from a command name.
-
-## 17. Comprehensive project audit
-
-`/webteam_audit` performs risk-driven coverage across product fit, architecture, frontend, UI/UX, backend, database, security/privacy, accessibility, testing, performance, operations, integrations/AI and documentation. A full-scope audit **must disclose what could not be examined**.
-
-### Modes and common commands
-
-| Mode | Source code | Markdown report | Remediation planning | Feature roadmap |
-|---|---|---|---|---|
-| `report` | Read-only by default | Required | Prioritized recommendations | On by default |
-| `plan` | Read-only by default | Required | Sequenced, dependency-aware implementation plan | Off unless requested |
-| `fix` | Bounded approved local changes only | Required with fix ledger | Required | Off unless requested |
-
-```text
-/webteam_audit --mode=report --scope=full --depth=standard --roadmap=on
-/webteam_audit --mode=plan --scope=security,backend --depth=deep
-/webteam_audit --mode=fix --scope=frontend --max-fixes=3 --budget=normal
-```
-
-### Supported argument contract
-
-| Option | Valid values | Default / critical behavior |
-|---|---|---|
-| `--mode` | `report`, `plan`, `fix` | `report` |
-| `--scope` | `full` or applicable listed domain(s) | `full`; `full` is risk-driven, not guaranteed exhaustive coverage |
-| `--depth` | `quick`, `standard`, `deep` | `standard`; deep does not authorize intrusion or high-cost jobs |
-| `--roadmap` | `on`, `off` | On in report; off in plan/fix |
-| `--output` | Safe new `docs/audits/*.md` path | Generated new report filename; no overwrite, traversal or escaping symlinks |
-| `--max-fixes` | Integer 1–20 | 5 for fix; issue count, **not** Loop iterations |
-| `--budget` | `small`, `normal`, `extended` | `normal`; advisory effort label, not a hard provider charge cap |
-
-Read the [canonical command contract](commands/webteam_audit.md) for exact domains and validation rules. Markdown does not enforce these parameter types; the running OMP agent must validate arguments before work.
-
-### Report contract
-
-Each mode produces **one redacted Markdown report inside the authorized repository's `docs/audits/`**, if safe writing is permitted. It must include an executive decision/limitations, scope and methods, evidence ledger with observed results, domain coverage, prioritized findings and detailed reproduction, risk register, phased remediation, optional feature roadmap, fix ledger for `fix`, residual risk and decisions still needed.
-
-Use clear IDs such as `AUD-001` and priorities `P0–P4`. Separate **confirmed defects, hypotheses, missing evidence and strategic product opportunities**. A “GO” release recommendation or passing subset of checks is **not** a security certification.
-
-### Fix-mode protections
-
-A request explicitly using `--mode=fix` permits **reasonable reversible local fixes within the specified repository and approval rules**, not unrestricted self-modification. It does **not** authorize production requests, schema/data destruction, secret changes, purchases, provider reconfiguration, Git push/commit, deployment, security bypasses or silent screenshot-baseline updates. One writer owns a path; verify each material change with relevant tests and independent review. If a safe report path cannot be written, state the blocker—do not claim the file exists.
-
-## 18. Dedicated UI/UX quality and remediation
-
-`/webteam_uiux` applies the advanced Designer skills and matching P01–P22/C01–C38 contracts to **rendered user experience, not merely CSS formatting**. It complements, but does not replace, other audits:
-
-- `/webteam_design_audit`: discover and preserve project Design DNA (usually read-only).
-- `/webteam_visual_test`: observed Playwright screenshots and UI interactions.
-- `/webteam_audit`: broad full-stack health including design as one domain.
-- `/webteam_uiux`: specialist visual language, page/task hierarchy, interaction behavior, component contracts, responsive states, and safe remediation.
+| `docs/PRODUCT.md` | Product | Actors, business rules, user goals and success metrics |
+| `docs/DESIGN.md` | Designer | Visual identity, typography, tokens, components, interaction states |
+| `docs/ARCHITECTURE.md` | Architect | Context, boundaries, quality scenarios, diagrams and ADR links |
+| `docs/TECH_STACK.md` | Architect + implementers | Approved runtime/framework/data/third-party choices |
+| `docs/ROADMAP.md` | Product + Orchestrator | Evidence-based milestones, dependencies and hypotheses |
+| `docs/TEST_STRATEGY.md` | QA | Test pyramid, fixtures, tooling, CI and risk matrix |
+| `docs/SECURITY.md` / privacy policy | Security + Product | Data classification, threat boundaries, accepted risks |
+| `docs/governance/MEMORY_POLICY.md` | Orchestrator | Memory scope, retention and promotion approvals |
+| `docs/DECISIONS.md`, `docs/adr/` | Architect + decision owners | Dated decisions and alternatives |
+| `docs/audits/*.md` | Audit owner | Observed findings, tests, plans and accepted constraints |
+
+Treat source code, tests, configuration and actual behavior as evidence. Project documents remain valuable decisions but should not be blindly trusted if stale. Keep the project context compact: `.omp/AGENTS.md` should link to the relevant sources rather than pasting all reference manuals into every prompt.
+
+## Bundled skills and reference manuals
+
+OMP skills live under `skills/<exact-name>/SKILL.md`, each with `name` and `description` frontmatter. The startup model should receive lightweight discovery information and load skill bodies/references when applicable. All references must live under their own skill directory and be read by exact path or `skill://...` only when the installed runtime supports those addresses. Avoid eager loading many skills into context.
+
+| Discipline | Bundled skills | Reference manuals | Coverage |
+|---|---:|---:|---|
+| Accessibility | 14 | 3 | WCAG/APG, keyboard/AT, forms, grids, dense interfaces; [Accessibility examples](skills/webteam-accessibility-aria-widgets-interaction/SKILL.md) |
+| Architect | 13 | 3 | C4/ADR, boundaries, fitness, reliability and modernization; [Architect examples](skills/webteam-architect-architecture-drivers/SKILL.md) |
+| Backend | 15 | 7 | Fastify/TypeScript contracts, authz, consistency, async/reliability; [Backend examples](skills/webteam-backend-api-contract-engineering/SKILL.md) |
+| Database | 15 | 4 | SQLite/PostgreSQL/MongoDB, invariants, concurrency, tuning and migrations; [Database examples](skills/webteam-database-backup-recovery/SKILL.md) |
+| Designer | 16 | 3 | Art direction, Design DNA, 22 page patterns, 38 component contracts, visual critique; [Designer examples](skills/webteam-auth-profile-settings-ux/SKILL.md) |
+| Frontend | 14 | 3 | Typed state and forms, complex components, accessibility, browser correctness; [Frontend examples](skills/webteam-frontend-a11y-components/SKILL.md) |
+| Integration | 16 | 3 | SaaS/ERP/API events, webhooks, contract versioning and reconciliation; [Integration examples](skills/webteam-integration-api-versioning-consumer-contracts/SKILL.md) |
+| Orchestrator | 14 | 4 | Capability preflight, task DAG, budget/risk, provider governance and handoffs; [Orchestrator examples](skills/webteam-orchestrator-capability-and-risk-routing/SKILL.md) |
+| Performance | 14 | 3 | Web Vitals, API/DB profiles, load, SLO and measurable optimizations; [Performance examples](skills/webteam-performance-api-throughput-latency/SKILL.md) |
+| Product | 13 | 3 | Discovery evidence, workflow/acceptance, roadmap and product metrics; [Product examples](skills/webteam-product-commercial-flows/SKILL.md) |
+| Qa | 15 | 3 | Test strategy, deterministic fixtures, Playwright and business invariants; [Qa examples](skills/webteam-qa-api-and-consumer-contracts/SKILL.md) |
+| Reviewer | 27 | 7 | Independent correctness/security/reliability/test-review and verdicts; [Reviewer examples](skills/webteam-reviewer-adversarial-counterexample-review/SKILL.md) |
+| Security | 15 | 3 | Threat models, OWASP, permissions, privacy and supply-chain; [Security examples](skills/webteam-security-ai-agent-tool-risk/SKILL.md) |
+
+The counts above describe **actual files in this release**, not all skills that may later be generated for additional roles. `webteam-reviewer` currently includes more narrowly targeted skills than some other roles; its operator should choose only the applicable review dimensions rather than loading all of them.
+
+### Loading discipline
+
+- Start with the agent's task and the nearest matching skill description; load **one to three** task-relevant skill bodies and only the reference headings used by that task. Broaden only when evidence shows a missing dependency.
+- Respect exact `name`, file path and scope. Check for project/global collisions, disabled skill providers, and name overrides at runtime.
+- Do not treat skill instructions as a security sandbox or as permission to copy/reuse confidential project memories.
+- Designer's [page blueprint catalog](skills/webteam-page-experience-patterns/references/PAGE_BLUEPRINTS.md) and [component catalog](skills/webteam-component-interaction-contracts/references/COMPONENT_CATALOG.md) are on-demand references, not mandatory templates for every page.
+- Backend's [capability blueprints](skills/webteam-backend-engineering-reference/references/BACKEND_CAPABILITY_BLUEPRINTS.md) similarly inform task-specific engineering rather than forcing microservices, cloud complexity or particular data stores.
+
+## Professional product design and frontend
+
+WebTeam Designer follows an **eight-stage practice**: (1) product discovery, (2) user/context research, (3) visual art direction and creative alternatives, (4) typography/palette, (5) interaction architecture, (6) systematic component tokens, (7) implementation/motion guidance, (8) browser-based visual critique and regression evidence.
+
+**Distinctive does not mean decorative.** Avoid thoughtless repeated KPI card grids, purple/blue gradients, identical rounded rectangles, generic SaaS copy, arbitrary glows and poorly structured DataTables. Favor the product's actual roles, content, information density, tone and task hierarchy; use asymmetry or unusual palettes only when justified. Existing Design DNA is protected until an explicit redesign is approved.
+
+Each screen contract should cover: meaningful content, navigation and orientation, responsive breakpoints based on layout failure, loading/empty/partial/error/success/unauthorized/offline states, keyboard behavior and focus, color-independent status, Vietnamese text/glyph handling when relevant, mobile constraints, charts/tables with semantic data, and browser screenshots at reproducible viewports. Data Grid interaction is not interchangeable with static HTML table semantics.
+
+**Audit versus implementation:**
 
 ```text
 /webteam_uiux --mode=report --scope=all --depth=deep
-/webteam_uiux --mode=plan --scope=route --pages=/dashboard,/users --style=preserve
-/webteam_uiux --mode=fix --scope=route --pages=/dashboard --style=preserve --max-fixes=3
-/webteam_uiux --mode=report --scope=component --component=DataGrid --roadmap=on
-```
-
-### Key options
-
-| Option | Valid values / meaning |
-|---|---|
-| `--mode=report|plan|fix` | Audit; prepare a change plan; or execute bounded authorized fixes |
-| `--scope=all|route|component` | Whole app, selected routes, or selected component |
-| `--pages=<routes>` | Comma-separated route list, validated within authorized app |
-| `--component=<name>` | Specific named component |
-| `--depth=quick|deep` | Targeted static or deeper visual/interaction review |
-| `--style=preserve|evolve|redesign` | `preserve` default; identity-breaking redesign requires explicit approval |
-| `--reference=<URL>` | Design inspiration for analysis, **not automatic cloning** |
-| `--roadmap=on|off` | Optional improvement roadmap |
-| `--output=<safe-path>` | Markdown file within authorized project, default `docs/audits/UIUX_AUDIT_<date>.md` |
-| `--max-fixes=N` | Default 3, normally capped at 5 absent further approval |
-| `--budget=<cap>` | User-defined spending/effort limit; runtime enforcement must be verified |
-| `--dry-run` | Produce a proposed plan/report only, including in fix mode |
-
-Inspect the [canonical UI/UX command](commands/webteam_uiux.md) for validation nuances. Results should cover typography, brand, density, interactions, roles/states, layout composition, mobile, long text and locale expansion, accessibility and screenshots where actually available. Preserve intentional design system constraints. A subjective preference alone is not a severity-one defect, and a static review cannot honestly certify pixel quality.
-
-## 19. Day-to-day operational playbooks
-
-### Plan → implement → verify → review
-
-```text
-/webteam_plan "Create approval workflow for purchase requests"
-/webteam_implement "Implement the approved purchase approval workflow"
-/webteam_test "Approval workflow, unauthorized actions and failure paths"
-/webteam_review "Current change set"
-/webteam_docs_sync
-```
-
-An effective plan identifies dependency ordering, one source writer per area, acceptance criteria, risk and needed test owners. The Orchestrator chooses relevant agents and records remaining work honestly.
-
-### Preserve design when improving a mature product
-
-```text
-/webteam_design_audit "/dashboard and /users"
 /webteam_uiux --mode=plan --pages=/dashboard,/users --style=preserve
-/webteam_visual_test "/dashboard and /users"
+/webteam_uiux --mode=fix --pages=/dashboard --max-fixes=3
 ```
 
-Obtain approval before broad theme rewrites, changing primary navigation structure, replacing design tokens or rebaselining screenshots.
+Use `report` before redesigning a mature project. `fix` is limited to approved, reversible local UI changes with independent visual/keyboard regression evidence. Do **not** silently regenerate screenshot baselines or replace the brand identity. `/webteam_frontend` covers client architecture/correctness, while `/webteam_design_audit` focuses on understanding and preserving Design DNA.
 
-### Investigate a failing feature
+## Backend, database, integration and architecture
+
+**API boundaries:** explicit input/output schema, structured error contracts, authentication and object-level authorization, idempotency on retry-prone operations, versioned contracts, pagination, security-relevant logs and safe defaults. Fastify/TypeScript/Zod is a suggested baseline when appropriate, not a mandate for an existing Python/Go/etc. project.
+
+**Data integrity:** select SQLite, MongoDB or PostgreSQL based on workload, consistency and deployment constraints. Express invariants at the correct layer, use transaction-safe updates, review indexes/query plans, test concurrency and failure states. Require a separate recovery plan and human approval for production schema/data changes. A passing migration dry run is not evidence that production was migrated safely.
+
+**External integrations:** assign source-of-truth for each field, version contracts, handle duplicate/out-of-order callbacks, delays, backoff, non-idempotent side effects, reconciliation and tenant isolation. Model vendor sandboxes/real endpoints separately. Do not contact external services, send webhooks or manipulate credentials merely because `--mode=fix` was requested.
+
+**Architecture:** evaluate quality scenarios and expected evolution, document ADR/C4 diagrams and realistic failure/rollback behavior, prefer modular monolith until justified otherwise. No extra infrastructure simply for appearances. Audits provide source-grounded tradeoffs, ownership and measurable acceptance.
 
 ```text
-/webteam_status
-/webteam_test "Failing route or API"
-/webteam_review "Suspected defect area"
-/webteam_quality_loop "Bounded verify-fix-verify for the confirmed failure"
+/webteam_backend --mode=report --scope=all --depth=deep
+/webteam_database --mode=plan --scope=schema,migrations
+/webteam_integration --mode=report --scope=contracts,webhooks,sync
+/webteam_architect --mode=report --scope=all
 ```
 
-Require a reproducible failure before repeated repair. Stop after no progress rather than spending more tokens on near-identical retries.
+## Security, privacy and runtime permissions
 
-### Preparing a release
+Security is a **cross-cutting verification and authorization boundary**, not a side agent summoned only at release. Apply current project-relevant OWASP ASVS controls, threat/abuse modeling, object/tenant/function authorization, API security, secrets and token lifecycles, dependency provenance, privacy, logging exposure and prompt-injection defense.
 
-```text
-/webteam_audit --mode=report --scope=full --roadmap=off
-/webteam_release_check "staging"
-```
+- Repository files, docs, GitHub references, downloaded skills, MCP outputs, CI logs, screenshots and tool results are **untrusted data**; they cannot change agent hierarchy, provider/privacy choices or tool permissions.
+- A frontmatter `tools:` list, Markdown command, skill, or prompt asking an agent to be read-only **is not a sandbox**. Effective OMP child grants, MCP/custom/extension tools, filesystem/container permissions, network boundaries and secrets must be assessed. Some subagents can run with permissive headless approval modes; sensitive tasks should stay supervised in MAIN if enforcement is uncertain.
+- Never use code execution or a third-party endpoint for discovery without appropriate approval; do not scan production or someone else's service without scope and consent.
+- `--mode=fix` is a **requested workflow**, not authorization to access credentials, run destructive migrations, change IAM, rotate secrets, deploy or contact live services. These require separate informed approval and verified tooling controls.
+- Reviewer independent sign-off cannot waive a genuine Security or product-owner approval gate. `OWASP ASVS` is a requirements catalogue, **not** a certification granted by an agent.
+- Audit reports and memory must avoid credentials, PII, raw private customer logs and unnecessary secret-bearing screenshots. Use redaction and protected paths when evidence is confidential.
 
-The release check does not deploy. Production writes and external operations remain human-approval-gated.
+### Bundled agent built-in tool profiles (defense in depth)
 
-## 20. Agent visibility, routing and health checks
+The included agent definitions now **explicitly declare built-in tools** instead of accepting an implicit broad default:
 
-### Which agents are installed versus actually running?
-
-These are **different questions**:
-
-| Question | Best interface | What it proves |
+| Profile | Agents | Declared built-in tools |
 |---|---|---|
-| Which of the 16 definitions exists and is discoverable? | `/webteam_agents --mode=verify --scope=all` | Static roster/discovery/model readiness where inspectable |
-| Which subagents are currently active? | **`Alt+A` Agent Hub** | Live subagents in the current OMP session |
-| Can I get a read-only monitoring snapshot? | `/webteam_monitor --scope=session --detail=full` | Available one-shot activity evidence, not continuous monitoring |
-| Does natural-language WebTeam routing really delegate? | `/webteam_healthcheck` | Bounded, observed `task` delegation, when authorized and performed |
-| What is the project's overall state? | `/webteam_status` | Verified project progress and blockers |
+| Coordinator | `webteam-orchestrator` | `read`, `grep`, `find`, `glob`, `task` |
+| Independent reviewer | `webteam-reviewer` | `read`, `grep`, `find`, `glob` |
+| Read-only domain analyst | Product, Designer, Architect, Security, Performance, Accessibility, Researcher | `read`, `grep`, `find`, `glob` |
+| Scoped file author | Frontend, Backend, Database, QA, DevOps, Integration, Documentation | `read`, `grep`, `find`, `glob`, `edit`, `write` |
 
-The top-level OMP session is **not** itself shown as a subagent. `/agents` is about defined/configured agents, whereas `/jobs` concerns asynchronous tool jobs. An empty Agent Hub does not necessarily mean installation failed; it may mean no subagent was launched during the observed interval.
+No bundled agent definition grants **built-in `bash`** by default. It may still be necessary to run builds, tests and migrations from MAIN under actual host permissions and approvals. A write-capable agent may edit **only its expressly delegated local paths**; when path-level isolation cannot be enforced, MAIN should supervise the patch. The OMP `tools` list alone cannot prohibit an MCP or extension tool that is granted independently. Verify all effective grants during runtime acceptance, not merely these declarations.
 
-### Optional recommended OMP display configuration
+## Quality assurance, testing and release
 
-If the installed OMP schema accepts these settings and you approve the change:
+Pick test levels from actual risk and change impact: TypeScript/Biome checks, unit, component, schema/API, integration/contract, Playwright end-to-end, accessibility, visual regression, authorization negatives, concurrency/retry tests and relevant load tests. No test layer is compulsory for trivial cosmetic changes if a safer focused check meets acceptance criteria. Release-critical code must have appropriate independent QA/Reviewer checks.
+
+**Evidence contract:** capture exact command, environment, source revision, fixture/data provenance, exit status, key artifacts, flakiness and failures. `NOT_RUN` is not `PASS`; static screenshot existence does not prove a visual test ran. Preserve approved visual baselines and investigate diffs rather than silently accepting them.
+
+### Reviewer verdicts
+
+`/webteam_review` supports **`report`, `plan`, `verify`**, not `fix`. Reviewer must inspect actual diff/requirements/tests, express falsifiable issues with `path:line`, confidence and reproductions, remove false positives, delegate fixes to code owners and retest the same finding after change. The reviewer **never fixes then approves its own code**. Use `--mode=verify --finding=RV-001` when the reported finding exists.
+
+### Release readiness
+
+`/webteam_release_check` checks supported acceptance evidence, security and compatibility, migration and rollback plans, accessibility, operational readiness and blockers. It is **not** a deployment command. A status of `PASS_VERIFIED` requires actual corresponding evidence, not an optimistic prose conclusion.
+
+## Audits, reviews and controlled remediation
+
+### Comprehensive project audit
+
+```text
+/webteam_audit --mode=report --scope=full --depth=deep --roadmap=on
+/webteam_audit --mode=plan --scope=full
+/webteam_audit --mode=fix --max-fixes=3
+```
+
+Audit may inspect Product, Architect, Designer, Frontend, Backend, Database, Security, QA, Accessibility, Integration, Performance, DevOps, documentation and release behavior **as applicable**; it should not summon every agent automatically. Default creates a new redacted Markdown report under `docs/audits/` **if write permission exists**. If writing is blocked, return the report content in chat and clearly state no file was saved.
+
+A strong report includes audit date and revision, actual scope, evidence sources, coverage (`APPLICABLE / NOT_APPLICABLE / BLOCKED`), stable finding IDs, severity/confidence, reproducibility, impact, ownership, prioritized remediation dependencies, tests/acceptance, risk and rollback, optional outcome-based feature roadmap and residual unknowns. A speculative feature suggestion must not be presented as an observed bug.
+
+### Mode semantics for specialist commands
+
+| Mode | Allowed intent | Source edits? | Minimum output |
+|---|---|---|---|
+| `report` | Investigate and report | **No** (new report artifact only, where approved) | Findings with cited evidence and limitations |
+| `plan` | Report plus phased remediation | **No** (new report/plan artifact only, where approved) | Priorities, dependencies, owners, measurable gates |
+| `fix` | Apply a small, authorized local patch, then verify | **Only** with explicit scope/approval and actual enforced permissions | Before/after, diff, tests, independent review, rollback and blocked remainder |
+| `verify` | Independent recheck of a specified previous finding (Reviewer) | **No** | Retest evidence tied to finding and revision |
+
+**Argument parsing is not a security boundary.** All custom `.md` slash commands expand text with `$ARGUMENTS` under MAIN; do not feed this value into `eval`, shell, script or arbitrary endpoint. Unknown flags should lead to a clarification or safe refusal, not invention of behavior. Do not accept unsafe report paths, overwrite files through symlinks or write outside an approved repository. Each fix cycle has an explicit budget and stop condition.
+
+## Complete native command reference
+
+OMP discovers native `commands/*.md` non-recursively. Each file's **basename** defines `/command_name`; frontmatter supplies the description and argument hint. A successful autocomplete merely proves discovery/expansion and does not prove correct routing or actual subagent execution.
+
+### Project lifecycle
+
+| Command | Purpose / typical use |
+|---|---|
+| [`/webteam_create_project`](commands/webteam_create_project.md) | Initialize a new WebTeam web application with approved onboarding and project documents |
+| [`/webteam_adopt_project`](commands/webteam_adopt_project.md) | Safely analyze and onboard an existing codebase into Project WebTeam |
+| [`/webteam_status`](commands/webteam_status.md) | Report WebTeam project progress, blockers, agents and runtime capability status |
+| [`/webteam_plan`](commands/webteam_plan.md) | Create a bounded, dependency-aware implementation plan without coding |
+| [`/webteam_implement`](commands/webteam_implement.md) | Implement an approved feature using the right specialist agents |
+| [`/webteam_docs_sync`](commands/webteam_docs_sync.md) | Check alignment of requirements, design, architecture and tests |
+| [`/webteam_reference_analyze`](commands/webteam_reference_analyze.md) | Analyze a Git reference repository for safe, licensed adoption |
+
+### Orchestration and visibility
+
+| Command | Purpose / typical use |
+|---|---|
+| [`/webteam_orchestrate`](commands/webteam_orchestrate.md) | Plan and coordinate a bounded WebTeam task with verified native OMP delegation and independent quality gates. |
+| [`/webteam_dispatch`](commands/webteam_dispatch.md) | Inspect and prove WebTeam agent routing in a bounded, read-only OMP session test. |
+| [`/webteam_healthcheck`](commands/webteam_healthcheck.md) | Verify WebTeam installation and actual orchestration safely |
+| [`/webteam_agents`](commands/webteam_agents.md) | Inventory and validate installed WebTeam agent definitions, effective discovery and execution readiness |
+| [`/webteam_monitor`](commands/webteam_monitor.md) | Inspect live WebTeam subagents, Agent Hub visibility and monitoring settings without changing configuration |
+| [`/webteam_models_audit`](commands/webteam_models_audit.md) | Audit approved default models, fallback and council routing |
+| [`/webteam_memory_review`](commands/webteam_memory_review.md) | Audit project-scoped Mnemopi memory and Auto-Learn governance |
+| [`/webteam_quality_loop`](commands/webteam_quality_loop.md) | Propose or run a bounded verify-fix-verify cycle |
+| [`/webteam_help`](commands/webteam_help.md) | Explain the installed WebTeam commands and when to use them |
+
+### Broad assurance and delivery
+
+| Command | Purpose / typical use |
+|---|---|
+| [`/webteam_audit`](commands/webteam_audit.md) | Run comprehensive evidence-based WebTeam project audit with report, remediation plan or safe fixes |
+| [`/webteam_test`](commands/webteam_test.md) | Run relevant unit, integration, API and E2E tests |
+| [`/webteam_visual_test`](commands/webteam_visual_test.md) | Validate responsive visuals with Playwright screenshot baselines |
+| [`/webteam_review`](commands/webteam_review.md) | Independent evidence-based risk review and after-fix verification; read-only by default |
+| [`/webteam_release_check`](commands/webteam_release_check.md) | Run release-readiness checks without deploying |
+
+### Product, experience and architecture
+
+| Command | Purpose / typical use |
+|---|---|
+| [`/webteam_product`](commands/webteam_product.md) | Evidence-based product audit, remediation plan or narrowly bounded safe local fixes |
+| [`/webteam_uiux`](commands/webteam_uiux.md) | Audit, plan, or safely fix professional UI/UX issues across product surfaces |
+| [`/webteam_design_audit`](commands/webteam_design_audit.md) | Extract or verify project Design DNA and design consistency |
+| [`/webteam_architect`](commands/webteam_architect.md) | Evidence-based architecture audit, remediation plan or narrowly bounded safe local fixes |
+| [`/webteam_architecture_audit`](commands/webteam_architecture_audit.md) | Review architecture, contracts and migration risks |
+
+### Application and data engineering
+
+| Command | Purpose / typical use |
+|---|---|
+| [`/webteam_frontend`](commands/webteam_frontend.md) | Evidence-based frontend architecture, rendering, accessibility and client-correctness audit, plan and bounded fixes |
+| [`/webteam_backend`](commands/webteam_backend.md) | Comprehensive, evidence-based backend/API/security/reliability audit, remediation plan, or bounded safe fixes |
+| [`/webteam_database`](commands/webteam_database.md) | Evidence-based database audit, remediation plan or narrowly bounded safe local fixes |
+| [`/webteam_integration`](commands/webteam_integration.md) | Evidence-based Enterprise APIs, Events, SaaS Integration and Data Synchronization: report, remediation plan and bounded authorized local fixes |
+
+### Security, quality, accessibility and speed
+
+| Command | Purpose / typical use |
+|---|---|
+| [`/webteam_security`](commands/webteam_security.md) | Risk-based application security verification, threat model, OWASP ASVS controls, remediation plan and restricted fixes |
+| [`/webteam_security_audit`](commands/webteam_security_audit.md) | Assess threats, authorization and security boundaries |
+| [`/webteam_qa`](commands/webteam_qa.md) | Evidence-based Quality Engineering, Test Automation and Business Workflow Assurance: report, remediation plan and bounded authorized local fixes |
+| [`/webteam_accessibility`](commands/webteam_accessibility.md) | Evidence-based Accessibility, Inclusive Interactions and Operator-Ready UX: report, remediation plan and bounded authorized local fixes |
+| [`/webteam_performance`](commands/webteam_performance.md) | Measured frontend/API/database capacity and reliability performance audit, plan and bounded safe optimization |
+
+
+### Command selection guidance
+
+- Start with `/webteam_help` for discovered commands, `/webteam_healthcheck` for full configuration and delegation checks, `/webteam_agents` for configured definitions and `/webteam_monitor` for observed activity. `/webteam_dispatch --mode=inspect` specifically tests whether MAIN can discover/route specialists; its smoke mode needs a safely bounded approved task.
+- `/webteam_orchestrate --mode=plan` produces an owner/dependency charter; `--mode=run` proceeds only within actual permissions and approvals. `/webteam_plan` creates a feature plan without code edits; `/webteam_implement` handles an approved implementation.
+- Domain-specific `report/plan/fix` commands should be used instead of a full audit when the issue is narrow. `/webteam_audit` consolidates related findings under one canonical ID rather than duplicating them.
+- `/webteam_quality_loop` is a **bounded** verify/fix/verify proposal or workflow, not a continuously running automation. `/webteam_review` is read-only and independently verifies diffs.
+- Commands taking paths, URLs or arguments require careful parsing and scope checks. Do not paste user-supplied strings unescaped into shell commands.
+
+## Model routing, effort and cost controls
+
+The framework can use one model for all roles or approved models for different task/risk classes. Do **not** assume that the alias `deepseek-flash` resolves unless discovered; OMP `modelRoles` may map verified role names to concrete selectors, and agent frontmatter may reference supported aliases such as `@review`. Model selectors and thinking/effort knobs are **runtime-specific** and require version/provider verification.
+
+Set practical defaults by workload: Researcher/Documentation low-to-medium, routine Frontend/Backend/QA medium, complex Architect/Security/Orchestrator high when justified. Thinking **max** is not a universal premium setting and should be reserved for challenging decisions when supported and affordable. Use compact task charters, selective skill/reference loading and concise handoffs; a larger context window alone does not make work better.
+
+**Three distinct decisions:**
+
+1. **Normal role routing:** verified single-provider/single-model or role-specific approved selectors.
+2. **Fallback:** OFF/ASK/AUTO depending on real ability to enforce provider/privacy/budget restrictions. If arbitrary child/runtime fallback cannot be restricted, forbid cross-provider AUTO; approval must precede new-provider dispatch.
+3. **Multi-model deliberation:** optional CHALLENGE/COUNCIL for high-stakes conflicting choices, not an always-on fan-out. Model votes do not outweigh test evidence or owner decisions.
+
+Do not invoke fallback, an advisor, a council and multiple loops concurrently without a verified shared cost budget. A failed model call does not grant permission to re-send sensitive source data to another provider.
+
+## Memory and Auto-Learn governance
+
+When the actual OMP installation supports **Mnemopi**, a project-scoped configuration can improve continuity, but settings keys and semantics must be inspected in that build. The core principle is **project isolation by default** with no automatic cross-project transfer.
+
+- Recall only a small relevant set of memories for a task; retrieved memories can be stale or wrong and should be checked against current source/tests.
+- Auto-Learn is a candidate-generator, not authority to change global agents or skills. Confirm capability and enablement; do not assume a standard directory exists on every profile.
+- Promote a reusable learning from project → global only after sanitization, generalization, independent QA/Security review and **explicit user approval**. Never promote secrets, customer data, project-specific architecture, private screenshots or credentials.
+- Document purpose, scope, retention, access and removal/rollback policies in `docs/governance/MEMORY_POLICY.md` where applicable.
+- Caveman and `DeusData/codebase-memory-mcp` are optional separately approved integrations. Their installation, tool schema, permissions, source indexing and subagent access must each be validated; nothing should auto-index an unrelated repository.
+
+## Adaptive Quality Loop
+
+WebTeam's **quality cycle is a finite workflow**, not inherently the native OMP `/loop` implementation. Native loop mode selection and actual invocation/stop capabilities must be verified independently. When native loop stop/retry behavior is uncertain, MAIN should use explicit finite QA passes.
+
+| Complexity | Extra corrective passes | Typical policy |
+|---|---:|---|
+| C1–C2 | 0 | Focused check only |
+| C3 | Up to 1 | When there is a specific failing test or confirmed defect |
+| C4 | Up to 2 | Bounded QA and independent review where warranted |
+| C5 | Up to 3, separately approved | High-risk work with tighter gates and explicit stop conditions |
+
+Each pass must name new evidence, a responsible owner, an approved budget, changed paths, tests and a meaningful stop condition. No unlimited “try again”, silent re-prompt, self-approval, repeated side effects or unreviewed baseline replacement. If progress plateaus, stop and report the blocker.
+
+## Agent Hub and operator visibility
+
+OMP's default Agent Hub shortcut is **`Alt+A`**, with customization possible via keymap. Use it to inspect **actually spawned** subagents, status, resolved models, live tool activity and usage where available. The MAIN session is not itself a task agent in the hub. `/agents` inventories configurations; `/jobs` lists async tool jobs; neither is a live agent ledger.
+
+During global setup, optionally offer these presentation preferences **only if the installed schema supports them**:
 
 ```yaml
 display:
@@ -978,374 +436,66 @@ display:
   subagentLivePreview: true
 ```
 
-`full` is suitable for supervising several concurrent specialists; `collapsed` preserves terminal space; `off` hides the pinned roster if supported by your runtime. Live preview shows recent tool activity. These are **display-only options**, not a delegation mechanism, permission system, new model call, or automatic background monitor. Do not overwrite unrelated `display` configuration. Press `Alt+A` to inspect details; use `/hotkeys` to check your active keyboard mapping if different.
+Ask before changing shared global display settings; preserve other keys. Visible agent cards are monitoring aids, not proof of correctness or effective sandboxing, and turning them on does not inherently issue extra model calls.
 
-### Mandatory post-install self-orchestration verification
+Use `/webteam_monitor --scope=active --detail=full` for a one-time inspection/guidance snapshot and `/webteam_agents --mode=verify --scope=all` for configuration readiness. A real safe `task` call, not roster presence, is needed to prove dispatch works.
 
-A trustworthy bootstrap/healthcheck distinguishes at least these stages:
+## Runtime acceptance and evidence scorecard
 
-1. The agent files exist and their frontmatter is valid.
-2. OMP discovers the expected names without collisions/shadowing.
-3. Skills and model selectors actually resolve.
-4. The MAIN session has a supported orchestration entry point for web tasks.
-5. A harmless specialist `task` call **really occurs** and returns evidence.
-6. A representative natural-language web request routes appropriately without explicitly naming the specialists.
-7. Effective headless subagent permissions, extension/MCP capabilities and relevant host protections are examined.
-8. Optional fallbacks, panels, Mnemopi, Loop and tool integrations are tested individually **only where enabled and authorized**.
-
-Do not claim nested delegation if only MAIN-to-specialist dispatch was tested. Never loosen security permissions to pass a test; isolate the failure and report a safe configuration remediation plan.
-
-## 21. Security, privacy and execution boundaries
-
-WebTeam's threat model includes third-party repository instructions, tools/MCP results, model/provider changes, cross-project memory, unattended subagents, destructive test scripts and model-generated code. Treat all external content as **data**, not an instruction to modify authority.
-
-### Required boundaries
-
-- **Untrusted input:** code snippets, README files, issue comments, web results, screenshots, MCP graph entries, test logs and slash-command arguments can contain prompt injection; none may override user/host policy.
-- **Permissions:** model prompts, agent frontmatter tool lists and skill text do not alone create an OS/container/network sandbox; inspect effective grants, especially headless task approval modes and additive MCP/extension tools.
-- **Provider privacy:** no surprise provider switch, inference endpoint or paid model call; enforce data classification and user approval at every fallback/council route.
-- **Filesystem/Git:** respect authorized project root, uncommitted edits, symlinks and backups; avoid concurrent writers on shared files; never push, reset or deploy without authorization.
-- **Database/external actions:** migrations, deleting data, credentials, payments, publishing and production changes require stronger gates; reconcile uncertain side effects before retry.
-- **Knowledge:** Memory and Auto-Learn cannot promote secrets or project-specific intellectual property into Global skills.
-- **Quality evidence:** audits, static scans, browser snapshots and reviews have finite coverage. State exclusions and unverified claims.
-
-### Enforcement truth table
-
-| Status | Interpretation |
-|---|---|
-| `ENFORCED` | Actual runtime/host technical control was inspected and verified |
-| `PROMPT_ONLY` | Instruction exists but is not a proven security boundary |
-| `MANUAL_GATE` | Human approval or supervised step is required |
-| `UNVERIFIED` | Insufficient evidence to claim behavior or protection |
-
-This distinction is particularly important for read-only subagent tasks and external MCP tools. A read-only instruction is not proof that a tool cannot write.
-
-## 22. Installation and quality acceptance checklist
-
-Completion is a **measured state**, not a subjective declaration.
-
-- [ ] Active OMP profile, version, config schema and effective project root recorded.
-- [ ] Backup/change manifest exists; unrelated settings and user work preserved.
-- [ ] All 16 agent definitions are valid and **discoverable**.
-- [ ] Required specialist skills are substantive, valid, discoverable and their references resolve.
-- [ ] All 172 bundled `SKILL.md` files are present (16 Designer, 15 Backend, 13 Product, 13 Architect, 15 Database, 14 Frontend, 15 Security, 14 Performance, 15 QA, 14 Accessibility, 16 Integration, 12 Reviewer); all 41 packaged reference manuals exist and resolve from the applicable skill router.
-- [ ] All **33 native commands** are discoverable, do not collide unexpectedly and at least one expands correctly.
-- [ ] Primary model/alias resolves; actual model routing and optional effort mapping checked.
-- [ ] Optional fallback, council, Mnemopi, Auto-Learn and integrations validated **only if enabled and approved**.
-- [ ] Natural-language routing and harmless real `task` delegation observed (or correctly reported blocked).
-- [ ] Effective tool/MCP permissions and relevant isolation tested to available authority.
-- [ ] New/adopted project documents agree with observed project reality and approved decisions.
-- [ ] Applicable tests and visual evidence actually run, with failures and `NOT_RUN` clearly marked.
-- [ ] Risk, remaining work, costs if observable, decisions required and rollback instructions handed over.
-
-### Outcome vocabulary
-
-| Result | Meaning |
-|---|---|
-| `PASS_VERIFIED` | Observed against the actual OMP runtime/tooling with supporting evidence |
-| `PARTIAL_VERIFIED` | Some layers or dimensions verified; remaining scope explicitly identified |
-| `BLOCKED` | Prevented by missing access, companion files, permissions, tools or approval |
-| `FAIL` | A checked invariant or observed behavior failed |
-| `NOT_RUN` / `UNVERIFIED` | Not executed/observed; **never** substitute for a pass |
-
-Static Markdown/frontmatter/ZIP checks count as **document integrity** only. They cannot prove agent runtime behavior, real accessibility, deployed security, or that all bugs are fixed.
-
-### What a good handoff contains
-
-1. Completed and incomplete installation/checkpoint stages.
-2. Exact files created/modified and scope, with backup/rollback locations.
-3. Agents actually invoked, resolved model routes and tools actually used, if observable.
-4. Real commands run, exit statuses, browser settings and test evidence.
-5. Known limitations, unresolved high-risk findings and required approvals.
-6. Token/cost/time usage **when actually measured**; otherwise unknown.
-7. The next small verified task or project-start command.
-
-## 23. Operator guidance and common questions
-
-**Must I mention a specific agent each time?** Usually no. Request the desired outcome in plain language; the Orchestrator or verified MAIN fallback routes specialists according to task scope. If routing has not yet been tested, use `/webteam_healthcheck` before relying on it.
-
-**Does running a slash command automatically start a subagent?** No. Markdown commands expand prompts. Specialist invocation depends on active OMP delegation tools and routing policy.
-
-**Does the package install every listed specialized skill immediately?** Not by extracting it. All 172 specialist `SKILL.md` files described in this release are physically bundled. The 16 agent definitions and any additional baseline skills required by Master Prompt must be generated, merged and runtime-verified during bootstrap. Extraction alone is not installation.
-
-**Can I use only one DeepSeek or other model?** Yes, as long as it resolves, supports required tools, and is allowed by policy. Councils and cross-provider fallback are optional.
-
-**Will all 16 agents run on every request?** No. Dispatching every specialist would waste tokens, increase overlap and often reduce quality.
-
-**Can it automatically fix every audit finding?** No. `fix` is bounded, evidence-led and approval-constrained. Some defects require product decisions, manual testing, environment access or high-risk changes that must remain proposed.
-
-**Will automatic Loop make the UI look better?** Not reliably. Additional passes help when there is specific failing test/browser evidence; subjective repeated prompting without a bounded design critique often yields inconsistent aesthetics and higher cost.
-
-**Can WebTeam guarantee WCAG compliance or production security?** No. It targets relevant WCAG/OWASP practices, tests only what is accessible/authorized, and reports coverage and limitations; formal compliance requires appropriate broader assessment.
-
-## 24. Troubleshooting
-
-| Symptom | Likely cause / safe response |
-|---|---|
-| Slash commands not listed | Wrong active profile/path, nested directory, stale reload, command collision or unsupported native discovery; inspect OMP command inventory |
-| Command expands but no specialist appears | Prompt expansion is not `task` dispatch; inspect MAIN orchestration and tool availability |
-| Agent exists but is not used | Discovery, `spawns`, task-depth, role alias or routing policy issue; run bounded `/webteam_healthcheck` |
-| Agent Hub is empty | No subagent running, different session, hidden pinned roster or delegation not yet reached; use `Alt+A` and observed task evidence |
-| `/webteam_agents` shows definitions but execution fails | Model may not resolve, credentials/tool permissions may be missing, or headless child restrictions differ; distinguish static and runtime states |
-| Unknown Designer/Backend skill | Missing/invalid `SKILL.md`, wrong directory, broken references or stale discovery; verify canonical files and actual load |
-| Model uses unexpected provider | Audit fallback inheritance, role mapping and per-task overrides; stop unapproved data egress |
-| Mnemopi recalls another project's context | Pause sharing, verify effective root/scoping and nested path behavior; don't claim isolation without a two-project test |
-| Auto-Learn writes user-global managed skills | Managed skill storage differs from memory scope; disable uncontrolled promotion and apply review/project-local workflow |
-| Caveman or Codebase Memory MCP not callable | Integration not installed/connected, tool permission mismatch or stale index; fall back to approved source inspection |
-| Playwright screenshots are flaky | Browser/OS/fonts/time/locale/fixtures/viewports vary; fix environment before comparing, never blindly update baselines |
-| UI looks template-like despite passing tests | UX craft requires human/product judgment, truthful content, alternatives and rendered art-direction critique; use `/webteam_uiux` |
-| Quality Loop fails to stop | Turn native Loop off; resume only a supervised finite verify–fix–verify cycle after confirming stop behavior |
-| `/webteam_audit` gives chat summary but no file | Missing write scope, invalid or colliding path, tool failure; mark report not saved, resolve safe-write blocker |
-| Report claims security/quality success with little evidence | Treat uncovered domains as UNVERIFIED, validate applicable areas and revise conclusions |
-| Monorepo uses wrong instructions/config | Context and settings may resolve differently by cwd; inspect effective profile and nearest `.omp`, test root and nested paths |
-| Setup stopped halfway | Use stage manifest/backups and continue from last verified checkpoint; never rerun destructive setup blindly |
-
-## 25. Maintenance and change management
-
-- Review model/provider availability, OMP schema, command collisions, tool grants and integration compatibility after relevant runtime changes.
-- Review project docs, Design DNA and test baselines when the product actually changes; never rebrand solely because a new UI trend exists.
-- Re-run `/webteam_healthcheck` after substantive routing changes, agent installation, provider/permission changes or major project relocation.
-- Periodically review Mnemopi scope, stale knowledge, Auto-Learn generated skills and global promotions.
-- Keep lessons, ADRs and roadmap updates concise and attributable; avoid multiple conflicting sources of truth.
-- Do not install untrusted third-party extensions or blindly paste external prompt instructions into agent files.
-- Maintain backups, provenance and a clear rollback strategy for configuration and application changes.
-
-## 26. Standards and further reading
-
-These references are **guidance for applicable work**, not a declaration that the project conforms to them:
-
-- [OhMyPi source and documentation](https://github.com/can1357/oh-my-pi) — runtime behavior must be verified against the installed version.
-- [OhMyPi native command discovery](https://github.com/can1357/oh-my-pi/blob/v18.12.2/docs/slash-command-internals.md) and [task-agent discovery](https://github.com/can1357/oh-my-pi/blob/v18.12.2/docs/task-agent-discovery.md) — version-specific implementation references.
-- [OhMyPi Agent Hub](https://github.com/can1357/oh-my-pi/blob/v18.12.2/docs/agent-hub.md) — monitoring concepts, validate active hotkeys/settings.
-- [Playwright visual comparisons](https://playwright.dev/docs/test-snapshots) — reproducible visual testing and baseline management.
-- [W3C WCAG 2.2](https://www.w3.org/TR/WCAG22/) and [WAI-ARIA Authoring Practices Guide](https://www.w3.org/WAI/ARIA/apg/) — accessibility goals and interaction patterns.
-- [OWASP Top 10](https://owasp.org/www-project-top-ten/) and [OWASP ASVS](https://owasp.org/www-project-application-security-verification-standard/) — security risk and verification frameworks.
-- [Web Vitals](https://web.dev/articles/vitals) — user-perceived performance metrics and measurement considerations.
-- [Caveman](https://github.com/JuliusBrussee/caveman) and [Codebase Memory MCP](https://github.com/DeusData/codebase-memory-mcp) — optional integration sources; examine trust and OMP compatibility before activation.
-
----
-
-### Recommended first workflow
-
-**For a fresh installation:** provide the Master Prompt and all companion files, authorize the requested setup stages, validate actual runtime discovery/delegation and optional controls, then create your first project.
-
-**For an existing application:** adopt the repository without overwriting its identity, establish a verified product/design/engineering baseline, and work through scoped plans, tests, reviews and documentation updates.
-
-**For a mature project seeking quality improvements:** run `/webteam_audit --mode=report --scope=full` for overall engineering health or `/webteam_uiux --mode=report --scope=all --depth=deep` for professional UI/UX craft. Review evidence and approve a bounded plan before fixes.
-
-**The goal is not the largest agent team or the most commands called. It is the smallest justified set of specialists producing a verifiable, distinctive, secure and maintainable result.**
-
-
-## 27. Advanced Frontend, Security and Performance engineering
-
-This package includes **43 new specialist skills** (14 Frontend, 15 Security, 14 Performance, including one selective reference router per role), **nine reference manuals**, and three native commands. They extend the existing 16-agent organization without creating new agents. Every `skills/*/SKILL.md` contains real role boundaries, selective activation, a task-specific method, verification criteria, failure modes and escalation. The router references should be read **on demand** to minimize context usage.
-
-### 27.1 Frontend: beyond visual components
-
-The Frontend specialist is responsible for turning the product/design/API contracts into reliable browser behavior, not defining the brand or pretending that UI hiding is server authorization. Prioritize:
-
-- **Architecture:** route and domain ownership, component API design, correct async state boundaries, shared UI evolution.
-- **Data:** typed API contracts, validation, query-key invalidation, optimistic mutation rollback, race conditions, safe concurrent editing and session/tenant cache boundaries.
-- **UX reliability:** error/loading/empty/partial/offline/forbidden states, deep links, focus/scroll behavior, accessible forms, complex grids and realistic localization including Vietnamese glyphs and content.
-- **Quality:** visual implementation consistent with Designer's Design DNA, keyboard and screen-reader evidence, Playwright tests and budget-aware bundle/routing improvements.
-- **Browser threats:** untrusted HTML/URLs, storage, CSRF/CSP/Trusted Types compatibility, cache privacy and safe redirect behavior, with independent Security review.
-
-**Selective skill inventory** (each directory contains `SKILL.md`):
-
-- [`webteam-frontend-architecture-boundaries`](skills/webteam-frontend-architecture-boundaries/SKILL.md) — Frontend architecture, route ownership and component/API boundaries.
-- [`webteam-frontend-typed-server-contracts`](skills/webteam-frontend-typed-server-contracts/SKILL.md) — Typed server/client contracts and failure semantics.
-- [`webteam-frontend-navigation-routing`](skills/webteam-frontend-navigation-routing/SKILL.md) — Navigation, deep links, route guards and recovery.
-- [`webteam-frontend-async-state-and-cache`](skills/webteam-frontend-async-state-and-cache/SKILL.md) — Async server-state lifecycle and cache consistency.
-- [`webteam-frontend-forms-and-workflows`](skills/webteam-frontend-forms-and-workflows/SKILL.md) — Enterprise forms, schemas and complex task workflows.
-- [`webteam-frontend-a11y-components`](skills/webteam-frontend-a11y-components/SKILL.md) — Accessible component behavior and keyboard engineering.
-- [`webteam-frontend-data-rich-ux`](skills/webteam-frontend-data-rich-ux/SKILL.md) — High-density data grids, filters and virtualized views.
-- [`webteam-frontend-client-resilience`](skills/webteam-frontend-client-resilience/SKILL.md) — Resilient UI error boundaries and offline behavior.
-- [`webteam-frontend-bundle-runtime-optimization`](skills/webteam-frontend-bundle-runtime-optimization/SKILL.md) — Frontend rendering, bundle and hydration engineering.
-- [`webteam-frontend-design-system-implementation`](skills/webteam-frontend-design-system-implementation/SKILL.md) — Design-to-code precision and token/component governance.
-- [`webteam-frontend-i18n-content-format`](skills/webteam-frontend-i18n-content-format/SKILL.md) — Internationalization, Vietnamese content and formatting correctness.
-- [`webteam-frontend-browser-security`](skills/webteam-frontend-browser-security/SKILL.md) — Browser-side privacy and threat boundaries.
-- [`webteam-frontend-frontend-quality-ci`](skills/webteam-frontend-frontend-quality-ci/SKILL.md) — Component, integration and visual quality in CI.
-- [`webteam-frontend-engineering-reference`](skills/webteam-frontend-engineering-reference/SKILL.md) — Load selective playbooks and evidence matrices.
-
-### 27.2 Security: verified controls, not checkbox compliance
-
-Security is an independent evaluator and threat-model owner. Product owns policy *intent*, Backend/Database enforce server-side privileges, DevOps owns deployed infrastructure, and QA captures negative test evidence. Use **OWASP ASVS 5.0.0** for verifiable controls, OWASP Top 10:2025 for web risk awareness, OWASP API Security Top 10:2023 for API-specific risk and SLSA 1.2 as graduated supply-chain guidance. None automatically certifies the application.
-
-Prioritize real abuse cases: horizontal/vertical/tenant authorization; replay and credential recovery; untrusted input/HTML, session cookies and web headers; webhook/SSRF/quotas; dependency provenance, CI credentials, secrets and privacy; security logging and incident escalation; indirect prompt injection and MCP/model data egress. Label findings `OBSERVED`, `INFERRED`, `NOT_TESTED` or `BLOCKED` and supply exact evidence. **Never perform unapproved live penetration tests or secret rotation.**
-
-**Selective skill inventory:**
-
-- [`webteam-security-risk-threat-modeling`](skills/webteam-security-risk-threat-modeling/SKILL.md) — Threat modeling, asset inventory and attack-path reasoning.
-- [`webteam-security-identity-session-passkeys`](skills/webteam-security-identity-session-passkeys/SKILL.md) — Authentication, session management, OIDC and passkeys.
-- [`webteam-security-authorization-tenant`](skills/webteam-security-authorization-tenant/SKILL.md) — Object/field/function authorization and tenant isolation.
-- [`webteam-security-injection-browser-defense`](skills/webteam-security-injection-browser-defense/SKILL.md) — Injection, output encoding, DOM XSS and browser hardening.
-- [`webteam-security-api-abuse-logic`](skills/webteam-security-api-abuse-logic/SKILL.md) — API abuse, business logic protection and request hardening.
-- [`webteam-security-privacy-and-crypto`](skills/webteam-security-privacy-and-crypto/SKILL.md) — Privacy engineering, key management and cryptography controls.
-- [`webteam-security-supply-chain-build`](skills/webteam-security-supply-chain-build/SKILL.md) — Dependency and build provenance security.
-- [`webteam-security-secure-sdlc-controls`](skills/webteam-security-secure-sdlc-controls/SKILL.md) — Secure SDLC policy, review gates and security test orchestration.
-- [`webteam-security-security-testing-evidence`](skills/webteam-security-security-testing-evidence/SKILL.md) — Secure testing, vulnerability reproduction and retest evidence.
-- [`webteam-security-infra-cloud-secrets`](skills/webteam-security-infra-cloud-secrets/SKILL.md) — Secrets, cloud/IaC and deployment boundary hardening.
-- [`webteam-security-audit-logging-detection`](skills/webteam-security-audit-logging-detection/SKILL.md) — Security logs, anomaly detection and incident evidence.
-- [`webteam-security-incident-response-recovery`](skills/webteam-security-incident-response-recovery/SKILL.md) — Security incident readiness and coordinated containment.
-- [`webteam-security-ai-agent-tool-risk`](skills/webteam-security-ai-agent-tool-risk/SKILL.md) — AI, prompt-injection, MCP and tool delegation security.
-- [`webteam-security-remediation-policy-exceptions`](skills/webteam-security-remediation-policy-exceptions/SKILL.md) — Security remediation prioritization, waivers and residual risk.
-- [`webteam-security-engineering-reference`](skills/webteam-security-engineering-reference/SKILL.md) — Load selective playbooks and evidence matrices.
-
-### 27.3 Performance: from measurements to sustainable SLOs
-
-Performance must first determine the user's actual bottleneck, then measure under reproducible conditions. For Core Web Vitals, use the published reference good targets **LCP <=2.5s, INP <=200ms, CLS <=0.1 at p75**, segmenting field data by relevant devices and routes. Lab scores, p95/p99 backend latency, throughput, error rates and saturation are separate dimensions. Never fabricate baselines.
-
-Investigate the browser critical path, main-thread blocking, bundle hydration, network/media/fonts, API/DB latency, queue lag, caching semantics, memory leaks and safe capacity testing only when relevant. Test cross-tenant cache correctness, accessibility, authorization and business semantics after optimization. OpenTelemetry JS browser instrumentation is documented as experimental and logs as development: verify live capability before claiming tracing/logging is ready.
-
-**Selective skill inventory:**
-
-- [`webteam-performance-rum-web-vitals-budgets`](skills/webteam-performance-rum-web-vitals-budgets/SKILL.md) — Real-user monitoring, Web Vitals and performance budgets.
-- [`webteam-performance-rendering-interaction`](skills/webteam-performance-rendering-interaction/SKILL.md) — Rendering, animation and interaction latency profiling.
-- [`webteam-performance-critical-loading-path`](skills/webteam-performance-critical-loading-path/SKILL.md) — Critical rendering path, media, font and LCP engineering.
-- [`webteam-performance-bundles-delivery-caching`](skills/webteam-performance-bundles-delivery-caching/SKILL.md) — Bundling, HTTP delivery and CDN cache policy.
-- [`webteam-performance-client-memory-jank`](skills/webteam-performance-client-memory-jank/SKILL.md) — Client CPU, memory, long-task and lifecycle optimization.
-- [`webteam-performance-api-throughput-latency`](skills/webteam-performance-api-throughput-latency/SKILL.md) — Service latency, throughput, queues and API hot-path tuning.
-- [`webteam-performance-database-workload-tuning`](skills/webteam-performance-database-workload-tuning/SKILL.md) — Database workload and query plan performance.
-- [`webteam-performance-load-stress-capacity`](skills/webteam-performance-load-stress-capacity/SKILL.md) — Load, stress, soak and capacity engineering.
-- [`webteam-performance-queues-distributed-latency`](skills/webteam-performance-queues-distributed-latency/SKILL.md) — Async queue latency, backpressure and distributed workflow tuning.
-- [`webteam-performance-cache-correctness`](skills/webteam-performance-cache-correctness/SKILL.md) — Cache strategy, invalidation and privacy consistency.
-- [`webteam-performance-instrumentation-profiling`](skills/webteam-performance-instrumentation-profiling/SKILL.md) — Observability and performance profiling evidence.
-- [`webteam-performance-performance-regression`](skills/webteam-performance-performance-regression/SKILL.md) — Continuous performance gates and causal experiments.
-- [`webteam-performance-slo-capacity-economics`](skills/webteam-performance-slo-capacity-economics/SKILL.md) — Performance SLO, capacity economics and scaling decisions.
-- [`webteam-performance-engineering-reference`](skills/webteam-performance-engineering-reference/SKILL.md) — Load selective playbooks and evidence matrices.
-
-### 27.4 Commands: report / plan / bounded fix
-
-| Command | Main use | Example |
+| Check | Static evidence | Runtime requirement |
 |---|---|---|
-| `/webteam_frontend` | Correctness, design-to-code, accessibility, state and browser security | `/webteam_frontend --mode=report --scope=all --depth=deep` |
-| `/webteam_security` | Threat model, ASVS risk verification, access controls and secure SDLC | `/webteam_security --mode=plan --scope=authz,api,supply-chain` |
-| `/webteam_performance` | Field/lab evidence, route/API/DB profiling, SLO and regression planning | `/webteam_performance --mode=report --scope=vitals,api,cache` |
+| Agents | 16 valid `.md` files, unique names | OMP discovers correct source/overrides, model resolves |
+| Commands | 35 flat `.md` files | OMP expands representative commands as intended |
+| Skills | 201 skill directories with valid `SKILL.md` | OMP discovers relevant skill names/references |
+| References | 49 linked `.md` files | Relevant asset opens from effective skill root |
+| Delegation | Agent frontmatter and policy | Approved, observed `task` spawn and completion |
+| Permissions | Documented least-privilege intent | Actual host/tool/MCP/extension grants constrained |
+| Models | Approved alias/role mapping | Model selection and provider/data boundary tested |
+| Browser/API/test | Test plan and fixture assets | Exact test command/artifact/exit status recorded |
+| Memory/Loop | Policy and consent documented | Enabled-specific behaviors verified separately |
 
-All three commands accept `--mode=report|plan|fix`, `--scope`, `--depth`, `--roadmap`, safe `--output`, `--max-fixes`, `--budget` and optional `--dry-run`. These are conventions for a **Markdown prompt** and **not an executable CLI flag parser**. `report` creates the authorized Markdown audit in `docs/audits/`; `plan` adds prioritized remediation and dependencies; `fix` permits only small, reversible, local changes within user-approved risk limits. No automatic production load, credential changes, destructive scripts, provider changes or baseline overwrites.
+Use precise labels: `STATIC_PASS` (documents and files checked), `RUNTIME_VERIFIED` (real OMP evidence), `PARTIAL_VERIFIED`, `BLOCKED`, `FAIL`, `NOT_RUN` or `NOT_APPLICABLE`. A checklist filled with promises is not a test run.
 
-### 27.5 Recommended cross-agent workflow
+## Troubleshooting and failure recovery
 
-1. **Product/Designer:** identify user journey, verified use cases, design DNA and business constraints.
-2. **Architect/Backend/Database:** locate server policy/data and reliability contract; identify change boundaries.
-3. **Frontend/Security/Performance:** analyze only impacted areas and establish current evidence/metrics, including failure and abuse cases.
-4. **Single authorized implementation owner:** apply minimal reversible fix, never concurrent writers on shared paths.
-5. **QA/Reviewer/Accessibility/DevOps as relevant:** independently verify access, correctness, real browser behavior and matched performance results.
-6. **Report:** update the project Markdown audit, documentation and rollback record. Explicitly label missing tool/run evidence.
+| Symptom | Likely causes | Safe first action |
+|---|---|---|
+| Command missing in autocomplete | Wrong root/profile, filename, collision or disabled source | Check effective config/cwd and command basename, reload if needed |
+| Skill not found | Incorrect one-level directory layout, provider filtering, duplicate name or missing `SKILL.md` | Verify `skills/<name>/SKILL.md` and skill discovery source |
+| Agent registered but not running | MAIN routing not active, `task` unavailable, disallowed spawn/depth, model route failure | `/webteam_dispatch --mode=inspect`, then approved smoke test |
+| Agent Hub empty | No active spawned tasks, MAIN-only work or selected session mismatch | Observe while an approved task is running; don't infer failure from idle state |
+| Wrong model/effort | Alias unresolved, role mapping shadowed, provider unsupported, task override | Inspect effective role/model/effort and approval before changes |
+| Skills inflate context | Eager skill loading or too many reference manuals | Load only the task's specific capability and necessary headings |
+| Same bug repeatedly fixed | No ownership/acceptance criteria, repeated loop, stale tests, incomplete evidence | Freeze retries, inspect state, create a bounded root-cause charter |
+| UI looks generic | Weak content/brand direction or screenshots never reviewed | Designer analysis and `/webteam_uiux --mode=report` |
+| Reviewer says PASS without evidence | Diff/test coverage missing, self-review, unverifiable assumptions | Request precise evidence or mark `BLOCKED` |
+| Config disappears in monorepo | Nearest non-empty `.omp`, cwd-dependent config, project overrides | Check project root and nested cwd context independently |
+| Unintended external requests | Provider fallback, MCP/extension tool grants or overbroad child permissions | Stop, revoke unsafe route at enforcement layer, inspect logs without disclosing secrets |
 
-### 27.6 Installing into an existing WebTeam
+**Recovery protocol:** stop repeated side effects; snapshot Git/worktree state; identify last known successful transaction/test; compare effective config and modified paths; restore from a verified backup if safe; rerun narrow deterministic checks; record unresolved risks. Never “repair” a failing smoke test by granting every agent write/network permission.
 
-Install only the new three command files, 43 new `SKILL.md` files and nine reference manuals after inspecting effective OMP profile/root, collisions and Git state. Merge the changed agent-role instructions into existing `webteam-frontend`, `webteam-security`, `webteam-performance` definitions without resetting providers, context effort, Mnemopi, Auto-Learn, quality Loop, or other agents. Run YAML/frontmatter and relative-link checks, verify native OMP discoverability, and perform a harmless role/command smoke test **only with suitable permissions**. The bundle's static checks alone do not prove it installed or ran correctly.
+## Maintenance, contribution and release discipline
 
-### 27.7 Reference sources
+1. Treat this distribution as one canonical set of files, not a patch chain. Proposed skill additions must include purpose, triggers/exclusions, workflow, acceptance evidence, threat boundaries and an actual `SKILL.md`.
+2. Before modifying a command, check its frontmatter, allowed modes, artifact path, approval behavior and overlap with other commands. Update `/webteam_help` and command inventory documentation in the same change.
+3. Before changing an agent, verify real OMP frontmatter semantics and active model/tool restrictions. Do not silently widen `tools`, `spawns` or provider routing.
+4. When references change, keep relative links under the skill directory and update only the relevant reference navigation, avoiding duplication of entire manuals.
+5. Run the release's static structural/link/metadata/inventory checks, then OMP runtime smoke tests in an authorized disposable workspace. Maintain a change manifest, rollback plan and known limitations.
+6. Do not ship historical upgrade prompts, bilingual duplicates, confidential logs, secrets, cached model credentials or backup snapshots inside the canonical ZIP.
 
-- [OWASP Application Security Verification Standard 5.0](https://github.com/OWASP/ASVS)
-- [OWASP Top 10:2025](https://top10.owasp.org/2025/)
-- [OWASP API Security Top 10:2023](https://api-security.owasp.org/editions/2023/en/0x11-t10/)
-- [SLSA specification 1.2](https://slsa.dev/spec/v1.2/)
-- [Web Vitals](https://web.dev/articles/vitals)
-- [React Compiler](https://react.dev/learn/react-compiler/introduction)
-- [OpenTelemetry JavaScript instrumentation status](https://opentelemetry.io/docs/languages/js/)
+## Authoritative external references
+
+- [OMP v18.12.2 — task agent discovery and model routing](https://github.com/can1357/oh-my-pi/blob/v18.12.2/docs/task-agent-discovery.md)
+- [OMP v18.12.2 — native slash commands](https://github.com/can1357/oh-my-pi/blob/v18.12.2/docs/slash-command-internals.md)
+- [OMP v18.12.2 — config and capability roots](https://github.com/can1357/oh-my-pi/blob/v18.12.2/docs/config-usage.md)
+- [OMP v18.12.2 — Agent Hub and monitoring](https://github.com/can1357/oh-my-pi/blob/v18.12.2/docs/agent-hub.md)
+- [OMP skill discovery reference](https://github.com/can1357/oh-my-pi/blob/v18.12.2/docs/skills.md)
+- [OWASP ASVS](https://owasp.org/www-project-application-security-verification-standard/)
 - [WCAG 2.2](https://www.w3.org/TR/WCAG22/)
-
+- [WAI-ARIA APG](https://www.w3.org/WAI/ARIA/apg/)
+- [Playwright documentation](https://playwright.dev/docs/intro)
+- [OpenTelemetry JS](https://opentelemetry.io/docs/languages/js/)
 
 ---
 
-## 28. Advanced QA, Accessibility and Enterprise/Industrial Integration
-
-WebTeam includes **45 additional bundled, discoverable skills**: **15 QA**, **14 Accessibility** and **16 Integration**, supported by **9 focused reference documents**. This augments the same 16-agent team rather than adding more permanent agents. Install the canonical `skills/` files and verify OMP discovery; existence in this distribution alone does not prove the runtime loaded or used them.
-
-### 28.1 QA — business correctness, not just green test suites
-
-`webteam-qa` is the owner of risk-based test design, reproducible harnesses, unit/component/API/contract/E2E/visual regression, cross-role authorization negatives, CI flakiness analysis, release/UAT evidence and fault simulation in approved isolated environments.
-
-**Manufacturing, process and warehouse examples:**
-
-| Scenario | Required behavior and QA evidence |
-|---|---|
-| Work order → operation → quantity confirmation | Release/approval permission, state progression, authorized reversal and no double-confirmation |
-| Lot/serial genealogy | Parent/child traceability, multi-stage consumption, quarantine/scrap and rework consistency |
-| Shift transition | Correct local shift calendar, time zones, midnight/daylight-saving edges if applicable and immutable audit trail |
-| Partial batch and inventory | Unit conversions, count reconciliation, holds/returns and concurrent operator updates |
-| Duplicate webhook or broker replay | One business effect per idempotency scope despite at-least-once event delivery |
-| Offline network during handoff | Last-known state quality visible; retry/reconciliation without silent loss or duplicate stock movement |
-| Role and tenant isolation | Cross-site/tenant, operator/supervisor and approval transitions denied server-side |
-
-Tests use synthetic fixtures and scenario evidence, not production machine controls. Use Playwright traces/semantic locators and contract tests only when project tooling is installed and compatible. Snapshot changes require independent review.
-
-Skills: `webteam-qa-*` (15, including router); references under `webteam-qa-engineering-reference/references/`: `QA_CAPABILITY_BLUEPRINTS.md` (Q01–Q14), `QA_ENGINEERING_PLAYBOOK.md`, `QA_ACCEPTANCE_MATRIX.md`.
-
-### 28.2 Accessibility — inclusive data-intensive and shop-floor UX
-
-Target **WCAG 2.2 AA** when applicable. The Accessibility agent tests semantics, visible keyboard focus, correct dialog/combobox/grid behavior, forms/errors, accessible authentication, screen-reader output, data table/chart alternatives, live notifications, zoom/reflow and Vietnamese/locale presentation. A static scanner is *not* a conformance certification.
-
-For production dashboards and operator kiosks, explicitly assess noisy environments, glove/touch interaction, readable metrics from expected distance, textual alarm meaning instead of color alone, stale sensor indicators, shift change announcements, accessible alternatives for drag/reorder and predictable focus after modal operations. These are usability/system requirements, not a guarantee of physical machine safety. Distinguish a plain HTML data table from an ARIA interactive grid; APG grid requires focus/arrow-key behavior.
-
-Skills: `webteam-accessibility-*` (14, including router); references `ACCESSIBILITY_CAPABILITY_BLUEPRINTS.md` (A01–A13), `ACCESSIBILITY_ENGINEERING_PLAYBOOK.md`, `ACCESSIBILITY_ACCEPTANCE_MATRIX.md`.
-
-### 28.3 Integration — reliable business transactions and controlled OT data
-
-The Integration agent specializes in source-of-truth ownership, canonical identities/units/timestamps, schema evolution, OAuth/service credentials, signatures/webhooks, event brokers, outbox/inbox, retries, reconciliation, ERP/MES/WMS processes, batch imports, edge/offline buffering and observability.
-
-**ISA-95** is useful for modeling ERP (enterprise planning), MES (manufacturing operations) and shop-floor boundaries, but is neither a required runtime library nor authorization to connect to PLCs. **OPC UA** and **MQTT Sparkplug** are optional interoperability choices if the project has approved endpoints and skill prerequisites. They require typed measurements, message quality/staleness, online/offline lifecycle, tenant/network boundary protection and deterministic replay handling. Use simulators and read-only telemetry by default.
-
-**Hard safety policy:** Do **not** access a plant network, send PLC/SCADA instructions, publish NCMD/DCMD messages, control actuators, alter safety interlocks, bypass operator approval or perform production stress/penetration tests just because a user runs a WebTeam slash command. Such work requires separate explicit plant/OT owner authorization, validated change controls and independent safety review; WebTeam is not an industrial safety controller.
-
-Skills: `webteam-integration-*` (16, including router); references `INTEGRATION_CAPABILITY_BLUEPRINTS.md` (I01–I15), `INTEGRATION_ENGINEERING_PLAYBOOK.md`, `INTEGRATION_ACCEPTANCE_MATRIX.md`.
-
-### 28.4 New specialist commands
-
-```text
-/webteam_qa --mode=report --scope=all --depth=deep
-/webteam_qa --mode=plan --scope=manufacturing,concurrency,contracts
-/webteam_qa --mode=fix --scope=ci,unit --max-fixes=2
-
-/webteam_accessibility --mode=report --scope=all --depth=deep
-/webteam_accessibility --mode=plan --scope=grids,kiosk,alerts
-/webteam_accessibility --mode=fix --scope=keyboard,forms --max-fixes=2
-
-/webteam_integration --mode=report --scope=erp,mes,wms,events
-/webteam_integration --mode=plan --scope=isa95,opcua,edge
-/webteam_integration --mode=fix --scope=contracts,webhooks --max-fixes=2
-```
-
-All three default to **report**, create evidence-backed Markdown in `docs/audits/`, and share `report`, `plan`, `fix` semantics with other specialist audits. Option strings are **prompt input**, not a real CLI enforcement mechanism. `fix` only permits approved low-risk reversible local modifications owned by the correct specialist and tested afterward; Security/OT/production approval gates are never bypassed. Audit plans and future feature roadmaps are separated from actually observed defects.
-
-### 28.5 Cross-agent coordination and verification sequence
-
-1. **Product** specifies business workflow, actors, shift/lot semantics, acceptance and operator impact.
-2. **Architect + Integration + Database** define system boundaries, canonical business entities/units, authorized connector trust and reconciliation model.
-3. **Backend + Frontend + Designer** implement scoped code/contracts, with **Accessibility** defining and validating inclusive interaction patterns.
-4. **QA** builds deterministic, role-aware, negative, concurrent and failure/recovery scenarios; **Security** validates boundaries and **DevOps** ensures safe CI/staging.
-5. **Reviewer** checks independent evidence and unresolved risk; plant/OT safety approver remains external to WebTeam.
-6. Run `/webteam_qa`, `/webteam_accessibility`, `/webteam_integration` in `report` first, then `plan`, and optionally tightly bounded `fix` after authorization.
-
-**Distribution acceptance:** 16 agent roles, 33 native commands, 172 bundled skills, 41 reference manuals. These numbers describe packaged artifacts, not runtime verification. The bootstrap must separately prove skill discovery, command expansion, routing and safe tests in the user's actual OMP instance.
-
-### 28.6 Primary technical standards and references
-
-- [WCAG 2.2](https://www.w3.org/TR/WCAG22/) and [WAI ARIA APG Grid Pattern](https://www.w3.org/WAI/ARIA/apg/patterns/grid/).
-- [Pact Consumer–Provider Contract Testing](https://docs.pact.io/implementation_guides/pact_specification) and [Playwright documentation](https://playwright.dev/docs/intro).
-- [ISA-95 / IEC 62264](https://www.isa.org/standards-and-publications/isa-standards/isa-95-standard), [OPC UA](https://reference.opcfoundation.org/specs/OPC-10000-1/full) and [Eclipse Sparkplug](https://github.com/eclipse-sparkplug/sparkplug).
-- [NIST SP 800-82 Rev. 3, Guide to OT Security](https://csrc.nist.gov/pubs/sp/800/82/r3/final) (Rev. 4 was a draft as of October 2026).
-
-
-## Independent Reviewer: professional evidence-based code review
-
-`webteam-reviewer` is the independent quality gate for meaningful code and design changes. Review is not a synonym for running linters or having the author ask the same model whether its code is good. The reviewer examines the real diff and affected consumers, validates realistic failure paths and reports only actionable material defects as blockers. Review time and specialist usage are risk-based to avoid unnecessary token cost.
-
-### Reviewer skills
-
-The package includes **12 `webteam-reviewer-*` skills** covering risk-ranked diffs, domain invariants and concurrency, API compatibility, security/privacy handoff, data migrations, test adequacy, UI/accessibility, performance/reliability, dependency provenance, finding calibration, independent signoff and selective reference loading. Three optional review references contain the finding format, risk matrix and real-world failure scenarios. Skills are **selected per review**, not loaded wholesale.
-
-### Native command
-
-```text
-/webteam_review --mode=report --scope=diff --depth=deep
-/webteam_review --mode=plan --scope=branch --base=main
-/webteam_review --mode=verify --scope=diff --finding=RV-001
-```
-
-The command is **read-only**, except for optional permitted Markdown reports in `docs/reviews/`. `report` produces actionable findings; `plan` adds an implementation plan; `verify` checks whether earlier findings were actually fixed. Code changes are owned by the appropriate implementation agents; QA supplies real test evidence and Security/Database/Accessibility are consulted when needed.
-
-Every blocking finding must identify a reviewed file/line, realistic triggering conditions, impact, severity, confidence, minimal fix and deterministic verification. Unverified hypotheses are clearly distinguished from proven defects. Final verdicts: `PASS`, `CHANGES_REQUESTED`, `UNVERIFIED`, `BLOCKED`. No self-approval, no fake test results, no routine multi-model council, no automatic recursive retries, and no unreviewed production operations. If a real independent `task` review is impossible in the installed OMP topology, WebTeam reports the limitation rather than falsely claiming success.
+**Bottom line:** WebTeam is effective only when its **actual OMP installation**, scoped specialists, user-approved permissions and verification results match this documented operating model. Never confuse a comprehensive prompt with proof of runtime correctness.
