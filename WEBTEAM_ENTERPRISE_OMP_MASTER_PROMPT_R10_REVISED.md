@@ -1,8 +1,10 @@
-> **R9 Hybrid Memory Governance:** Section 15C is authoritative when earlier memory guidance differs.
+# R10.1 — Safety and Compatibility Patch Notice
+
+**Canonical new-install edition: R10.1 (reviewed).** Preserve the R10 feature set and all sixteen agents. The latest rules in **Section 17 (R10.1 Operational Corrections)** take precedence over older wording whenever they conflict. For memory, Section 15C governs sharing and project isolation; Section 15B governs the recommended Mnemopi profile, while Section 15A supplies general consent and failure-safety requirements. Section 16A–16G governs quality loops. These policies are implementation instructions, **not an assertion that any OMP version enforces them natively**.
 
 # WebTeam Enterprise — Unified OhMyPi Bootstrap & Operating Prompt
 
-**Edition:** 2026-10 · **Revision:** R7 Native Memory & Controlled Auto-Learn · **Language:** English · **Target:** OhMyPi (OMP) · **Team:** WebTeam  
+**Edition:** 2026-10 · **Revision:** R10.1 — Hardened Adaptive Quality Loop & Hybrid Memory Governance · **Language:** English · **Target:** OhMyPi (OMP) · **Team:** WebTeam  
 **Purpose:** Install and validate a reusable, professional web-engineering multi-agent team and enable safe, autonomous project-specific onboarding, development, quality assurance, and evolution.
 
 > **Execution instruction:** This document is a prompt for an OMP coding-agent session with appropriate filesystem access. It is **not** a claim that WebTeam has already been installed; successful static document auditing cannot substitute for runtime, security, or model-routing verification. The agent receiving it must implement and verify the requested files and settings in its own environment.
@@ -1300,23 +1302,13 @@ A completed bootstrap should demonstrate:
 
 ### 15A.1 Ask before changing settings
 
-During first Global WebTeam bootstrap, **ask**: (a) Enable OMP persistent memory? Choose OFF, LOCAL (recommended starter), MNEMOPI (advanced local structured recall), HINDSIGHT (requires separately approved server/network and bank scoping), or other backend verified in the installed runtime; (b) Enable OMP experimental Auto-Learn? OFF / REVIEW-FIRST (recommended) / AUTO-CAPTURE; (c) Is memory allowed to contain project-only metadata, sanitized engineering lessons, or cross-project generalized knowledge? (d) Approve any extra inference, retention, network, disk and storage requirements. Describe privacy and deletion implications. Do not silently enable memory/autolearn for existing profiles. Inspect current backend, version and user/project configuration precedence before changes. No global-to-project promotion without user permission. Respect explicit OFF.
+During first Global WebTeam bootstrap, **ask**: (a) Enable OMP persistent memory? Choose OFF, LOCAL (optional minimal fallback), MNEMOPI (recommended structured project memory), HINDSIGHT (requires separately approved server/network and bank scoping), or other backend verified in the installed runtime; (b) Enable OMP experimental Auto-Learn? OFF / REVIEW-FIRST (recommended) / AUTO-CAPTURE; (c) Is memory allowed to contain project-only metadata, sanitized engineering lessons, or cross-project generalized knowledge? (d) Approve any extra inference, retention, network, disk and storage requirements. Describe privacy and deletion implications. Do not silently enable memory/autolearn for existing profiles. Inspect current backend, version and user/project configuration precedence before changes. No global-to-project promotion without user permission. Respect explicit OFF.
 
-### 15A.2 Recommended conservative baseline
+### 15A.2 Recommended safe baseline (R10.1 corrected)
 
-For local, multi-project WebTeam, **propose** this config snippet in the *actual verified effective* OMP config location; merge without overwriting unrelated keys:
+The recommended **opt-in** structured-memory starting point for a multi-project WebTeam is the Mnemopi profile defined in **Section 15B.2**, subject to effective OMP schema, project scoping and managed-skill output verification. **Do not configure the older `memory.backend: local` example as the default for R10.1.** Local remains an optional consented fallback when structured memory is unsupported or unwanted. No memory change may be applied automatically to an existing installation. A user selecting OFF has precedence over all recommended defaults.
 
-```yaml
-memory:
-  backend: local
-
-autolearn:
-  enabled: true
-  autoContinue: false
-  minToolCalls: 8
-```
-
-This is a recommended profile, not an assertion that settings were applied. OMP defaults include `memory.backend: off`, `autolearn.enabled: false`, `autolearn.autoContinue: false`, `autolearn.minToolCalls: 5` in the documented settings. Keep `autoContinue: false` for passive learning without extra automatic capture turns. If the user explicitly opts into AUTO-CAPTURE, explain it incurs one additional capture turn and may use a paid model; obtain approval before setting `autoContinue: true`. More tool calls are not proof of valuable lessons: learn only verified, reusable, non-secret patterns. Do not specify unsupported backend/settings keys; the available backend enumeration can vary by OMP version. Prefer `/settings` when safe; otherwise use the discovered config path and documented schema.
+The documented Auto-Learn starter policy is `enabled: true`, `autoContinue: false`, `minToolCalls: 8` only when approved. A disabled continuation does not prevent all Global user-managed skill output. Therefore inspect the *actual* managed-skill output path and use project-local reviewed learning if project isolation cannot be guaranteed; never enable native Auto-Learn solely because the YAML exists.
 
 ### 15A.3 Backend decision policy
 
@@ -1571,3 +1563,178 @@ When technical permission enforcement is unavailable, use a review-only / no-wri
 10. Each acceptance test records `PASS`, `FAIL`, `BLOCKED`, or `UNVERIFIED` with evidence; never infer live OMP success from Markdown validation.
 
 **Update both fresh bootstrap and R6 in-place migration skill inventories:** add `webteam-project-memory-onboarding`, `webteam-knowledge-classification`, `webteam-global-knowledge-promotion`, and `webteam-memory-isolation-verification` as actual valid `SKILL.md` files, or enhance existing skill files without duplication. Ensure Orchestrator autoloads only the minimal governance entry point, and additional specialist skills are loaded on demand. Integrate these stages into earlier project onboarding, existing-repository adoption, documentation generation, project memory workflow, QA gates and ongoing skill curation; do not merely leave this section as passive text.
+
+
+---
+
+# R10 — ADAPTIVE QUALITY LOOP (MANDATORY INTEGRATION)
+
+> This section extends and, in case of conflict, supersedes prior R9 orchestration, retry, testing, cost and learning policies. Preserve all 16 agents, Global/Project isolation, R9 Mnemopi governance, provider/fallback/council controls and Caveman/Codebase Memory MCP integration. Loop is a bounded quality technique, **not** a new agent or an autonomous authorization mechanism.
+
+## 16A. Installation discovery and consent
+
+At initial **Global WebTeam installation**, inspect the installed OhMyPi version, official runtime help, active profile and effective config schema. Determine whether `/loop` is present, its exact command syntax, stop/pause behavior, count semantics, supported `prompt`/`compact`/`reset` modes, `--until`/`--while` conditions if any, iteration accounting, and interaction with async/background work. Do **not** assert that `/loop 2`, condition flags or `loop.mode` are accepted before validating this runtime. Ask once:
+
+- Enable *optional, task-scoped Adaptive Quality Loop*? Recommend **YES, but global continuous loop OFF**. Choices: OFF / ASK (recommended) / bounded AUTO after passing smoke tests.
+- Preferred baseline: C1–C2 zero extra iterations, C3 at most one, C4 at most two, C5 at most three with confirmation for consequential risk. Count the initial verification separately as **baseline pass 0**; the C1–C5 values govern only *extra* review/fix passes. A native `/loop` may count prompt submissions instead of extra verification passes: confirm and record any off-by-one mapping using a disposable test.
+- Maximum tokens/cost per task (hard cap if runtime exposes it, otherwise policy soft cap requiring enforced iteration limit), maximum model/subagent invocations, wall-clock deadline, and escalation conditions. Default ask before exceeding any approved budget.
+- Whether browser visual testing is authorized, whether loop may write source, and which test commands are safe. Never permit deploy, migration, purchases, provider enrollment, global promotion or destructive commands through a loop.
+
+At **project initialization/import**, inherit Global choices with one brief confirmation about project test suite, visual baseline environment, iteration/cost limits, and high-risk operations. Persist in `docs/governance/QUALITY_LOOP_POLICY.md`; no unnecessary re-interview every task. Project overrides cannot weaken Global permission boundaries.
+
+If runtime safety cannot be demonstrated, mark Native Loop **BLOCKED** and use an ordinary task-driven, manually orchestrated bounded Verify→Fix→Verify sequence. Never fake native loop activation or depend on prompt text to stop a runtime loop.
+
+## 16B. Create two complete discoverable Global WebTeam skills
+
+### `webteam-adaptive-quality-loop` (Orchestrator owner)
+
+Create actual `SKILL.md` under the supported global skill root, with purpose, triggers, prerequisites, applicable OMP commands, input/output contract, examples, anti-patterns, failure handling and evidence-based DoD. Responsibilities:
+
+1. Classify task C1–C5 and risk independently; decide if another verification pass has sufficient expected benefit.
+2. Write a **bounded quality-loop charter**: task ID, repo/worktree/branch, owner, affected paths, expected invariants, test commands, acceptance thresholds, exact number of allowed iterations, budget, stop triggers and rollback reference.
+3. Permit exactly one authorized writer per checkout; Reviewer/QA/Designer may inspect and report, but may not perform unapproved source writes.
+4. Use `prompt` as preferred runtime mode for short passes; consider `compact` only after persisting a verified task ledger and when context pressure requires it. `reset` is forbidden unless durable handoff/acceptance state is restored and validated.
+5. Never invoke `/loop` from unattended/headless subagents without verifying supported invocation, operational isolation, cancellation and operator visibility. Prefer Orchestrator-controlled checks in the main session.
+6. Verify runtime count limits and explicit disable/stop controls *before* starting. If these are missing, do not start native loop.
+7. On each iteration, inspect only relevant diffs, failing tests, targeted screenshots or new evidence. Do not re-read the whole repo or repeat unchanged analysis.
+8. Keep one shared attempt counter across primary/fallback models, retries, council, Caveman and subagents. Provider fallback never resets the attempt count.
+9. Require fresh, reproducible evidence before another attempt. After two failed hypotheses, stop and reframe/escalate instead of repeating a similar call.
+10. Preserve idempotency of side-effecting operations; do not replay migration, payment, email, deploy, data mutation or external action after timeout without independent outcome reconciliation.
+
+### `webteam-loop-evidence-evaluator` (QA primary, Reviewer independent)
+
+Create actual `SKILL.md` with test selection, baseline capture, reproducibility rules, scoring rubric, anti-patterns and escalation. Require an iteration evidence packet:
+
+- iteration index and model/agent routes actually used;
+- precise code diff / changed paths;
+- commands, exit codes, failing/passing tests and reproducibility notes;
+- screenshot or visual-diff evidence for UI work, environment/font/browser revision pinned;
+- new vs previous defect count, severity and any regressions;
+- token/cost/time usage if observed; otherwise label UNKNOWN;
+- explicit decision: PASS / IMPROVING / NO_PROGRESS / REGRESSION / BLOCKED / NEEDS_APPROVAL.
+
+No fabricated test results; no treating a green snapshot update as proof of no visual regression. Baseline updates require human-reviewed intentional differences when material. Require QA/Reviewer independence for critical changes and keep test oracles independent from the code being implemented.
+
+## 16C. Complexity matrix and stop conditions
+
+| Level | Additional review/fix passes | Native loop recommendation |
+|---|---:|---|
+| C1–C2 | 0 | OFF; normal relevant checks only |
+| C3 | 0–1 | ASK if evidence shows value |
+| C4 | 0–2 | ASK, task-scoped and bounded |
+| C5 | 0–3 after risk approval | prefer explicit staged passes; no unattended native loop for destructive/security-critical operations |
+
+The maximum is **not a target**. Stop immediately when all scoped gates pass, progress stalls, new regression appears, budget/time is exhausted, repeated errors occur, runtime state becomes ambiguous, independent verification fails, or human authorization is needed. No silent auto-extension. A model's statement `DONE` alone does not disable `/loop`; verify the actual runtime state and perform an explicit supported stop/cancel or use a proven enforced iteration cap. Pause/stop semantics vary across versions: never claim pressing Esc always works the same way.
+
+## 16D. Example bounded charter (conceptual, not an OMP command)
+
+```yaml
+quality_loop:
+  mode: ask
+  runtime_native_loop: disabled_until_verified
+  complexity: C4
+  max_additional_passes: 2
+  budget:
+    max_extra_tokens: user_approved_or_measured
+    max_extra_cost: user_approved_or_measured
+  single_writer: webteam-frontend
+  independent_verifier: webteam-qa
+  selected_checks:
+    - focused_unit_tests
+    - playwright_relevant_scenarios
+    - reviewed_visual_diffs
+  stop_on:
+    - scoped_checks_pass
+    - no_material_progress
+    - regression
+    - uncertainty_about_side_effects
+    - budget_exhausted
+    - approval_required
+```
+
+Values in this example are policy records, **not native OMP config keys**. Only generate OMP configuration verified in the installed schema.
+
+## 16E. Integration with existing WebTeam capabilities
+
+- **Orchestrator** owns activation/stop, shared counter, permissions, budgets and durable ledger; no recursive subagent loops or parallel loop controllers.
+- **QA** owns risk-based verification selection; **Reviewer** independently challenges material unresolved defects. **Designer/Frontend** jointly review Playwright screenshots; the implementing agent fixes only verified defects.
+- **Backend/Database/Security** run relevant contract, authorization and transaction tests; never automatically repeat write-bearing infrastructure actions.
+- **Performance** requires stable metrics, representative baseline and explicit pass criteria; do not optimize noisy measurements into false wins.
+- **Caveman** can offer bounded investigation/review/compaction steps where actually available but must not start its own autonomous retry loop; one orchestration owner at a time.
+- **Codebase Memory MCP** may accelerate targeted dependency retrieval; stale graph hits are checked against live files; no automatic full reindex each iteration.
+- **Mnemopi** retains only sanitized, verified final lessons following project policy. Do not store raw loop transcripts or failed hypotheses as authoritative knowledge. Do not modify Auto-Learn settings as a loop-installation side effect. If `autoContinue` or other hooks can spawn unbounded extra work, choose finite supervised manual passes; user approval and separate governance checks are required for any settings change. Managed-skill Global promotion is prohibited inside the loop.
+- **Multi-model deliberation** OFF during ordinary quality loops. Escalate to a separate approved CHALLENGE/COUNCIL step only for unresolved high-impact decisions, counting its costs against the same task budget; never nest deliberation rounds in each iteration.
+- **Fallback** is an error-recovery route only; per-provider privacy and allowlists apply even mid-loop. Never trigger fallback solely because a test failed.
+
+## 16F. Operational safety and known loop hazards
+
+Perform disposable smoke tests for: exact count exhaustion; proper stop/disable; interruption/steering during active iteration; pending async work; repeated user input; context compaction; fallback-related error; max-cost limit; and loop restart after session loss. OMP has had reports of steering input unexpectedly replacing the recurring prompt and of loops waiting indefinitely for unsettled post-prompt work. Detect affected versions and disable native automation where control is unreliable. A timeout must fail CLOSED; it must not blindly start another pass. The operator retains visible control of the main session.
+
+No native shell command should be published as universally valid until checked against the active installation. In particular, `loop.mode: prompt` is a mode choice rather than permission to continuously execute loops; plain task prompts must not silently enable `/loop`.
+
+## 16G. Persistent project records and acceptance tests
+
+On project onboarding, create or update `docs/governance/QUALITY_LOOP_POLICY.md` only when relevant. For a significant looped task, store a concise ledger under `docs/testing/` or existing task log with the charter, attempt number, test evidence, verdict, total observed usage, stop reason and unresolved risks. Protect secrets and respect Gitignore. Avoid redundant documentation for trivial tasks.
+
+Acceptance criteria (record PASS/FAIL/BLOCKED/UNVERIFIED with evidence):
+
+1. Two new skills are discoverable with valid OMP metadata, not merely named in prompt.
+2. Global opt-in and project inheritance are recorded; globally continuous loop stays disabled.
+3. C1/C2 does not loop; C3/C4 bounded task has exact tested limit; high-risk workflow stops for approval.
+4. Native `/loop` invocation and cancellation are tested on actual installed version, or native mode is explicitly BLOCKED and deterministic manual bounded passes used.
+5. Reviewer and QA check source/test evidence and prevent unreviewed visual baseline updates.
+6. Model fallback, multi-model, Caveman, Mnemopi and Auto-Learn do not create recursive repeated calls or reset the budget.
+7. No unsafe write is retried after ambiguous timeout; project-to-project data scope remains isolated.
+8. Token and cost overhead is reported from measurements when available; otherwise clearly UNKNOWN and no savings claims made.
+9. Failed or stopped loops leave repository and persistent standards consistent and preserve rollback details.
+10. Installation smoke tests do not overwrite unrelated R6/R9 settings.
+
+## 17. R10.1 Operational Corrections and Security Invariants (AUTHORITATIVE)
+
+These controls supersede inconsistent earlier release-history wording and apply to new WebTeam installation, project initialization and all work after install.
+
+### 17.1 Correct bootstrap ordering and minimal cost
+
+1. Inspect active OMP version/profile/config/schema and existing user-managed files **before writes**. Save a scoped manifest and backups. Ask approval for global config edits, external plugin install, downloads and paid provider/tool use.
+2. Ask for primary provider, then discover authenticated models; only after that ask separately for optional **cross-provider fallback**, optional **multi-model deliberation**, Caveman/CBM tools, Mnemopi/Auto-Learn and task-scoped quality-loop policy. Do not probe other provider catalogs or send repo data across providers before approval.
+3. Reuse working existing integrations. For new applications ask only project-specific policy inheritance or narrower overrides; do not re-install global agents or reset Mnemopi.
+4. Ensure model/council/fallback cost policy, task budget, and per-provider data classifications follow *all* retries, subagents and loop iterations; none restart the budget.
+5. Do not promise indefinite unattended work, cost savings, secure execution or runtime controls that have not been verified. The OMP session must do real install steps or report blocked items.
+
+### 17.2 Loop is not automatic OMP agent orchestration
+
+- **Global quality-loop default: ASK, native continuously-running loop: OFF.** `loop.mode: prompt` is a **mode preference**, not a switch for automatic recurring execution. OFF/ASK/BOUNDED AUTO are WebTeam policy states and must not be written as invented native OMP config keys.
+- C1/C2: 0 *additional* quality passes. C3: 0–1. C4: 0–2. C5: 0–3 only after explicit high-risk approval. The initial verification is a baseline, not one of those extra passes. Runtime prompt-submission counts may not equal additional passes: run a **synthetic counted test** before scheduling.
+- Native looping requires a verified finite runtime iteration cap, reliable operator cancellation, safe async settlement and controlled side effects. A natural-language “stop” statement is insufficient. If any precondition is unsafe or unverified, choose a supervised finite Verify → Fix → Verify workflow instead of `/loop`.
+- Loop conditions such as `--until`/`--while`, when supported, **execute a shell command** and must be treated as powerful execution rights. Use only fixed, validated, non-destructive predicate commands and an *independent hard cap*. An exit status of 1 may mean false while statuses 2+ can mean predicate error; confirm installed semantics. Do not interpolate untrusted filenames, URLs or repository text into conditions.
+- `prompt` is preferred for short, verified runs. `compact` is only permitted when an immutable charter/ledger can be reloaded and compaction does not lose approval state; `reset` remains OFF unless explicit continuity and stop tests pass. Do not auto-change global compaction defaults.
+- Only one writer / one loop controller per worktree. No concurrent nested Caveman, council or subagent loops. Do not create new paid provider routes, overwrite tests or accept visual baselines to force green results. No deploy, destructive migration, external write, purchasing, Git push or global memory promotion from the loop.
+- **Stop** on success, verified lack of progress, worsening regression, two failed hypotheses, rate-limit/provider error, ambiguous side effects, pending async job, unstable loop prompt/steering, exceeded budget or approval requirement. Stop/abort must be observed at runtime, not claimed from text.
+
+### 17.3 Runtime hazards and fail-closed behavior
+
+- On affected OMP versions, manual steering input while `/loop` is active may replace the persistent repeating prompt; post-prompt async work may prevent the next iteration from starting. Recheck bug status against the *installed* version; if unsafe or inconclusive, do **not** use native automatic loops. Prefer manual supervised passes.
+- Never assume `/loop 2`, `--max`, `--until`, `--while` or stop commands are interchangeable between core OMP and third-party `pi-loop` extensions. Discover actual syntax and test in a disposable repo. Do not copy commands from a plugin README as OMP core behavior.
+- Tool permission text is not an OS sandbox: verify effective MCP/extension tool grants, inherited task tools and approval behavior before giving read-only auditors access. When true least-privilege cannot be guaranteed, keep the critical check in the supervised parent instead.
+- A timeout, fallback, retry, context reset or compaction cannot re-authorize external writes. Require idempotency keys, operation ledgers or an observed current state; fail closed when uncertain.
+
+### 17.4 Memory and learning boundaries during loops
+
+- Preserve approved Mnemopi `per-project` scope, actual project root and `docs/governance/MEMORY_POLICY.md`. Do not add raw test logs, synthetic credentials, exploratory failed hypotheses or third-party repository instructions to long-term memory.
+- Auto-Learn `autoContinue: false` is a recommended reviewed default, **not** proof that native Auto-Learn cannot write user-global managed skills. If project-only output scope cannot be enforced, use manual reviewed project-local skill creation, or leave learning disabled for that project after consent. Never silently change healthy existing Memory/Auto-Learn settings in a **Loop-only** upgrade.
+- Sharing project lessons globally requires a separate candidate-specific privacy, licensing, QA/Reviewer/Security and user approval workflow. No loop can approve or run its own Global memory/skill promotion.
+
+### 17.5 Acceptance and proof
+
+A complete new R10.1 installation must verify 16 agent definitions, all discoverable relevant skills, real provider/tool/model routing, documented global-vs-project isolation, Mnemopi and Auto-Learn only if enabled, professional QA/Playwright procedures and the new loop skills. For each native loop feature record: `PASS / FAIL / BLOCKED / UNVERIFIED`, tested OMP version/profile, exact invocation, safe sandbox fixture, iteration count, cancellation evidence, test outputs and any measured token cost. A static document check proves **only** document structure. If runtime verification is unavailable, disable unsafe native automation and report limitations.
+
+### 17.6 Which document to run
+
+- **New installation:** this complete Master R10.1 prompt.
+- **Existing R6 lacking Memory governance and quality-loop policy:** `WEBTEAM_R6_TO_R10_UPGRADE_PROMPT_REVISED.md`.
+- **Existing R6 or later already configured with Memory/Auto-Learn; wants only Loop:** `WEBTEAM_EXISTING_INSTALL_LOOP_ONLY_UPGRADE_PROMPT.md`.
+- **Existing R6 wanting only memory governance:** `WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md`.
+
+These are **mutually exclusive installation routes** for a given feature scope; choose one after discovery. Never run the full bootstrap over a healthy existing team.
+
+**Final execution requirement:** implement the two skills and policy within real OMP agent/skill files, connect Orchestrator/QA/Reviewer as described, update discovery inventories, quality gates and onboarding hooks, run bounded smoke tests only if safe, and report runtime evidence. Do NOT claim any loop is active merely because this prompt contains loop instructions.

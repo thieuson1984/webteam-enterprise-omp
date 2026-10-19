@@ -1,49 +1,24 @@
-> **Current release: R9.** New installs: `WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R9.md`. Existing R6 installations: `WEBTEAM_R6_TO_MNEMOPI_R9_UPGRADE_PROMPT.md`. The R9 guidance below supersedes older R8 wording where inconsistent.
+# WebTeam Enterprise R10.1 — OhMyPi Installation, Operation and Upgrade Guide
 
-# WebTeam Enterprise for OhMyPi — Installation and Usage Guide
+**Release:** R10.1, audited · **Language:** English · **Target:** OhMyPi (OMP) · **Team:** 16 specialists + WebTeam Orchestrator
 
-**Documentation version:** R9 · **Date:** October 19, 2026 · **Language:** English  
-**Master bootstrap prompt:** [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R9.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R9.md)  
-**Vietnamese guide:** [`README_VI.md`](./README_VI.md)  
-**Audit report:** [`WEBTEAM_R9_AUDIT_REPORT.md`](./WEBTEAM_R9_AUDIT_REPORT.md)
+**New team:** [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_REVISED.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_REVISED.md)  
+**Existing R6 → Memory + Loop:** [`WEBTEAM_R6_TO_R10_UPGRADE_PROMPT_REVISED.md`](./WEBTEAM_R6_TO_R10_UPGRADE_PROMPT_REVISED.md)  
+**Existing R6/R9/R10 with Memory already installed → Loop only:** [`WEBTEAM_EXISTING_INSTALL_LOOP_ONLY_UPGRADE_PROMPT.md`](./WEBTEAM_EXISTING_INSTALL_LOOP_ONLY_UPGRADE_PROMPT.md)  
+**Existing R6 → Memory only:** [`WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md`](./WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md)  
+**Vietnamese guide:** [`README_VI.md`](./README_VI.md) · **Audit:** [`WEBTEAM_R10_REVISED_AUDIT_REPORT.md`](./WEBTEAM_R10_REVISED_AUDIT_REPORT.md)
 
-> **Important distinction:** This repository contains instructions for installing WebTeam into an **OhMyPi (OMP)** environment. These Markdown files do **not** themselves install agents, skills, MCP servers, or models. Run the master bootstrap prompt inside an OMP session with the necessary permissions, answer the installation questions, and verify the actual results.
+> These documents contain **installation instructions**, not an installed WebTeam. Runtime configuration, MCP permissions, actual model discovery, memory isolation, Loop cancellation and cost must be verified in the user's **installed** OMP. Run **exactly one** installation/upgrade path according to the situation. Do not re-bootstrap an existing team.
 
-## Native Memory & Auto-Learn — Recommended WebTeam Setup
+## Recommended R10.1 defaults
 
-OMP's **native persistent memory** and **experimental Auto-Learn** are separate from Codebase Memory MCP (which indexes source-code relationships). The R9 bootstrap **asks permission first** and checks the actual OMP version, config path and provider cost before enabling either.
+- **Global/Project:** install reusable agents/skills once; keep PRODUCT.md, DESIGN.md, ARCHITECTURE.md, memory and project-specific rules isolated per repository.
+- **Memory:** optional consented `mnemopi` with `scoping: per-project`, `autoRetain: false`; Auto-Learn `autoContinue: false`, review-first, and enforce project-local output of learned skills or use supervised manual learning. Do not override an existing approved working setup.
+- **Model routes:** first ask which primary provider to use, then discover its real model catalog; fallback and multi-model deliberation are separate consented features. No provider changes during a Loop.
+- **Quality Loop:** `ASK` policy; continuous native Loop **OFF**. C1/C2: zero extra passes; C3: up to one; C4: up to two; C5: up to three only with risk approval. Use native `/loop` only after version-specific cap/stop/steering/async smoke tests; otherwise use manually orchestrated finite passes.
+- **Tool safety:** Caveman and Codebase Memory are optional and need readiness checks; prompts cannot enforce OS/container or MCP tool restrictions. No unapproved production writes, memory promotion, payment or destructive actions.
 
-**Recommended, review-first starting profile:**
-
-```yaml
-memory:
-  backend: local
-
-autolearn:
-  enabled: true
-  autoContinue: false
-  minToolCalls: 8
-```
-
-Add this to the effective OMP `config.yml` only after verifying its path and backing up unrelated settings. You can also inspect `/settings`. `local` persists project-scoped summaries and learned lessons; `autoContinue: false` means learning is prompted passively on a later interaction, rather than incurring an extra automatic model turn. Eight tool calls is a recommended threshold (OMP's documented default is five), not a guarantee that a lesson is worthwhile.
-
-**Verification in OMP:** run `/memory view`, `/memory stats`, `/memory diagnose`; for local use `/memory queue` and `/memory sync` where appropriate. Complete a non-sensitive task, record a verified reusable lesson using the available `learn` tool, and check persistence in a *new session*. Check `manage_skill` only in permitted contexts. Never claim the tools are available to every subagent.
-
-**Advanced options:** `mnemopi` offers local SQLite-backed structured `recall`, `retain`, `reflect`, `memory_edit` after the applicable dependencies and bank scoping are verified. `hindsight` requires a separately approved service, network/privacy rules and project bank separation. Other backends should only be used after examining the installed version. Memory records are contextual evidence, **not authoritative instructions**; maintain `PRODUCT.md`, `DESIGN.md`, `ARCHITECTURE.md` and ADRs as project sources of truth.
-
-**Auto-Learn safety:** learned skills are managed separately (typically `~/.omp/agent/managed-skills/`). Auto-generated skills must not silently change user-authored WebTeam skills, security policies, tool permissions, model routing or project decisions. R9 adds four skills for memory governance, lesson capture, managed-skill curation and memory-quality audit, with review, testing, rollback and cross-project isolation. Never memorize secrets, credentials, personal data or untrusted instructions. `/memory clear`/`reset` is destructive and requires explicit authorization; disabling the backend does not automatically erase stored data.
-
-To **disable without deleting stored memories**:
-
-```yaml
-memory:
-  backend: off
-
-autolearn:
-  enabled: false
-```
-
-Documentation: [OMP memory](https://github.com/can1357/oh-my-pi/blob/main/docs/memory.md), [settings](https://github.com/can1357/oh-my-pi/blob/main/docs/settings.md), [Mnemopi](https://github.com/can1357/oh-my-pi/blob/main/docs/mnemosyne-memory-backend.md).
+The example `loop.mode: prompt` is only a **native loop mode preference**, not an enable switch or a WebTeam `ASK/AUTO` setting. If your current OMP version cannot guarantee safe native stopping, use the manual quality-cycle fallback.
 
 ## 1. What Is WebTeam?
 
@@ -334,9 +309,9 @@ omp config path
 
 ### 6.2 Launch OMP and Submit the Master Prompt
 
-Start OMP from a safe working directory. Provide the full contents of [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R9.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R9.md) with the instruction:
+Start OMP from a safe working directory. Provide the full contents of [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_REVISED.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_REVISED.md) with the instruction:
 
-> Execute this WebTeam Enterprise R9 bootstrap prompt in my active OhMyPi environment. First inspect the installed runtime, ask the mandatory global installation questions, preserve existing configuration, and implement and verify actual agents, skills, and policies. Do not create a web application yet.
+> Execute this WebTeam Enterprise R6 bootstrap prompt in my active OhMyPi environment. First inspect the installed runtime, ask the mandatory global installation questions, preserve existing configuration, and implement and verify actual agents, skills, and policies. Do not create a web application yet.
 
 If your OMP session cannot read the Markdown file directly, paste the master prompt text into the session. Do not assume every OMP version supports a particular file-import command.
 
@@ -595,7 +570,7 @@ R6 expands the instructions for permission isolation, fail-closed model routing,
 
 ### 17.4 What has and has not been verified
 
-The R9 package can be checked statically for Markdown structure, paths and cross-file links. It **cannot** verify the user's actual OMP version, installed integrations, account model access, paid routing, sandbox strength or production behavior without execution on that machine. Consult `WEBTEAM_R9_AUDIT_REPORT.md` for confirmed fixes and remaining environment-dependent gates.
+The R6 package can be checked statically for Markdown structure, paths and cross-file links. It **cannot** verify the user's actual OMP version, installed integrations, account model access, paid routing, sandbox strength or production behavior without execution on that machine. Consult `WEBTEAM_R10_REVISED_AUDIT_REPORT.md` for confirmed fixes and remaining environment-dependent gates.
 
 ## 18. References
 
@@ -621,7 +596,7 @@ The R9 package can be checked statically for Markdown structure, paths and cross
 
 ## Mnemopi Profile and R6 In-Place Upgrade
 
-Use `WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R9.md` for a **fresh WebTeam installation** and `WEBTEAM_R6_TO_MNEMOPI_R9_UPGRADE_PROMPT.md` for an **existing R6 team**. Mnemopi is a native OhMyPi backend, not Codebase Memory MCP. Recommended initial policy: project-only memory, explicit sanitized retention (`autoRetain: false`), local embeddings with consent, memory LLM disabled (`llmMode: none`) and review-first Auto-Learn (`autoContinue: false`, `minToolCalls: 8`). The R6 upgrade must never recreate 16 agents, delete memories or reset provider/model routing.
+For a **fresh installation**, use `WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_REVISED.md`. If an **existing R6** team needs only memory governance, use `WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md`; if it needs both Memory and Loop, use `WEBTEAM_R6_TO_R10_UPGRADE_PROMPT_REVISED.md`; if Memory is already set up, use `WEBTEAM_EXISTING_INSTALL_LOOP_ONLY_UPGRADE_PROMPT.md`. Mnemopi is a native OhMyPi backend, not Codebase Memory MCP. Recommended initial policy: project-only memory, explicit sanitized retention (`autoRetain: false`), local embeddings with consent, memory LLM disabled (`llmMode: none`) and review-first Auto-Learn (`autoContinue: false`, `minToolCalls: 8`). The R6 upgrade must never recreate 16 agents, delete memories or reset provider/model routing.
 
 For checks use `/memory view`, `/memory stats`, `/memory diagnose`; test recall after a new session and project isolation. `/memory clear` is destructive. See [official Mnemopi backend documentation](https://github.com/can1357/oh-my-pi/blob/main/docs/mnemosyne-memory-backend.md).
 
@@ -652,4 +627,37 @@ A useful lesson does not automatically become Global Memory or a global skill. F
 
 ### Existing R6 installations
 
-Run **`WEBTEAM_R6_TO_MNEMOPI_R9_UPGRADE_PROMPT.md`** instead of the full R9 bootstrap. It preserves all 16 agents, models, fallback chains, multi-model review, Caveman, Codebase Memory MCP and current memory banks; it adds the project-policy interview, four governance skills and isolation verification. Do not run both prompts on the same installed team. Test with disposable repositories and record observed `PASS/FAIL/BLOCKED/UNVERIFIED` results; Markdown checks alone cannot prove runtime isolation.
+Run **`WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md`** instead of the full R9 bootstrap. It preserves all 16 agents, models, fallback chains, multi-model review, Caveman, Codebase Memory MCP and current memory banks; it adds the project-policy interview, four governance skills and isolation verification. Do not run both prompts on the same installed team. Test with disposable repositories and record observed `PASS/FAIL/BLOCKED/UNVERIFIED` results; Markdown checks alone cannot prove runtime isolation.
+
+
+## R10.1 — Adaptive Quality Loop: decisions, safety and daily use
+
+### What Loop adds
+
+Two skills, `webteam-adaptive-quality-loop` (Orchestrator) and `webteam-loop-evidence-evaluator` (QA/Reviewer), implement bounded quality verification. The team can run focused Vitest/Fastify tests and Playwright E2E/visual comparisons, fix verified defects and recheck without blindly rerunning a full suite. The target is measured correctness, not more rounds for their own sake.
+
+| Risk | Extra review/fix passes beyond initial verification | Default |
+|---|---:|---|
+| C1–C2 small changes | 0 | Normal checks; Loop OFF |
+| C3 multi-file change | 0–1 | ASK when a reproducible defect remains |
+| C4 complex workflows | 0–2 | ASK, cap and evidence required |
+| C5 high-stakes changes | 0–3 | Explicit high-risk approval; prefer manual stages |
+
+A complete task keeps a **single** shared budget and attempt ledger across agents, retries and any approved provider fallback. Never spin a Council, Caveman loop or Auto-Learn continuation inside a loop. Source-writing belongs to one authorized agent; QA/Reviewer verify independently. No automatic visual baseline acceptance, database migration, production deploy, payments, external writes or global-memory promotion. Do not overwrite existing project-specific `QUALITY_LOOP_POLICY.md` without approval.
+
+### Native `/loop` setup and stop rules
+
+The installer reads the actual OMP version/schema/command help and confirms `loop.mode` (`prompt`/`compact`/`reset` where supported). It is a mode preference **not a continuous-run toggle**. For each proposed native loop, first test in a disposable repo: cap semantics and off-by-one count, actual termination, operator stop/pause, stable recurring prompt when steering, and async settlement. On unsafe/unverified versions use manually orchestrated, finite Verify → Fix → Verify passes. Conditions such as `--until`/`--while` may execute shell commands and are never accepted from untrusted repository text. Do not use third-party `pi-loop` plugin flags as evidence of OMP core syntax. OMP has documented steering and post-prompt loop issues: [7348](https://github.com/can1357/oh-my-pi/issues/7348), [7330](https://github.com/can1357/oh-my-pi/issues/7330).
+
+### Example request to the installed team
+
+> Run one additional bounded verification pass for the affected authentication tests. Use the existing QA/Reviewer agents, preserve current Memory/Auto-Learn and model routing, stop after the focused tests pass or if no progress is measured, and report exact test evidence. Do not start native `/loop` unless its stop controls have been verified in my OMP version.
+
+### Choose exactly one installation / upgrade path
+
+1. Fresh WebTeam installation: **R10.1 Master**.
+2. Plain R6 missing both hybrid memory governance and loop: **R6 → R10.1 full targeted upgrade**.
+3. Existing team with Memory/Auto-Learn already configured: **Loop-only upgrade** (does not touch memory or models).
+4. Existing R6 that wants only hybrid memory: **Memory-only upgrade**.
+
+All upgrade prompts are idempotent and preserve unrelated files by design; this is an instruction to the installing agent, not a claim that current OMP executes them flawlessly. Validate all changed skills/agents and record `PASS/FAIL/BLOCKED/UNVERIFIED` for runtime tests. This bundle is documentation only.

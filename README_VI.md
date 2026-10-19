@@ -1,48 +1,24 @@
-> **Phiên bản hiện tại: R9.** Cài mới: `WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R9.md`. Đã cài R6: `WEBTEAM_R6_TO_MNEMOPI_R9_UPGRADE_PROMPT.md`. Các hướng dẫn R9 bên dưới được ưu tiên nếu có mâu thuẫn với R8.
+# WebTeam Enterprise R10.1 — Hướng dẫn OhMyPi và nâng cấp an toàn
 
-# WebTeam Enterprise for OhMyPi — Hướng dẫn triển khai và sử dụng
+**Phiên bản:** R10.1, đã rà soát · **Ngôn ngữ:** Tiếng Việt · **Nền tảng:** OhMyPi (OMP) · **Đội ngũ:** 16 chuyên gia và Orchestrator
 
-**Phiên bản tài liệu:** R9 · **Ngày:** 19/10/2026 · **Ngôn ngữ:** Tiếng Việt  
-**Master Prompt:** [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R9.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R9.md)  
-**English guide:** [`README.md`](./README.md)
+**Cài WebTeam mới:** [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_REVISED.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_REVISED.md)  
+**R6 → Memory + Loop:** [`WEBTEAM_R6_TO_R10_UPGRADE_PROMPT_REVISED.md`](./WEBTEAM_R6_TO_R10_UPGRADE_PROMPT_REVISED.md)  
+**R6 hoặc mới hơn đã có Memory → chỉ thêm Loop:** [`WEBTEAM_EXISTING_INSTALL_LOOP_ONLY_UPGRADE_PROMPT.md`](./WEBTEAM_EXISTING_INSTALL_LOOP_ONLY_UPGRADE_PROMPT.md)  
+**R6 → chỉ nâng cấp Memory:** [`WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md`](./WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md)  
+**README English:** [`README.md`](./README.md) · **Audit:** [`WEBTEAM_R10_REVISED_AUDIT_REPORT.md`](./WEBTEAM_R10_REVISED_AUDIT_REPORT.md)
 
-> **Phân biệt quan trọng:** Đây là bộ tài liệu hướng dẫn cài WebTeam trong môi trường **OhMyPi (OMP)**. Các tệp Markdown này **không tự cài agents, skills, MCP hay model** vào máy. Hãy chạy Master Prompt trong một phiên OMP được cấp quyền phù hợp, trả lời các lựa chọn cài đặt và kiểm tra kết quả thật.
+> Đây là **prompt hướng dẫn thực hiện**, không phải bộ agents đã được cài. Cần kiểm tra runtime OMP thật: quyền MCP, model routing, bank Mnemopi, khả năng dừng `/loop` và chi phí. **Chỉ sử dụng một đường cài đặt/nâng cấp** phù hợp, không bootstrap lại team đang hoạt động.
 
-## Memory & Auto-Learn native — Cấu hình đề xuất cho WebTeam
+## Cấu hình mặc định khuyến nghị cho R10.1
 
-**Memory của OhMyPi** lưu bài học xuyên phiên; **Auto-Learn** hỗ trợ ghi nhận bài học và tạo skills tự quản lý. Đây là hai tính năng khác với **Codebase Memory MCP** (công cụ lập chỉ mục và phân tích quan hệ source code). R9 yêu cầu hỏi ý kiến trước khi bật và kiểm tra phiên bản, vị trí config, quyền truy cập, chi phí.
+- **Global/Project:** agents và skills chung được cài một lần; PRODUCT.md, DESIGN.md, ARCHITECTURE.md, memory và tiêu chuẩn dự án lưu độc lập theo repository.
+- **Memory:** Mnemopi `per-project` nếu được cho phép; `autoRetain: false`, Auto-Learn `autoContinue: false` với kiểm duyệt. Nếu native managed skills không cách ly theo project, dùng quy trình tạo project-local skill có kiểm duyệt. Không tự ý thay đổi cài đặt Memory đã hoạt động tốt.
+- **Provider/model:** hỏi provider mặc định trước khi khám phá model; fallback và hội đồng nhiều model là hai cơ chế riêng, phải có phê duyệt trước.
+- **Loop:** policy `ASK`, native Loop thường trực **OFF**. C1/C2 không thêm vòng; C3 tối đa 1; C4 tối đa 2; C5 tối đa 3 khi có chấp thuận rủi ro. Chỉ dùng `/loop` native sau khi kiểm chứng giới hạn lượt, dừng, steering và async; nếu không, thực hiện kiểm thử hữu hạn bằng Orchestrator.
+- **Công cụ:** Caveman, Codebase Memory MCP chỉ dùng khi sẵn sàng và được đồng ý; quy tắc trong Markdown không thay thế phân quyền thực tế.
 
-**Cấu hình khuyến nghị ban đầu (kiểm duyệt trước, tối ưu chi phí):**
-
-```yaml
-memory:
-  backend: local
-
-autolearn:
-  enabled: true
-  autoContinue: false
-  minToolCalls: 8
-```
-
-Chỉ thêm vào `config.yml` thực sự có hiệu lực sau khi xác minh đường dẫn và sao lưu thiết lập. Có thể xem `/settings`. `local` tạo trí nhớ/tóm tắt theo dự án, còn `autoContinue: false` không tự tiêu thụ thêm một lượt gọi model sau mỗi tác vụ. Mốc 8 tool calls là khuyến nghị (OMP mặc định 5), không bảo đảm mọi tác vụ đều có bài học đáng lưu.
-
-**Kiểm tra:** chạy `/memory view`, `/memory stats`, `/memory diagnose`, và với local dùng `/memory queue`, `/memory sync` khi phù hợp. Sau một tác vụ không chứa dữ liệu nhạy cảm, thử `learn` khi công cụ sẵn có và kiểm tra bài học còn xuất hiện ở **phiên OMP mới**. `manage_skill` chỉ hoạt động trong các ngữ cảnh được cho phép; không giả định mọi subagent có quyền sử dụng.
-
-**Lựa chọn nâng cao:** `mnemopi` dùng SQLite cục bộ và hỗ trợ truy xuất có cấu trúc (`recall`, `retain`, `reflect`, `memory_edit`) khi đã xác minh cấu hình. `hindsight` yêu cầu dịch vụ riêng và phê duyệt quyền truy cập mạng, dữ liệu, ngân sách. `PRODUCT.md`, `DESIGN.md`, `ARCHITECTURE.md`, ADRs vẫn là nguồn tài liệu chuẩn; ký ức chỉ là ngữ cảnh để tham khảo.
-
-**Bảo vệ skills:** Auto-Learn lưu managed skills ở nơi riêng (thường `~/.omp/agent/managed-skills/`). Không cho cơ chế tự học tự sửa skills gốc, quyền tools, cấu hình provider/model, chính sách bảo mật hay quyết định dự án. R9 bổ sung bốn skills quản trị memory, rút kinh nghiệm, kiểm duyệt managed skills và đánh giá chất lượng ghi nhớ. Không lưu secrets, dữ liệu khách hàng hoặc hướng dẫn từ nguồn không đáng tin. Lệnh `/memory clear`/`reset` xóa dữ liệu và cần được cho phép rõ ràng; tắt backend không đồng nghĩa xóa dữ liệu đã lưu.
-
-**Tắt không xóa dữ liệu:**
-
-```yaml
-memory:
-  backend: off
-
-autolearn:
-  enabled: false
-```
-
-Tham khảo: [OMP memory](https://github.com/can1357/oh-my-pi/blob/main/docs/memory.md), [settings](https://github.com/can1357/oh-my-pi/blob/main/docs/settings.md), [Mnemopi](https://github.com/can1357/oh-my-pi/blob/main/docs/mnemosyne-memory-backend.md).
+`loop.mode: prompt` là cấu hình **kiểu lặp**, không phải lệnh bật Loop hoặc một chế độ `ASK/AUTO` native. Nếu không kiểm chứng được cơ chế dừng an toàn, dùng Verify → Fix → Verify có giới hạn.
 
 ## 1. WebTeam là gì?
 
@@ -305,9 +281,9 @@ omp config path
 
 ### 6.2 Mở OMP và đưa Master Prompt
 
-Trong terminal, mở phiên OMP tại một thư mục làm việc an toàn, rồi đưa toàn bộ nội dung [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R9.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R9.md) vào session với chỉ dẫn:
+Trong terminal, mở phiên OMP tại một thư mục làm việc an toàn, rồi đưa toàn bộ nội dung [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_REVISED.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_REVISED.md) vào session với chỉ dẫn:
 
-> Execute this WebTeam Enterprise R9 bootstrap prompt in my active OhMyPi environment. First inspect the installed runtime, ask the mandatory global installation questions, preserve existing configuration, and implement/verify real agents, skills and policies. Do not create a web application yet.
+> Execute this WebTeam Enterprise R6 bootstrap prompt in my active OhMyPi environment. First inspect the installed runtime, ask the mandatory global installation questions, preserve existing configuration, and implement/verify real agents, skills and policies. Do not create a web application yet.
 
 Nếu phiên OMP không thể đọc file Markdown trực tiếp, dán nội dung Master Prompt vào chat của OMP. Không giả định có một lệnh nhập file cố định trên mọi bản OMP.
 
@@ -565,7 +541,7 @@ Bản R6 tăng cường quy trình kiểm soát quyền của subagents, chuyể
 
 ### 17.4 Giới hạn xác minh
 
-Kiểm tra tài liệu Markdown không chứng minh tất cả tính năng đã chạy trong OMP thực tế. Cần kiểm thử trên máy cài đặt đối với quyền tool, version, model, fallback, MCP, visual tests và CI. Xem `WEBTEAM_R9_AUDIT_REPORT.md` để biết những gì đã sửa và các điểm còn phụ thuộc môi trường.
+Kiểm tra tài liệu Markdown không chứng minh tất cả tính năng đã chạy trong OMP thực tế. Cần kiểm thử trên máy cài đặt đối với quyền tool, version, model, fallback, MCP, visual tests và CI. Xem `WEBTEAM_R10_REVISED_AUDIT_REPORT.md` để biết những gì đã sửa và các điểm còn phụ thuộc môi trường.
 
 ## 18. Tài liệu tham khảo
 
@@ -591,7 +567,7 @@ Kiểm tra tài liệu Markdown không chứng minh tất cả tính năng đã 
 
 ## Cấu hình Mnemopi và nâng cấp trực tiếp từ R6
 
-Sử dụng `WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R9.md` để **cài WebTeam mới** và `WEBTEAM_R6_TO_MNEMOPI_R9_UPGRADE_PROMPT.md` để **nâng cấp đội R6 đã cài**. Mnemopi là backend tích hợp sẵn trong OhMyPi, không phải Codebase Memory MCP. Cấu hình khuyến nghị: bộ nhớ riêng từng dự án, chỉ lưu bài học đã kiểm chứng bằng công cụ (`autoRetain: false`), local embeddings khi được cho phép, không gọi model phụ cho memory (`llmMode: none`) và Auto-Learn review-first (`autoContinue: false`, `minToolCalls: 8`). Việc nâng cấp R6 không được tạo lại 16 agents, xóa dữ liệu nhớ hoặc thay đổi model routing.
+Để **cài WebTeam mới**, dùng `WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_REVISED.md`. Với **R6 chỉ cần Memory**, dùng `WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md`; nếu cần **cả Memory và Loop**, dùng `WEBTEAM_R6_TO_R10_UPGRADE_PROMPT_REVISED.md`; nếu **đã có Memory**, dùng `WEBTEAM_EXISTING_INSTALL_LOOP_ONLY_UPGRADE_PROMPT.md`. Mnemopi là backend tích hợp sẵn trong OhMyPi, không phải Codebase Memory MCP. Cấu hình khuyến nghị: bộ nhớ riêng từng dự án, chỉ lưu bài học đã kiểm chứng bằng công cụ (`autoRetain: false`), local embeddings khi được cho phép, không gọi model phụ cho memory (`llmMode: none`) và Auto-Learn review-first (`autoContinue: false`, `minToolCalls: 8`). Việc nâng cấp R6 không được tạo lại 16 agents, xóa dữ liệu nhớ hoặc thay đổi model routing.
 
 Kiểm tra với `/memory view`, `/memory stats`, `/memory diagnose`, thử nhớ qua phiên mới và cách ly dự án. `/memory clear` có thể xóa dữ liệu. Tham khảo [tài liệu Mnemopi](https://github.com/can1357/oh-my-pi/blob/main/docs/mnemosyne-memory-backend.md).
 
@@ -624,6 +600,37 @@ WebTeam áp dụng **hai cấp chính sách tri thức**: Global WebTeam quy đ�
 
 ### Dành cho WebTeam R6 đã cài
 
-Chỉ chạy **`WEBTEAM_R6_TO_MNEMOPI_R9_UPGRADE_PROMPT.md`**, **không** chạy Master Prompt R9 để cài lại. Prompt nâng cấp bảo tồn 16 agents, models, fallback, hội đồng multi-model, Caveman, Codebase Memory MCP và memory hiện có; chỉ thêm phỏng vấn chính sách từng dự án, bốn skills mới và kiểm tra cách ly. Các kết quả `PASS/FAIL/BLOCKED/UNVERIFIED` phải dựa vào chạy thử thực tế trên OMP, không chỉ dựa vào file Markdown.
+Chỉ chạy **`WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md`**, **không** chạy Master Prompt R9 để cài lại. Prompt nâng cấp bảo tồn 16 agents, models, fallback, hội đồng multi-model, Caveman, Codebase Memory MCP và memory hiện có; chỉ thêm phỏng vấn chính sách từng dự án, bốn skills mới và kiểm tra cách ly. Các kết quả `PASS/FAIL/BLOCKED/UNVERIFIED` phải dựa vào chạy thử thực tế trên OMP, không chỉ dựa vào file Markdown.
 
 
+## R10.1 — Adaptive Quality Loop: chính sách và sử dụng hằng ngày
+
+### Loop có thêm những gì?
+
+Hai skills `webteam-adaptive-quality-loop` (Orchestrator) và `webteam-loop-evidence-evaluator` (QA/Reviewer) giúp kiểm tra, sửa lỗi đã xác minh và chạy lại các tests liên quan. Ví dụ: Vitest/Fastify, Playwright E2E, visual regression. Mục tiêu là giảm lỗi có bằng chứng, không tăng số lượt model một cách máy móc.
+
+| Mức độ | Lượt review/sửa bổ sung sau bước kiểm tra đầu tiên | Mặc định |
+|---|---:|---|
+| C1–C2 | 0 | Kiểm tra thường, Loop OFF |
+| C3 | 0–1 | ASK khi có lỗi tái hiện được |
+| C4 | 0–2 | ASK, giới hạn và bằng chứng |
+| C5 | 0–3 | Phê duyệt rủi ro, ưu tiên làm thủ công |
+
+Mỗi task có **một ngân sách chung** và số lượt thực tế, không được reset khi fallback model hay retry. Một agent chịu trách nhiệm sửa code, QA và Reviewer đánh giá độc lập. Không lồng Caveman loop, Council hay Auto-Learn continuation. Cấm tự chấp nhận ảnh baseline, deploy, migration, mua dịch vụ, ghi dữ liệu ngoài, hay đưa bài học lên Global. Không ghi đè `QUALITY_LOOP_POLICY.md` đã được duyệt khi chưa hỏi.
+
+### Sử dụng `/loop` native an toàn
+
+Trước khi dùng Loop, kiểm tra phiên bản OMP, help/cấu hình và cú pháp chính xác. `loop.mode` (`prompt`/`compact`/`reset`) chỉ chọn cách lặp chứ không bật Loop thường trực. Kiểm thử trên repository giả lập: số lượt và off-by-one, dừng/hủy, steering không thay prompt lặp, việc hoàn thành async jobs. Nếu bất kỳ mục nào không an toàn hoặc chưa xác minh, sử dụng các lượt **Verify → Fix → Verify hữu hạn do Orchestrator giám sát**. Các điều kiện `--until`/`--while` có thể chạy shell, chỉ dùng lệnh cố định đã duyệt. Không lấy cú pháp plugin `pi-loop` làm cú pháp OMP native. Xem các vấn đề upstream [7348](https://github.com/can1357/oh-my-pi/issues/7348), [7330](https://github.com/can1357/oh-my-pi/issues/7330).
+
+### Ví dụ yêu cầu với WebTeam đã cài
+
+> Hãy thêm một lượt kiểm thử có giới hạn cho tính năng authentication vừa thay đổi. Dùng QA và Reviewer, không thay đổi Memory/Auto-Learn, model hay provider, dừng khi các tests liên quan đạt hoặc không còn tiến triển. Chỉ dùng native `/loop` nếu đã kiểm chứng cơ chế dừng trên bản OMP hiện tại.
+
+### Chọn đúng một phương án nâng cấp
+
+1. **Cài mới:** Master Prompt R10.1.
+2. **R6 chưa có Hybrid Memory và Loop:** Prompt nâng cấp đầy đủ R6 → R10.1.
+3. **R6 hoặc mới hơn đã có Memory/Auto-Learn:** Prompt **Loop-only**, không động vào bộ nhớ/model.
+4. **R6 chỉ cần Mnemopi/Memory:** Prompt **Memory-only**.
+
+Các prompt yêu cầu bảo toàn cấu hình không liên quan và phải kiểm tra những thay đổi thực tế. Chỉ có Markdown không chứng minh quyền tool, cách ly memory hay khả năng dừng Loop đã hoạt động. Kiểm tra runtime với trạng thái `PASS/FAIL/BLOCKED/UNVERIFIED`.
