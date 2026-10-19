@@ -1,16 +1,18 @@
-# WebTeam Enterprise R10.1 — OhMyPi Installation, Operation and Upgrade Guide
+# WebTeam Enterprise R11 — OhMyPi Installation, Operation, Slash Commands and Upgrade Guide
+**Post-install self-check:** [`WEBTEAM_POST_INSTALL_SELF_ORCHESTRATION_CHECK.md`](./WEBTEAM_POST_INSTALL_SELF_ORCHESTRATION_CHECK.md)  
 
-**Release:** R10.1, audited · **Language:** English · **Target:** OhMyPi (OMP) · **Team:** 16 specialists + WebTeam Orchestrator
+**Release:** R11, document-reviewed · **Language:** English · **Target:** OhMyPi (OMP) · **Team:** 16 specialists + WebTeam Orchestrator
 
-**New team:** [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_REVISED.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_REVISED.md)  
-**Existing R6 → Memory + Loop:** [`WEBTEAM_R6_TO_R10_UPGRADE_PROMPT_REVISED.md`](./WEBTEAM_R6_TO_R10_UPGRADE_PROMPT_REVISED.md)  
+**New team (R11):** [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R11.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R11.md)  
+**Existing WebTeam — commands only:** [`WEBTEAM_EXISTING_INSTALL_COMMANDS_ONLY_UPGRADE_PROMPT.md`](./WEBTEAM_EXISTING_INSTALL_COMMANDS_ONLY_UPGRADE_PROMPT.md)  
+**Existing R6 → R10.2 base features (if missing):** [`WEBTEAM_R6_TO_R10_2_UPGRADE_PROMPT.md`](./WEBTEAM_R6_TO_R10_2_UPGRADE_PROMPT.md)  
 **Existing R6/R9/R10 with Memory already installed → Loop only:** [`WEBTEAM_EXISTING_INSTALL_LOOP_ONLY_UPGRADE_PROMPT.md`](./WEBTEAM_EXISTING_INSTALL_LOOP_ONLY_UPGRADE_PROMPT.md)  
 **Existing R6 → Memory only:** [`WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md`](./WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md)  
-**Vietnamese guide:** [`README_VI.md`](./README_VI.md) · **Audit:** [`WEBTEAM_R10_REVISED_AUDIT_REPORT.md`](./WEBTEAM_R10_REVISED_AUDIT_REPORT.md)
+**Vietnamese guide:** [`README_VI.md`](./README_VI.md) · **R11 audit:** [`WEBTEAM_R11_AUDIT_REPORT.md`](./WEBTEAM_R11_AUDIT_REPORT.md)
 
 > These documents contain **installation instructions**, not an installed WebTeam. Runtime configuration, MCP permissions, actual model discovery, memory isolation, Loop cancellation and cost must be verified in the user's **installed** OMP. Run **exactly one** installation/upgrade path according to the situation. Do not re-bootstrap an existing team.
 
-## Recommended R10.1 defaults
+## Recommended R11 defaults
 
 - **Global/Project:** install reusable agents/skills once; keep PRODUCT.md, DESIGN.md, ARCHITECTURE.md, memory and project-specific rules isolated per repository.
 - **Memory:** optional consented `mnemopi` with `scoping: per-project`, `autoRetain: false`; Auto-Learn `autoContinue: false`, review-first, and enforce project-local output of learned skills or use supervised manual learning. Do not override an existing approved working setup.
@@ -309,7 +311,7 @@ omp config path
 
 ### 6.2 Launch OMP and Submit the Master Prompt
 
-Start OMP from a safe working directory. Provide the full contents of [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_REVISED.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_REVISED.md) with the instruction:
+Start OMP from a safe working directory. Provide the full contents of [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_2.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_2.md) with the instruction:
 
 > Execute this WebTeam Enterprise R6 bootstrap prompt in my active OhMyPi environment. First inspect the installed runtime, ask the mandatory global installation questions, preserve existing configuration, and implement and verify actual agents, skills, and policies. Do not create a web application yet.
 
@@ -570,7 +572,7 @@ R6 expands the instructions for permission isolation, fail-closed model routing,
 
 ### 17.4 What has and has not been verified
 
-The R6 package can be checked statically for Markdown structure, paths and cross-file links. It **cannot** verify the user's actual OMP version, installed integrations, account model access, paid routing, sandbox strength or production behavior without execution on that machine. Consult `WEBTEAM_R10_REVISED_AUDIT_REPORT.md` for confirmed fixes and remaining environment-dependent gates.
+The R6 package can be checked statically for Markdown structure, paths and cross-file links. It **cannot** verify the user's actual OMP version, installed integrations, account model access, paid routing, sandbox strength or production behavior without execution on that machine. Consult `WEBTEAM_R10_2_AUDIT_REPORT.md` for confirmed fixes and remaining environment-dependent gates.
 
 ## 18. References
 
@@ -596,7 +598,7 @@ The R6 package can be checked statically for Markdown structure, paths and cross
 
 ## Mnemopi Profile and R6 In-Place Upgrade
 
-For a **fresh installation**, use `WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_REVISED.md`. If an **existing R6** team needs only memory governance, use `WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md`; if it needs both Memory and Loop, use `WEBTEAM_R6_TO_R10_UPGRADE_PROMPT_REVISED.md`; if Memory is already set up, use `WEBTEAM_EXISTING_INSTALL_LOOP_ONLY_UPGRADE_PROMPT.md`. Mnemopi is a native OhMyPi backend, not Codebase Memory MCP. Recommended initial policy: project-only memory, explicit sanitized retention (`autoRetain: false`), local embeddings with consent, memory LLM disabled (`llmMode: none`) and review-first Auto-Learn (`autoContinue: false`, `minToolCalls: 8`). The R6 upgrade must never recreate 16 agents, delete memories or reset provider/model routing.
+For a **fresh installation**, use `WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_2.md`. If an **existing R6** team needs only memory governance, use `WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md`; if it needs both Memory and Loop, use `WEBTEAM_R6_TO_R10_2_UPGRADE_PROMPT.md`; if Memory is already set up, use `WEBTEAM_EXISTING_INSTALL_LOOP_ONLY_UPGRADE_PROMPT.md`. Mnemopi is a native OhMyPi backend, not Codebase Memory MCP. Recommended initial policy: project-only memory, explicit sanitized retention (`autoRetain: false`), local embeddings with consent, memory LLM disabled (`llmMode: none`) and review-first Auto-Learn (`autoContinue: false`, `minToolCalls: 8`). The R6 upgrade must never recreate 16 agents, delete memories or reset provider/model routing.
 
 For checks use `/memory view`, `/memory stats`, `/memory diagnose`; test recall after a new session and project isolation. `/memory clear` is destructive. See [official Mnemopi backend documentation](https://github.com/can1357/oh-my-pi/blob/main/docs/mnemosyne-memory-backend.md).
 
@@ -630,7 +632,7 @@ A useful lesson does not automatically become Global Memory or a global skill. F
 Run **`WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md`** instead of the full R9 bootstrap. It preserves all 16 agents, models, fallback chains, multi-model review, Caveman, Codebase Memory MCP and current memory banks; it adds the project-policy interview, four governance skills and isolation verification. Do not run both prompts on the same installed team. Test with disposable repositories and record observed `PASS/FAIL/BLOCKED/UNVERIFIED` results; Markdown checks alone cannot prove runtime isolation.
 
 
-## R10.1 — Adaptive Quality Loop: decisions, safety and daily use
+## R10.2 — Adaptive Quality Loop: decisions, safety and daily use
 
 ### What Loop adds
 
@@ -655,9 +657,57 @@ The installer reads the actual OMP version/schema/command help and confirms `loo
 
 ### Choose exactly one installation / upgrade path
 
-1. Fresh WebTeam installation: **R10.1 Master**.
-2. Plain R6 missing both hybrid memory governance and loop: **R6 → R10.1 full targeted upgrade**.
+1. Fresh WebTeam installation: **R10.2 Master**.
+2. Plain R6 missing both hybrid memory governance and loop: **R6 → R10.2 full targeted upgrade**.
 3. Existing team with Memory/Auto-Learn already configured: **Loop-only upgrade** (does not touch memory or models).
 4. Existing R6 that wants only hybrid memory: **Memory-only upgrade**.
 
 All upgrade prompts are idempotent and preserve unrelated files by design; this is an instruction to the installing agent, not a claim that current OMP executes them flawlessly. Validate all changed skills/agents and record `PASS/FAIL/BLOCKED/UNVERIFIED` for runtime tests. This bundle is documentation only.
+
+
+## R10.2 — Post-install self-orchestration audit (new)
+
+**One-time check after every installation or substantial agent-routing change:** [`WEBTEAM_POST_INSTALL_SELF_ORCHESTRATION_CHECK.md`](./WEBTEAM_POST_INSTALL_SELF_ORCHESTRATION_CHECK.md). This diagnostic can also be run on an already-installed team; **do not re-run the master bootstrap** simply to test routing.
+
+The audit verifies the active OMP version/profile/project root; all 16 agents and relevant skills; effective Global/Project `AGENTS.md`/`RULES.md`; exact `task` tool availability (batch/flat schema), permissions, spawn depth, model roles and agent restrictions; compatibility with Caveman/MCP, memory and Loop without altering those systems. It then performs an **approved, bounded synthetic fixture test** to observe the main session handling a natural-language web-development request and a *real* specialist dispatch through `task`. A discoverable agent is not proof of automatic routing.
+
+**Expected routing:** main OMP session reads WebTeam policy and either delegates to `webteam-orchestrator`, which may delegate to specialists if nesting is available, or acts as coordinator itself and delegates directly to the correct specialists. Simple C1/C2 requests may be handled directly. This is policy-driven behavior; do not assume a native, hard-coded dispatcher intercepts all prompts.
+
+**Safe repair:** inspection is read-only first. Any configuration change requires relevant approval, backup and limited diff; re-test after repair. Unverifiable runtime routing is reported as `UNVERIFIED`/`PARTIAL_VERIFIED`, never incorrectly marked passed. Never weaken headless subagent permissions to make a test pass or repeat side-effecting operations. OMP headless subagents may use `yolo` approval mode; tool access must be inspected rather than trusted based on Markdown language.
+
+**Quick natural-language smoke-test request** (run in an approved disposable synthetic project, not an important application):
+
+> For this sample web application, assess how to add a role-based onboarding flow with a responsive administrative UI and Fastify API. Identify architecture, accessibility, security and test risks. Give a concise plan. Do not modify any files.
+
+Observe actual `task` calls/Agent Hub, not merely an agent statement that it 'would delegate.' If no fresh main session is possible, carry out the manual test later and keep the audit marked incomplete.
+
+
+---
+
+## R11 — Native OhMyPi 18.12.2 slash commands
+
+OMP 18.12.2 supports **native Markdown file slash commands**, in addition to TypeScript custom commands. WebTeam R11 bundles actual reusable command templates in [`WEBTEAM_R11_COMMAND_TEMPLATES/commands/`](./WEBTEAM_R11_COMMAND_TEMPLATES/commands/) and embeds the same templates in the master installer. A slash command is a shortcut that expands to a **prompt for the main session**, not an executable shell script, automatic task spawn or permission enforcement.
+
+**Locations:** Effective active-profile Global `commands/*.md` (typically `~/.omp/agent/commands/`) or project `<repo>/.omp/commands/*.md`. Native discovery is **non-recursive**. Project commands shadow same-name Global commands; built-in, extension or custom handlers may take precedence. Confirm the effective path and name collisions before installation.
+
+**Command examples:**
+
+```text
+/webteam_create_project "School management platform"
+/webteam_adopt_project "/workspace/existing-app"
+/webteam_plan "Add role-based permissions"
+/webteam_implement "Build approved user management feature"
+/webteam_design_audit "Dashboard"
+/webteam_test "Authentication unit and API tests"
+/webteam_visual_test "Responsive dashboard"
+/webteam_review "Current Git diff"
+/webteam_status
+/webteam_healthcheck
+/webteam_help
+```
+
+Additional commands: `/webteam_architecture_audit`, `/webteam_security_audit`, `/webteam_reference_analyze`, `/webteam_memory_review`, `/webteam_models_audit`, `/webteam_quality_loop`, `/webteam_docs_sync`, `/webteam_release_check`.
+
+**New installation:** use [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R11.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R11.md). **Already running WebTeam R6/R10.2 and want commands only:** use [`WEBTEAM_EXISTING_INSTALL_COMMANDS_ONLY_UPGRADE_PROMPT.md`](./WEBTEAM_EXISTING_INSTALL_COMMANDS_ONLY_UPGRADE_PROMPT.md), not the full bootstrap.
+
+**Important:** Commands do not replace natural-language requests, and autocomplete alone does not prove real `task` delegation. Verify OMP discovery, argument expansion and safe bounded invocation, and continue to use the post-install self-orchestration audit for real routing. `$ARGUMENTS` is untrusted user text and must never be interpolated into arbitrary shell execution. Command installation must preserve Memory, Auto-Learn, models/fallback/council, Loop, Caveman and Codebase Memory MCP unchanged.

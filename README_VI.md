@@ -1,16 +1,18 @@
-# WebTeam Enterprise R10.1 — Hướng dẫn OhMyPi và nâng cấp an toàn
+# WebTeam Enterprise R11 — Hướng dẫn OhMyPi, WebTeam Commands và nâng cấp an toàn
+**Kiểm tra sau cài đặt:** [`WEBTEAM_POST_INSTALL_SELF_ORCHESTRATION_CHECK.md`](./WEBTEAM_POST_INSTALL_SELF_ORCHESTRATION_CHECK.md)  
 
-**Phiên bản:** R10.1, đã rà soát · **Ngôn ngữ:** Tiếng Việt · **Nền tảng:** OhMyPi (OMP) · **Đội ngũ:** 16 chuyên gia và Orchestrator
+**Phiên bản:** R11, đã rà soát tài liệu · **Ngôn ngữ:** Tiếng Việt · **Nền tảng:** OhMyPi (OMP) · **Đội ngũ:** 16 chuyên gia và Orchestrator
 
-**Cài WebTeam mới:** [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_REVISED.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_REVISED.md)  
-**R6 → Memory + Loop:** [`WEBTEAM_R6_TO_R10_UPGRADE_PROMPT_REVISED.md`](./WEBTEAM_R6_TO_R10_UPGRADE_PROMPT_REVISED.md)  
+**Cài WebTeam mới (R11):** [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R11.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R11.md)  
+**WebTeam đã cài — chỉ bổ sung commands:** [`WEBTEAM_EXISTING_INSTALL_COMMANDS_ONLY_UPGRADE_PROMPT.md`](./WEBTEAM_EXISTING_INSTALL_COMMANDS_ONLY_UPGRADE_PROMPT.md)  
+**R6 → thành phần nền R10.2 (nếu còn thiếu):** [`WEBTEAM_R6_TO_R10_2_UPGRADE_PROMPT.md`](./WEBTEAM_R6_TO_R10_2_UPGRADE_PROMPT.md)  
 **R6 hoặc mới hơn đã có Memory → chỉ thêm Loop:** [`WEBTEAM_EXISTING_INSTALL_LOOP_ONLY_UPGRADE_PROMPT.md`](./WEBTEAM_EXISTING_INSTALL_LOOP_ONLY_UPGRADE_PROMPT.md)  
 **R6 → chỉ nâng cấp Memory:** [`WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md`](./WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md)  
-**README English:** [`README.md`](./README.md) · **Audit:** [`WEBTEAM_R10_REVISED_AUDIT_REPORT.md`](./WEBTEAM_R10_REVISED_AUDIT_REPORT.md)
+**README English:** [`README.md`](./README.md) · **Audit R11:** [`WEBTEAM_R11_AUDIT_REPORT.md`](./WEBTEAM_R11_AUDIT_REPORT.md)
 
 > Đây là **prompt hướng dẫn thực hiện**, không phải bộ agents đã được cài. Cần kiểm tra runtime OMP thật: quyền MCP, model routing, bank Mnemopi, khả năng dừng `/loop` và chi phí. **Chỉ sử dụng một đường cài đặt/nâng cấp** phù hợp, không bootstrap lại team đang hoạt động.
 
-## Cấu hình mặc định khuyến nghị cho R10.1
+## Cấu hình mặc định khuyến nghị cho R11
 
 - **Global/Project:** agents và skills chung được cài một lần; PRODUCT.md, DESIGN.md, ARCHITECTURE.md, memory và tiêu chuẩn dự án lưu độc lập theo repository.
 - **Memory:** Mnemopi `per-project` nếu được cho phép; `autoRetain: false`, Auto-Learn `autoContinue: false` với kiểm duyệt. Nếu native managed skills không cách ly theo project, dùng quy trình tạo project-local skill có kiểm duyệt. Không tự ý thay đổi cài đặt Memory đã hoạt động tốt.
@@ -281,7 +283,7 @@ omp config path
 
 ### 6.2 Mở OMP và đưa Master Prompt
 
-Trong terminal, mở phiên OMP tại một thư mục làm việc an toàn, rồi đưa toàn bộ nội dung [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_REVISED.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_REVISED.md) vào session với chỉ dẫn:
+Trong terminal, mở phiên OMP tại một thư mục làm việc an toàn, rồi đưa toàn bộ nội dung [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_2.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_2.md) vào session với chỉ dẫn:
 
 > Execute this WebTeam Enterprise R6 bootstrap prompt in my active OhMyPi environment. First inspect the installed runtime, ask the mandatory global installation questions, preserve existing configuration, and implement/verify real agents, skills and policies. Do not create a web application yet.
 
@@ -541,7 +543,7 @@ Bản R6 tăng cường quy trình kiểm soát quyền của subagents, chuyể
 
 ### 17.4 Giới hạn xác minh
 
-Kiểm tra tài liệu Markdown không chứng minh tất cả tính năng đã chạy trong OMP thực tế. Cần kiểm thử trên máy cài đặt đối với quyền tool, version, model, fallback, MCP, visual tests và CI. Xem `WEBTEAM_R10_REVISED_AUDIT_REPORT.md` để biết những gì đã sửa và các điểm còn phụ thuộc môi trường.
+Kiểm tra tài liệu Markdown không chứng minh tất cả tính năng đã chạy trong OMP thực tế. Cần kiểm thử trên máy cài đặt đối với quyền tool, version, model, fallback, MCP, visual tests và CI. Xem `WEBTEAM_R10_2_AUDIT_REPORT.md` để biết những gì đã sửa và các điểm còn phụ thuộc môi trường.
 
 ## 18. Tài liệu tham khảo
 
@@ -567,7 +569,7 @@ Kiểm tra tài liệu Markdown không chứng minh tất cả tính năng đã 
 
 ## Cấu hình Mnemopi và nâng cấp trực tiếp từ R6
 
-Để **cài WebTeam mới**, dùng `WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_REVISED.md`. Với **R6 chỉ cần Memory**, dùng `WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md`; nếu cần **cả Memory và Loop**, dùng `WEBTEAM_R6_TO_R10_UPGRADE_PROMPT_REVISED.md`; nếu **đã có Memory**, dùng `WEBTEAM_EXISTING_INSTALL_LOOP_ONLY_UPGRADE_PROMPT.md`. Mnemopi là backend tích hợp sẵn trong OhMyPi, không phải Codebase Memory MCP. Cấu hình khuyến nghị: bộ nhớ riêng từng dự án, chỉ lưu bài học đã kiểm chứng bằng công cụ (`autoRetain: false`), local embeddings khi được cho phép, không gọi model phụ cho memory (`llmMode: none`) và Auto-Learn review-first (`autoContinue: false`, `minToolCalls: 8`). Việc nâng cấp R6 không được tạo lại 16 agents, xóa dữ liệu nhớ hoặc thay đổi model routing.
+Để **cài WebTeam mới**, dùng `WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R10_2.md`. Với **R6 chỉ cần Memory**, dùng `WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md`; nếu cần **cả Memory và Loop**, dùng `WEBTEAM_R6_TO_R10_2_UPGRADE_PROMPT.md`; nếu **đã có Memory**, dùng `WEBTEAM_EXISTING_INSTALL_LOOP_ONLY_UPGRADE_PROMPT.md`. Mnemopi là backend tích hợp sẵn trong OhMyPi, không phải Codebase Memory MCP. Cấu hình khuyến nghị: bộ nhớ riêng từng dự án, chỉ lưu bài học đã kiểm chứng bằng công cụ (`autoRetain: false`), local embeddings khi được cho phép, không gọi model phụ cho memory (`llmMode: none`) và Auto-Learn review-first (`autoContinue: false`, `minToolCalls: 8`). Việc nâng cấp R6 không được tạo lại 16 agents, xóa dữ liệu nhớ hoặc thay đổi model routing.
 
 Kiểm tra với `/memory view`, `/memory stats`, `/memory diagnose`, thử nhớ qua phiên mới và cách ly dự án. `/memory clear` có thể xóa dữ liệu. Tham khảo [tài liệu Mnemopi](https://github.com/can1357/oh-my-pi/blob/main/docs/mnemosyne-memory-backend.md).
 
@@ -603,7 +605,7 @@ WebTeam áp dụng **hai cấp chính sách tri thức**: Global WebTeam quy đ�
 Chỉ chạy **`WEBTEAM_R6_MEMORY_ONLY_UPGRADE_PROMPT_REVISED.md`**, **không** chạy Master Prompt R9 để cài lại. Prompt nâng cấp bảo tồn 16 agents, models, fallback, hội đồng multi-model, Caveman, Codebase Memory MCP và memory hiện có; chỉ thêm phỏng vấn chính sách từng dự án, bốn skills mới và kiểm tra cách ly. Các kết quả `PASS/FAIL/BLOCKED/UNVERIFIED` phải dựa vào chạy thử thực tế trên OMP, không chỉ dựa vào file Markdown.
 
 
-## R10.1 — Adaptive Quality Loop: chính sách và sử dụng hằng ngày
+## R10.2 — Adaptive Quality Loop: chính sách và sử dụng hằng ngày
 
 ### Loop có thêm những gì?
 
@@ -628,9 +630,57 @@ Trước khi dùng Loop, kiểm tra phiên bản OMP, help/cấu hình và cú p
 
 ### Chọn đúng một phương án nâng cấp
 
-1. **Cài mới:** Master Prompt R10.1.
-2. **R6 chưa có Hybrid Memory và Loop:** Prompt nâng cấp đầy đủ R6 → R10.1.
+1. **Cài mới:** Master Prompt R10.2.
+2. **R6 chưa có Hybrid Memory và Loop:** Prompt nâng cấp đầy đủ R6 → R10.2.
 3. **R6 hoặc mới hơn đã có Memory/Auto-Learn:** Prompt **Loop-only**, không động vào bộ nhớ/model.
 4. **R6 chỉ cần Mnemopi/Memory:** Prompt **Memory-only**.
 
 Các prompt yêu cầu bảo toàn cấu hình không liên quan và phải kiểm tra những thay đổi thực tế. Chỉ có Markdown không chứng minh quyền tool, cách ly memory hay khả năng dừng Loop đã hoạt động. Kiểm tra runtime với trạng thái `PASS/FAIL/BLOCKED/UNVERIFIED`.
+
+
+## R10.2 — Kiểm tra khả năng tự điều phối sau cài đặt (mới)
+
+**Nên kiểm tra một lần sau khi cài đặt hoặc thay đổi lớn về agents/routing:** [`WEBTEAM_POST_INSTALL_SELF_ORCHESTRATION_CHECK.md`](./WEBTEAM_POST_INSTALL_SELF_ORCHESTRATION_CHECK.md). Dùng độc lập trên hệ thống đã cài, **không cần chạy lại Master Bootstrap**.
+
+Prompt sẽ đối chiếu phiên bản/profile/thư mục dự án thực tế; 16 agents và skills; các file `AGENTS.md`/`RULES.md` hiệu lực; công cụ `task` (cả batch/flat), giới hạn spawn depth, quyền tool của subagents, model roles và khả năng tương tác với Memory, Loop, Caveman và MCP mà **không thay đổi các công cụ này**. Sau đó tiến hành phép thử ngắn trong dự án mẫu vô hại để **quan sát thật** cách phiên chính xử lý yêu cầu web thông thường và giao việc cho chuyên gia bằng `task`.
+
+**Hai cách hợp lệ:** phiên chính gọi `webteam-orchestrator` rồi agent này giao tiếp cho chuyên gia (nếu OMP hỗ trợ nested delegation); hoặc phiên chính đóng vai điều phối và giao trực tiếp cho các chuyên gia. C1/C2 có thể xử lý trực tiếp để tiết kiệm token. Đây là chính sách trong instructions, không được khẳng định OMP chặn và định tuyến cứng mọi tin nhắn chỉ vì agents tồn tại.
+
+**Sửa lỗi an toàn:** đầu tiên chỉ đọc; mọi thay đổi cấu hình cần quyền phù hợp, có sao lưu, diff và thử lại. Không mở rộng quyền headless subagents hoặc tự đổi provider để làm bài kiểm tra thành công. Nếu chưa thấy task call thật, kết quả phải là `UNVERIFIED` hoặc `PARTIAL_VERIFIED`.
+
+**Câu thử không chỉ đích danh agent** (chạy trên dự án mẫu đã được cho phép):
+
+> For this sample web application, assess how to add a role-based onboarding flow with a responsive administrative UI and Fastify API. Identify architecture, accessibility, security and test risks. Give a concise plan. Do not modify any files.
+
+Quan sát kết quả gọi `task` bằng Agent Hub hoặc trace thực tế; lời tuyên bố "sẽ phân công" không đủ bằng chứng.
+
+
+---
+
+## R11 — Lệnh slash WebTeam tích hợp trong OMP 18.12.2
+
+OMP 18.12.2 **hỗ trợ custom slash commands từ file Markdown native**, ngoài TypeScript commands. Mục tiêu của R11 là cung cấp lệnh tắt giúp bắt đầu các workflow WebTeam, không thay thế điều phối tự nhiên hay tự động gọi agent theo tên. Các file mẫu đã có sẵn tại [`WEBTEAM_R11_COMMAND_TEMPLATES/commands/`](./WEBTEAM_R11_COMMAND_TEMPLATES/commands/) và được nhúng đầy đủ trong Master R11.
+
+**Cài đặt:** Global dùng `commands/*.md` trong thư mục agent của OMP profile đang hoạt động (mặc định `~/.omp/agent/commands/`); riêng dự án dùng `<repo>/.omp/commands/*.md`. Không đặt native commands vào thư mục con `commands/webteam/`, vì cơ chế khám phá native không đệ quy. Nếu trùng tên, command project ưu tiên hơn global; built-in/extension cũng có thể được ưu tiên. Kiểm tra danh sách và trạng thái qua OMP trước khi sử dụng.
+
+**Các lệnh hay dùng:**
+
+```text
+/webteam_create_project "School management platform"
+/webteam_adopt_project "/workspace/existing-app"
+/webteam_plan "Add role-based permissions"
+/webteam_implement "Build the approved user management feature"
+/webteam_design_audit "Dashboard"
+/webteam_test "Authentication unit and API tests"
+/webteam_visual_test "Responsive dashboard"
+/webteam_review "Current Git diff"
+/webteam_status
+/webteam_healthcheck
+/webteam_help
+```
+
+Các lệnh bổ sung: `/webteam_architecture_audit`, `/webteam_security_audit`, `/webteam_reference_analyze`, `/webteam_memory_review`, `/webteam_models_audit`, `/webteam_quality_loop`, `/webteam_docs_sync`, `/webteam_release_check`.
+
+**Cài mới:** dùng [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R11.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R11.md). **Đã có WebTeam R6/R10.2, chỉ cần lệnh:** dùng [`WEBTEAM_EXISTING_INSTALL_COMMANDS_ONLY_UPGRADE_PROMPT.md`](./WEBTEAM_EXISTING_INSTALL_COMMANDS_ONLY_UPGRADE_PROMPT.md), không chạy lại bootstrap.
+
+**Quan trọng:** lệnh Markdown mở rộng thành prompt trong phiên chính; không phải lệnh shell hay đảm bảo tự gọi subagent. Khi cài xong phải kiểm tra discovery, mở rộng tham số và có thể quan sát task delegation khi có quyền và ngân sách. Command nhận `$ARGUMENTS` dưới dạng dữ liệu người dùng không đáng tin cậy. Không tự thay đổi Memory, Loop, provider, model, fallback, Caveman hoặc CBM MCP.
