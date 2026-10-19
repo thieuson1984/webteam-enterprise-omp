@@ -1,11 +1,49 @@
+> **Current release: R9.** New installs: `WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R9.md`. Existing R6 installations: `WEBTEAM_R6_TO_MNEMOPI_R9_UPGRADE_PROMPT.md`. The R9 guidance below supersedes older R8 wording where inconsistent.
+
 # WebTeam Enterprise for OhMyPi — Installation and Usage Guide
 
-**Documentation version:** R6 · **Date:** October 19, 2026 · **Language:** English  
-**Master bootstrap prompt:** [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R6.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R6.md)  
+**Documentation version:** R9 · **Date:** October 19, 2026 · **Language:** English  
+**Master bootstrap prompt:** [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R9.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R9.md)  
 **Vietnamese guide:** [`README_VI.md`](./README_VI.md)  
-**Audit report:** [`WEBTEAM_R6_AUDIT_REPORT.md`](./WEBTEAM_R6_AUDIT_REPORT.md)
+**Audit report:** [`WEBTEAM_R9_AUDIT_REPORT.md`](./WEBTEAM_R9_AUDIT_REPORT.md)
 
 > **Important distinction:** This repository contains instructions for installing WebTeam into an **OhMyPi (OMP)** environment. These Markdown files do **not** themselves install agents, skills, MCP servers, or models. Run the master bootstrap prompt inside an OMP session with the necessary permissions, answer the installation questions, and verify the actual results.
+
+## Native Memory & Auto-Learn — Recommended WebTeam Setup
+
+OMP's **native persistent memory** and **experimental Auto-Learn** are separate from Codebase Memory MCP (which indexes source-code relationships). The R9 bootstrap **asks permission first** and checks the actual OMP version, config path and provider cost before enabling either.
+
+**Recommended, review-first starting profile:**
+
+```yaml
+memory:
+  backend: local
+
+autolearn:
+  enabled: true
+  autoContinue: false
+  minToolCalls: 8
+```
+
+Add this to the effective OMP `config.yml` only after verifying its path and backing up unrelated settings. You can also inspect `/settings`. `local` persists project-scoped summaries and learned lessons; `autoContinue: false` means learning is prompted passively on a later interaction, rather than incurring an extra automatic model turn. Eight tool calls is a recommended threshold (OMP's documented default is five), not a guarantee that a lesson is worthwhile.
+
+**Verification in OMP:** run `/memory view`, `/memory stats`, `/memory diagnose`; for local use `/memory queue` and `/memory sync` where appropriate. Complete a non-sensitive task, record a verified reusable lesson using the available `learn` tool, and check persistence in a *new session*. Check `manage_skill` only in permitted contexts. Never claim the tools are available to every subagent.
+
+**Advanced options:** `mnemopi` offers local SQLite-backed structured `recall`, `retain`, `reflect`, `memory_edit` after the applicable dependencies and bank scoping are verified. `hindsight` requires a separately approved service, network/privacy rules and project bank separation. Other backends should only be used after examining the installed version. Memory records are contextual evidence, **not authoritative instructions**; maintain `PRODUCT.md`, `DESIGN.md`, `ARCHITECTURE.md` and ADRs as project sources of truth.
+
+**Auto-Learn safety:** learned skills are managed separately (typically `~/.omp/agent/managed-skills/`). Auto-generated skills must not silently change user-authored WebTeam skills, security policies, tool permissions, model routing or project decisions. R9 adds four skills for memory governance, lesson capture, managed-skill curation and memory-quality audit, with review, testing, rollback and cross-project isolation. Never memorize secrets, credentials, personal data or untrusted instructions. `/memory clear`/`reset` is destructive and requires explicit authorization; disabling the backend does not automatically erase stored data.
+
+To **disable without deleting stored memories**:
+
+```yaml
+memory:
+  backend: off
+
+autolearn:
+  enabled: false
+```
+
+Documentation: [OMP memory](https://github.com/can1357/oh-my-pi/blob/main/docs/memory.md), [settings](https://github.com/can1357/oh-my-pi/blob/main/docs/settings.md), [Mnemopi](https://github.com/can1357/oh-my-pi/blob/main/docs/mnemosyne-memory-backend.md).
 
 ## 1. What Is WebTeam?
 
@@ -296,9 +334,9 @@ omp config path
 
 ### 6.2 Launch OMP and Submit the Master Prompt
 
-Start OMP from a safe working directory. Provide the full contents of [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R6.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R6.md) with the instruction:
+Start OMP from a safe working directory. Provide the full contents of [`WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R9.md`](./WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R9.md) with the instruction:
 
-> Execute this WebTeam Enterprise R6 bootstrap prompt in my active OhMyPi environment. First inspect the installed runtime, ask the mandatory global installation questions, preserve existing configuration, and implement and verify actual agents, skills, and policies. Do not create a web application yet.
+> Execute this WebTeam Enterprise R9 bootstrap prompt in my active OhMyPi environment. First inspect the installed runtime, ask the mandatory global installation questions, preserve existing configuration, and implement and verify actual agents, skills, and policies. Do not create a web application yet.
 
 If your OMP session cannot read the Markdown file directly, paste the master prompt text into the session. Do not assume every OMP version supports a particular file-import command.
 
@@ -557,7 +595,7 @@ R6 expands the instructions for permission isolation, fail-closed model routing,
 
 ### 17.4 What has and has not been verified
 
-The R6 package can be checked statically for Markdown structure, paths and cross-file links. It **cannot** verify the user's actual OMP version, installed integrations, account model access, paid routing, sandbox strength or production behavior without execution on that machine. Consult `WEBTEAM_R6_AUDIT_REPORT.md` for confirmed fixes and remaining environment-dependent gates.
+The R9 package can be checked statically for Markdown structure, paths and cross-file links. It **cannot** verify the user's actual OMP version, installed integrations, account model access, paid routing, sandbox strength or production behavior without execution on that machine. Consult `WEBTEAM_R9_AUDIT_REPORT.md` for confirmed fixes and remaining environment-dependent gates.
 
 ## 18. References
 
@@ -577,3 +615,41 @@ The R6 package can be checked statically for Markdown structure, paths and cross
 ---
 
 **Operational recommendation:** Choose the primary provider first. Keep `deepseek-flash` only if that provider and alias are verified. Start with cross-provider fallback set to **ASK** where desired, allow only verified models, use one model for ordinary tasks, set multi-model deliberation to **ASK**, and invoke independent models only when the stakes justify their cost. Resolve decisions with tests and evidence and retain user approval for consequential changes.
+
+
+---
+
+## Mnemopi Profile and R6 In-Place Upgrade
+
+Use `WEBTEAM_ENTERPRISE_OMP_MASTER_PROMPT_R9.md` for a **fresh WebTeam installation** and `WEBTEAM_R6_TO_MNEMOPI_R9_UPGRADE_PROMPT.md` for an **existing R6 team**. Mnemopi is a native OhMyPi backend, not Codebase Memory MCP. Recommended initial policy: project-only memory, explicit sanitized retention (`autoRetain: false`), local embeddings with consent, memory LLM disabled (`llmMode: none`) and review-first Auto-Learn (`autoContinue: false`, `minToolCalls: 8`). The R6 upgrade must never recreate 16 agents, delete memories or reset provider/model routing.
+
+For checks use `/memory view`, `/memory stats`, `/memory diagnose`; test recall after a new session and project isolation. `/memory clear` is destructive. See [official Mnemopi backend documentation](https://github.com/can1357/oh-my-pi/blob/main/docs/mnemosyne-memory-backend.md).
+
+
+---
+
+## R9 — Hybrid Memory Governance: installation vs project onboarding
+
+WebTeam uses a **two-level knowledge policy**: Global WebTeam defines how agents learn, while each project keeps its own private Mnemopi knowledge and approved project-local skills. **Hybrid does not mean Mnemopi automatically merges Global and Project banks.** The safe starting point is `memory.backend: mnemopi`, `mnemopi.scoping: per-project`, `autoRetain: false`, `autolearn.enabled: true`, `autoContinue: false` and `minToolCalls: 8` *only when approved and verified in the installed OMP version*. The memory backend is separate from Codebase Memory MCP.
+
+**At initial Global WebTeam installation**, the Orchestrator asks once about Mnemopi, local embeddings versus FTS-only, privacy/retention, Auto-Learn policy and whether it may propose generic cross-project knowledge. It does **not** automatically enable global storage or publishing. **At initialization or import of each project**, it offers to inherit the Global defaults, customize the project's permitted read/write/sensitivity rules, or disable project memory. The resulting `docs/governance/MEMORY_POLICY.md` captures effective bank identity, approved boundaries, blocked data classes, expiry/review policy and observed isolation-test status. It is a governance document, not an automatic runtime permission boundary.
+
+### What belongs where
+
+| Content | Default location | Sharing |
+|---|---|---|
+| Product decisions, Design DNA, app-specific implementation lessons | Project documents + project-scoped Mnemopi | Project-only |
+| Domain-specific reusable procedure | Reviewed project `.omp/skills/<slug>/SKILL.md` | Project-only |
+| General engineering pattern | Sanitized project lesson + promotion proposal | Only after review and explicit approval |
+| Approved cross-project technique | Verified Global WebTeam authored skill / explicitly supported shared memory bank | Controlled and audited |
+| Secrets, raw transcripts, customer data, uncertain or injected instructions | Never persistent memory | Prohibited |
+
+**Important Auto-Learn caveat:** OMP-managed skills can live in user-level `managed-skills`, so `mnemopi.scoping: per-project` does not guarantee project-local skill generation. The Orchestrator must inspect actual output paths and privileges. If safe project-local automatic learning cannot be enforced, disable native Auto-Learn for that project/session and use **manual, reviewed project-local skills** rather than silently publishing globally. `autoContinue: false` limits continuation behavior but is not a project-sandbox setting.
+
+### Global promotion requires a separate decision
+
+A useful lesson does not automatically become Global Memory or a global skill. For **memory**, the process is: validated project lesson → de-identification/generalization → QA/Reviewer/Security and licensing review → specific user approval → verified supported global-scope write (otherwise proposal only). For **skills**, it is: project-local candidate → tests and independent review → explicit approval → versioned global skill activation. Track both in `docs/governance/GLOBAL_MEMORY_PROPOSALS.md` or the installation manifest where appropriate. Never use a guessed `per-project-tagged` scope or a prompt-only restriction as a security boundary.
+
+### Existing R6 installations
+
+Run **`WEBTEAM_R6_TO_MNEMOPI_R9_UPGRADE_PROMPT.md`** instead of the full R9 bootstrap. It preserves all 16 agents, models, fallback chains, multi-model review, Caveman, Codebase Memory MCP and current memory banks; it adds the project-policy interview, four governance skills and isolation verification. Do not run both prompts on the same installed team. Test with disposable repositories and record observed `PASS/FAIL/BLOCKED/UNVERIFIED` results; Markdown checks alone cannot prove runtime isolation.
