@@ -489,6 +489,10 @@ Use precise labels: `STATIC_PASS` (documents and files checked), `RUNTIME_VERIFI
 5. Run the release's static structural/link/metadata/inventory checks, then OMP runtime smoke tests in an authorized disposable workspace. Maintain a change manifest, rollback plan and known limitations.
 6. Do not ship historical upgrade prompts, bilingual duplicates, confidential logs, secrets, cached model credentials or backup snapshots inside the canonical ZIP.
 
+## License
+
+Released under the [MIT License](LICENSE). Copyright (c) 2026 kemcafe.
+
 ## Authoritative external references
 
 - [OMP v18.12.2 — task agent discovery and model routing](https://github.com/can1357/oh-my-pi/blob/v18.12.2/docs/task-agent-discovery.md)
