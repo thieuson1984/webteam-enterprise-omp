@@ -1,6 +1,0 @@
-# Use only via: omp --config .omp/contracts/omp/pilot-overlay.yml
-# Verify keys with: omp config get task.structured; omp config get task.batch
-# The overlay does NOT persistently change Global config.
-task:
-  structured: true
-  batch: true

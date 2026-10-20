@@ -3,25 +3,6 @@ description: "Inventory and validate installed WebTeam agent definitions, effect
 argument-hint: "[--scope=global|project|all] [--mode=inventory|verify]"
 ---
 
-## Contract-first preflight (WebTeam protocol v1)
-
-This command is a prompt expansion, not a tool or sandbox. When a contract is in use, apply this gate
-before dispatching, editing or approving:
-
-1. Obtain the Task Contract (`webteam.task.v1`). Validate it with
-   `python3 .omp/contracts/tools/validate_contracts.py check --kind task --file <task>`.
-2. Recompute its canonical SHA-256 with the `hash` command. Confirm `source.repo_revision` equals
-   the actual Git HEAD; confirm acceptance IDs, `allowed_paths`, excluded paths and `change_policy`.
-3. Dispatch only through the native `task` interface, passing the complete `outputSchema` **object**
-   (not a file path) and `schemaMode: "strict"`. A read-only task requires an enforced read-only
-   runtime; a Markdown instruction is not a sandbox.
-4. Save the actual child JSON. Run `check --kind result` and `handoff --repo .`; require independent
-   QA (`webteam.verification.v1`) and Reviewer (`webteam.review.v1`) for non-LIGHT work.
-5. The Orchestrator reconciles identity, digest, revision, scope, evidence and blockers. Schema PASS
-   is not acceptance; `SUBMITTED_FOR_VERIFY` is not ACCEPTED.
-6. Stop on task-ID/digest/revision/scope mismatch, missing or forged evidence, a failing required
-   test, or an unapproved external side effect. Never replay an uncertain side effect.
-
 # WebTeam command: /webteam_agents
 
 You are processing an explicit native OMP Markdown prompt command. Inspect the WebTeam **agent inventory and configuration**; do not confuse discoverable agents with subagents actually running. The MAIN session coordinates and must preserve all project/global configuration and user work. **Read-only only:** no writing, installing, changing model/provider/permissions, or launching tasks by default.

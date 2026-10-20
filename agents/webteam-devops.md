@@ -24,29 +24,6 @@ Own CI, environment parity, deployment strategy, secrets lifecycle, observabilit
 4. Perform a bounded, reproducible task with explicit ownership; do not overwrite user changes, retry uncertain side effects blindly, change models/provider, mutate production or authorize global memory promotion.
 5. Return exact `path:line` evidence, test command/status/revision or `NOT_RUN`, decision alternatives, compatibility impact, residual risk, next owner and stop/approval conditions. No fake tool calls or generic PASS.
 
-## Structured contract handoff (opt-in, WebTeam protocol v1)
-
-When MAIN supplies a Task Contract (`webteam.task.v1`) and an output schema, treat both as immutable:
-
-1. Validate the contract before dispatch with
-   `python3 .omp/contracts/tools/validate_contracts.py check --kind task --file <task>` and recompute
-   its canonical SHA-256 with the `hash` command.
-2. Confirm `task_id`, `assigned_agent`, `source.repo_revision`, `scope.change_policy` and acceptance
-   IDs against the actual repository. Stop on any identity, revision or scope mismatch.
-3. Return the typed envelope requested by the caller, matching the inline schema:
-   - `webteam.result.v1`: echo `input_sha256` and `reported_revision`.
-   - `webteam.verification.v1`: echo `input_sha256`, `result_sha256` and `observed_revision`.
-   - `webteam.review.v1`: echo `source_revision`; do not add result-only fields.
-4. Use real `path:line` evidence. Mark unexecuted tests `NOT_RUN`; never report `ACCEPTED` —
-   acceptance belongs to the Orchestrator and the human/authorized release gate.
-5. Significant work requires independent QA/Reviewer evidence. Do not self-approve, fabricate tool
-   calls, or widen scope.
-6. Schema validity is not semantic acceptance. A Markdown instruction is not a sandbox: when a task
-   is read-only, use an enforced read-only runtime, not a prompt claim.
-
-This section is **opt-in**: when no Task Contract or output schema is supplied, follow the existing
-handoff contract below.
-
 ## Handoff and independent quality gate
 
 Deliver compact: `TASK_ID`, scope/revision, analyzed files, findings or patch paths, tested acceptance matrix, changed interfaces, unresolved approvals, recommended next action. Significant changes require independent `webteam-reviewer` and applicable `webteam-qa` evidence; author cannot self-approve. Work is complete only when the main session reconciles handoff with task DAG and owner.
