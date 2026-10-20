@@ -1,0 +1,39 @@
+{
+  "protocol": "webteam.result.v1",
+  "task_id": "WT-999-BE-99",
+  "agent": "webteam-backend",
+  "input_sha256": "112e3fa6f06d2417f8fc152f1deb0d561a2dd27594da361923b4223f10b96a50",
+  "reported_revision": "NO_GIT_PILOT",
+  "status": "ACCEPTED",
+  "summary": "Synthetic read-only report returned; it is not a real code review.",
+  "acceptance": [
+    {
+      "id": "AC-142-01",
+      "state": "NOT_STARTED",
+      "evidence_refs": []
+    },
+    {
+      "id": "AC-142-02",
+      "state": "NOT_STARTED",
+      "evidence_refs": []
+    }
+  ],
+  "changed_paths": [
+    "secrets/.env"
+  ],
+  "tests": [
+    {
+      "name": "Authorization suite",
+      "status": "NOT_RUN",
+      "command": null,
+      "evidence_ref": null
+    }
+  ],
+  "evidence_refs": [],
+  "blockers": [],
+  "risks": [
+    "No repository was inspected in this fixture"
+  ],
+  "next_owner": "webteam-qa",
+  "approval_requested": false
+}

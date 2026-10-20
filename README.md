@@ -508,4 +508,15 @@ Released under the [MIT License](LICENSE). Copyright (c) 2026 kemcafe.
 
 ---
 
+## Structured contract protocol (opt-in)
+
+Agent and command files now document an opt-in, typed handoff protocol:
+`webteam.task.v1` → `webteam.result.v1` / `verification.v1` / `review.v1`, validated by
+`.omp/contracts/tools/validate_contracts.py` and the cross-field
+`.omp/contracts/tools/verify_artifact_links.py`. See [CONTRACT_PROTOCOL.md](CONTRACT_PROTOCOL.md).
+It does not change the roster, model roles, fallbacks, memory or tool authorization. Schema PASS is
+not acceptance; the Orchestrator/human release gate owns `ACCEPTED`.
+
+---
+
 **Bottom line:** WebTeam is effective only when its **actual OMP installation**, scoped specialists, user-approved permissions and verification results match this documented operating model. Never confuse a comprehensive prompt with proof of runtime correctness.

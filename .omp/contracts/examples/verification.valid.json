@@ -1,0 +1,19 @@
+{
+  "protocol": "webteam.verification.v1",
+  "task_id": "WT-142-BE-01",
+  "verifier": "webteam-qa",
+  "input_sha256": "112e3fa6f06d2417f8fc152f1deb0d561a2dd27594da361923b4223f10b96a50",
+  "result_sha256": "ea8d4c796afbed1f70084be088d7fcbca724b49d94d7811acfef984a03ce6738",
+  "observed_revision": "NO_GIT_PILOT",
+  "decision": "CLARIFY",
+  "checked_acceptance_ids": [
+    "AC-142-01",
+    "AC-142-02"
+  ],
+  "confirmed_evidence_refs": [],
+  "failed_checks": [
+    "No real repository artifacts supplied"
+  ],
+  "notes": "Synthetic test only; cannot mark verified",
+  "independent": true
+}

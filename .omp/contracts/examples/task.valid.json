@@ -1,0 +1,66 @@
+{
+  "protocol": "webteam.task.v1",
+  "task_id": "WT-142-BE-01",
+  "parent_task_id": "WT-142",
+  "assigned_agent": "webteam-backend",
+  "objective": "Inspect authorization coverage for user management without changing source code.",
+  "origin": {
+    "request_ref": "USER-REQUEST-142",
+    "approved_goal": "Assess authorization defects for user management",
+    "confirmed_constraints": [
+      "Read-only pilot",
+      "No production access"
+    ],
+    "assumptions": [],
+    "acceptance_ids": [
+      "AC-142-01",
+      "AC-142-02"
+    ]
+  },
+  "source": {
+    "repo_revision": "NO_GIT_PILOT",
+    "repository_scope": "synthetic-fixture",
+    "docs_revision": null
+  },
+  "context_refs": [
+    {
+      "path": "docs/PRODUCT.md",
+      "purpose": "Authorization rules; read if available"
+    }
+  ],
+  "scope": {
+    "allowed_paths": [
+      "src/auth/**"
+    ],
+    "excluded_paths": [
+      ".env",
+      "secrets/**"
+    ],
+    "out_of_scope": [
+      "Write code",
+      "Contact external services"
+    ],
+    "change_policy": "READ_ONLY",
+    "external_side_effects": false
+  },
+  "dependencies": [],
+  "deliverables": [
+    "Read-only review summary with evidence and unresolved questions"
+  ],
+  "verification": {
+    "required_checks": [
+      "Role matrix reviewed",
+      "Cross-tenant assumptions identified"
+    ],
+    "required_evidence": [
+      "file:line evidence where possible"
+    ],
+    "independent_review": true
+  },
+  "execution": {
+    "risk_tier": "STANDARD",
+    "max_retries": 0,
+    "on_ambiguity": "REQUEST_CLARIFICATION",
+    "budget_note": "One subagent call, no council/loop"
+  }
+}

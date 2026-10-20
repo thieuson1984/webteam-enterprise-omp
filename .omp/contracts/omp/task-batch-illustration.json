@@ -1,0 +1,12 @@
+{
+  "context": "Synthetic read-only WebTeam pilot. No real customer data, no file edits. Original goal and AC IDs are authoritative. Return only contract evidence; do not call external systems.",
+  "tasks": [
+    {
+      "name": "BackendContractPilot",
+      "agent": "webteam-backend",
+      "task": "Read the validated Task Contract WT-142-BE-01. Preserve task_id, agent, baseline revision and SHA-256 exactly. Inspect only synthetic fixtures. Return the complete Result Contract. If data is missing, return NEEDS_CLARIFICATION; never pretend tests were run.",
+      "solutionSpace": "Bounded read-only schema compliance check with a known contract; no coding or external side effects.",
+      "schemaMode": "strict"
+    }
+  ]
+}
